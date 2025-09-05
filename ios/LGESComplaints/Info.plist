@@ -32,9 +32,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>RCTNewArchEnabled</key>
-	<false/>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -49,5 +49,98 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Asap-Black.ttf</string>
+		<string>Asap-BlackItalic.ttf</string>
+		<string>Asap-Bold.ttf</string>
+		<string>Asap-BoldItalic.ttf</string>
+		<string>Asap-ExtraBold.ttf</string>
+		<string>Asap-ExtraBoldItalic.ttf</string>
+		<string>Asap-ExtraLight.ttf</string>
+		<string>Asap-ExtraLightItalic.ttf</string>
+		<string>Asap-Italic.ttf</string>
+		<string>Asap-Light.ttf</string>
+		<string>Asap-LightItalic.ttf</string>
+		<string>Asap-Medium.ttf</string>
+		<string>Asap-MediumItalic.ttf</string>
+		<string>Asap-Regular.ttf</string>
+		<string>Asap-SemiBold.ttf</string>
+		<string>Asap-SemiBoldItalic.ttf</string>
+		<string>Asap-Thin.ttf</string>
+		<string>Asap-ThinItalic.ttf</string>
+		<string>Asap_Condensed-Black.ttf</string>
+		<string>Asap_Condensed-BlackItalic.ttf</string>
+		<string>Asap_Condensed-Bold.ttf</string>
+		<string>Asap_Condensed-BoldItalic.ttf</string>
+		<string>Asap_Condensed-ExtraBold.ttf</string>
+		<string>Asap_Condensed-ExtraBoldItalic.ttf</string>
+		<string>Asap_Condensed-ExtraLight.ttf</string>
+		<string>Asap_Condensed-ExtraLightItalic.ttf</string>
+		<string>Asap_Condensed-Italic.ttf</string>
+		<string>Asap_Condensed-Light.ttf</string>
+		<string>Asap_Condensed-LightItalic.ttf</string>
+		<string>Asap_Condensed-Medium.ttf</string>
+		<string>Asap_Condensed-MediumItalic.ttf</string>
+		<string>Asap_Condensed-Regular.ttf</string>
+		<string>Asap_Condensed-SemiBold.ttf</string>
+		<string>Asap_Condensed-SemiBoldItalic.ttf</string>
+		<string>Asap_Condensed-Thin.ttf</string>
+		<string>Asap_Condensed-ThinItalic.ttf</string>
+		<string>Asap_Expanded-Black.ttf</string>
+		<string>Asap_Expanded-BlackItalic.ttf</string>
+		<string>Asap_Expanded-Bold.ttf</string>
+		<string>Asap_Expanded-BoldItalic.ttf</string>
+		<string>Asap_Expanded-ExtraBold.ttf</string>
+		<string>Asap_Expanded-ExtraBoldItalic.ttf</string>
+		<string>Asap_Expanded-ExtraLight.ttf</string>
+		<string>Asap_Expanded-ExtraLightItalic.ttf</string>
+		<string>Asap_Expanded-Italic.ttf</string>
+		<string>Asap_Expanded-Light.ttf</string>
+		<string>Asap_Expanded-LightItalic.ttf</string>
+		<string>Asap_Expanded-Medium.ttf</string>
+		<string>Asap_Expanded-MediumItalic.ttf</string>
+		<string>Asap_Expanded-Regular.ttf</string>
+		<string>Asap_Expanded-SemiBold.ttf</string>
+		<string>Asap_Expanded-SemiBoldItalic.ttf</string>
+		<string>Asap_Expanded-Thin.ttf</string>
+		<string>Asap_Expanded-ThinItalic.ttf</string>
+		<string>Asap_SemiCondensed-Black.ttf</string>
+		<string>Asap_SemiCondensed-BlackItalic.ttf</string>
+		<string>Asap_SemiCondensed-Bold.ttf</string>
+		<string>Asap_SemiCondensed-BoldItalic.ttf</string>
+		<string>Asap_SemiCondensed-ExtraBold.ttf</string>
+		<string>Asap_SemiCondensed-ExtraBoldItalic.ttf</string>
+		<string>Asap_SemiCondensed-ExtraLight.ttf</string>
+		<string>Asap_SemiCondensed-ExtraLightItalic.ttf</string>
+		<string>Asap_SemiCondensed-Italic.ttf</string>
+		<string>Asap_SemiCondensed-Light.ttf</string>
+		<string>Asap_SemiCondensed-LightItalic.ttf</string>
+		<string>Asap_SemiCondensed-Medium.ttf</string>
+		<string>Asap_SemiCondensed-MediumItalic.ttf</string>
+		<string>Asap_SemiCondensed-Regular.ttf</string>
+		<string>Asap_SemiCondensed-SemiBold.ttf</string>
+		<string>Asap_SemiCondensed-SemiBoldItalic.ttf</string>
+		<string>Asap_SemiCondensed-Thin.ttf</string>
+		<string>Asap_SemiCondensed-ThinItalic.ttf</string>
+		<string>Asap_SemiExpanded-Black.ttf</string>
+		<string>Asap_SemiExpanded-BlackItalic.ttf</string>
+		<string>Asap_SemiExpanded-Bold.ttf</string>
+		<string>Asap_SemiExpanded-BoldItalic.ttf</string>
+		<string>Asap_SemiExpanded-ExtraBold.ttf</string>
+		<string>Asap_SemiExpanded-ExtraBoldItalic.ttf</string>
+		<string>Asap_SemiExpanded-ExtraLight.ttf</string>
+		<string>Asap_SemiExpanded-ExtraLightItalic.ttf</string>
+		<string>Asap_SemiExpanded-Italic.ttf</string>
+		<string>Asap_SemiExpanded-Light.ttf</string>
+		<string>Asap_SemiExpanded-LightItalic.ttf</string>
+		<string>Asap_SemiExpanded-Medium.ttf</string>
+		<string>Asap_SemiExpanded-MediumItalic.ttf</string>
+		<string>Asap_SemiExpanded-Regular.ttf</string>
+		<string>Asap_SemiExpanded-SemiBold.ttf</string>
+		<string>Asap_SemiExpanded-SemiBoldItalic.ttf</string>
+		<string>Asap_SemiExpanded-Thin.ttf</string>
+		<string>Asap_SemiExpanded-ThinItalic.ttf</string>
+	</array>
 </dict>
 </plist>

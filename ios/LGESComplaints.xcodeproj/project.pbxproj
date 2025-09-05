@@ -7,24 +7,204 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B23BFA8FADA47D6BE456CA2 /* Asap_Expanded-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 669D35CC18034CBB9E2B0BD5 /* Asap_Expanded-BlackItalic.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-LGESComplaints.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-LGESComplaints.a */; };
+		0E44FCAA82964B899BC3FEF1 /* Asap_Condensed-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E27ACC29708042558A85E393 /* Asap_Condensed-ExtraLightItalic.ttf */; };
+		0FA19DB292B84D3A9EB08A62 /* Asap_SemiCondensed-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 13FB544F9C6B42A596DA6B0F /* Asap_SemiCondensed-Black.ttf */; };
+		12EDBEDBE4334FB6B47763A8 /* Asap_Condensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5A57CB55A1C48CDB4EFBD7B /* Asap_Condensed-Thin.ttf */; };
+		1339323902FE45A5912C2DCC /* Asap_Expanded-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE4F15FE73054BC08B1966A4 /* Asap_Expanded-Regular.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		1A876272156F4966930C3AE5 /* Asap_Expanded-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CFF78776D092459EA9F8EF5C /* Asap_Expanded-ExtraLightItalic.ttf */; };
+		1F92F0225CA04D5CA93D9231 /* Asap_Expanded-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 645631617CA8445E9EB10F69 /* Asap_Expanded-ExtraBold.ttf */; };
+		211DA60F4D9542C79E9FA476 /* Asap_Expanded-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3EAD85EC07DD4059837BE175 /* Asap_Expanded-ExtraLight.ttf */; };
+		2233495257F04A088CF2B7F6 /* Asap_Condensed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B5EE4718DF940CEBB2E3910 /* Asap_Condensed-BoldItalic.ttf */; };
+		22AC37BFC3F6453890610242 /* Asap_Condensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C45054447F4E416E922258E1 /* Asap_Condensed-Regular.ttf */; };
+		23472213BA3C4479B84E80A6 /* Asap_SemiExpanded-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76F9B6A7DA9B4F0B832D67C2 /* Asap_SemiExpanded-ExtraBold.ttf */; };
+		23CAD264626C42B1A3252D0E /* Asap_SemiExpanded-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DC585ECA2D8477ABA96401D /* Asap_SemiExpanded-ExtraBoldItalic.ttf */; };
+		24ADA5C3FE144DA2ACD28116 /* Asap_SemiCondensed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 216ADB18518549E493608BBE /* Asap_SemiCondensed-ThinItalic.ttf */; };
+		2767027450C04935B6EC5BBB /* Asap_Condensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6375230C3D0420492AC3CD7 /* Asap_Condensed-LightItalic.ttf */; };
+		29448B8B7EEE471F8F65EE1F /* Asap_SemiCondensed-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9FFF5559EED2492F87F132BF /* Asap_SemiCondensed-ExtraBoldItalic.ttf */; };
 		29B985C298D88B989B50DBD6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		2E5E03F46CAB4C0AAD1FDFC5 /* Asap_Expanded-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3E6CFF8493884BC48AB6A382 /* Asap_Expanded-Medium.ttf */; };
+		31DB6915EC624958A0DF81CE /* Asap_Expanded-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 932741527E964BB48F22DDCE /* Asap_Expanded-Italic.ttf */; };
+		353E2CDD6A5A429D9CEAE657 /* Asap_SemiExpanded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A82C4ECEF0948AEB3A13A9C /* Asap_SemiExpanded-Bold.ttf */; };
+		35A5683020BD43B4B8EEBAE3 /* Asap-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F45934CF102947F59E4E5CBA /* Asap-SemiBoldItalic.ttf */; };
+		3D8B622718384DFF94170710 /* Asap_SemiExpanded-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EFF8F15CBDD49C09C7E4A30 /* Asap_SemiExpanded-Regular.ttf */; };
+		43DD2EB80B6D40EFBE00D641 /* Asap_Expanded-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AB36420FF92477381B3D3F7 /* Asap_Expanded-Black.ttf */; };
+		44866E26912E41DD83891479 /* Asap_Expanded-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CED0E60A5D704C5FA87714BD /* Asap_Expanded-ExtraBoldItalic.ttf */; };
+		46F99CE6A21F438F9585AA03 /* Asap_Expanded-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0443608623AB414B9DC645B4 /* Asap_Expanded-ThinItalic.ttf */; };
+		552BBE3F214146D8BA36C741 /* Asap-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7404A483048C44B8B57103E0 /* Asap-LightItalic.ttf */; };
+		5592466DBDC84C1BB99CC459 /* Asap_SemiCondensed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CBAB52ED377B48D895C11F56 /* Asap_SemiCondensed-BlackItalic.ttf */; };
+		56E76DA8CD0F45E894471FAB /* Asap_Expanded-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6025D9EC4E764F1A8D6F7993 /* Asap_Expanded-MediumItalic.ttf */; };
+		577B1ABA69BE49609FB879ED /* Asap_Expanded-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EAA677408AF477A917589D0 /* Asap_Expanded-Bold.ttf */; };
+		59FF0BD0B17D400AA9AC7D72 /* Asap_SemiCondensed-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45F289D35ABD4427910AB1CA /* Asap_SemiCondensed-BoldItalic.ttf */; };
+		5C166EAFD0C94BDBAA1790AF /* Asap_SemiExpanded-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B269927DA442428C9F20DE0D /* Asap_SemiExpanded-LightItalic.ttf */; };
+		6A1FB07F665C4818A864C438 /* Asap_Expanded-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C987486CC1D34BE1AC3ADAB0 /* Asap_Expanded-Thin.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
+		762DA7CB374D4507B42049F5 /* Asap_Condensed-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 19E54403C95349C287A7B28A /* Asap_Condensed-ThinItalic.ttf */; };
+		77AC672D3FED46A89E154778 /* Asap_SemiCondensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F2CC0AD8A8741CCA199DA1A /* Asap_SemiCondensed-Thin.ttf */; };
+		784558EBDD264232A6910190 /* Asap_SemiExpanded-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A98322BFB42C46A086F6CBF1 /* Asap_SemiExpanded-BlackItalic.ttf */; };
+		789FCC7E5D93405AB607C5A1 /* Asap_SemiCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B7A38447B174A92BB9C3EE8 /* Asap_SemiCondensed-Light.ttf */; };
+		7A21EE9FAD844E6FB14370B8 /* Asap_SemiCondensed-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED26DA23671F407A834FE6AF /* Asap_SemiCondensed-SemiBoldItalic.ttf */; };
+		7DF0125E9FFD4934A1E3EDC4 /* Asap-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B57F979DF1B446598E6BE42 /* Asap-ExtraBoldItalic.ttf */; };
+		80DEF9F4BDB34B02B333601F /* Asap_SemiExpanded-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95CFEBA5FD5341A28D91BE76 /* Asap_SemiExpanded-BoldItalic.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		822431C971934E27A97277F2 /* Asap_SemiCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 422774F52AB34615A8B182E1 /* Asap_SemiCondensed-SemiBold.ttf */; };
+		8307C7826AF84D72A7068A07 /* Asap-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF2EFAEED56941CFBFB00ECD /* Asap-Thin.ttf */; };
+		87A1F3AEC2E5439486780B90 /* Asap_SemiExpanded-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B217E4A7DC24048A16C24AA /* Asap_SemiExpanded-ExtraLight.ttf */; };
+		890AC775B13D4C26B55B0F56 /* Asap_SemiExpanded-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4234BC797C2E499CB8B4B493 /* Asap_SemiExpanded-ExtraLightItalic.ttf */; };
+		89895F8E43FB49199E9FAAC1 /* Asap_SemiExpanded-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0AB965D1151342BDB102F4B4 /* Asap_SemiExpanded-Medium.ttf */; };
+		8AF53DD6EAD84F0BAFE81D7A /* Asap-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 992C28CBD45045D2AF58733D /* Asap-ExtraBold.ttf */; };
+		8E9CF4FA5E91478BAB017F63 /* Asap-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3BAD3A9922D45B796565432 /* Asap-SemiBold.ttf */; };
+		8FA020DBF950419689A22B2A /* Asap_Condensed-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F248B37FDCED4DCDB768B50A /* Asap_Condensed-BlackItalic.ttf */; };
+		953D9CA78E4542FD962C7F19 /* Asap-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71A1DDA4B989482AAB67B2F0 /* Asap-Regular.ttf */; };
+		95A8A5A1735B4026862D78E5 /* Asap_Condensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2AF51318F4A046B88721CD57 /* Asap_Condensed-Light.ttf */; };
+		96FC29D667F7487586B1FB27 /* Asap_SemiCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26C8FE3D73344820931A92C2 /* Asap_SemiCondensed-Bold.ttf */; };
+		980A1BC657C1477C8B130252 /* Asap_Expanded-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7E1270CE5924CBC8531F921 /* Asap_Expanded-SemiBold.ttf */; };
+		9BB46C71CA2F4ED4B2D5EC9E /* Asap_SemiExpanded-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6CB199ABF0EB4DC588372BD9 /* Asap_SemiExpanded-Thin.ttf */; };
+		9E53A449D0B247EA99AF4933 /* Asap_SemiCondensed-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25571521204848C39CA6A6F2 /* Asap_SemiCondensed-ExtraBold.ttf */; };
+		9EB2B99EB4AC42B09A08DF82 /* Asap-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 633E4EBEE71D4C4BA2858350 /* Asap-Light.ttf */; };
+		9EE9CE1E45CF452193301FC6 /* Asap-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27E1E3B61A4E422AADF66EC1 /* Asap-ExtraLightItalic.ttf */; };
+		A084E4BFFABA41338BB40F57 /* Asap_SemiExpanded-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81DB6F31EBD040B39B8286F5 /* Asap_SemiExpanded-SemiBoldItalic.ttf */; };
+		A110D3026E0D4C88B0651F13 /* Asap_SemiCondensed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8620DA3D5A684533A674B23D /* Asap_SemiCondensed-Italic.ttf */; };
+		A2E069CBC8114E4C86795915 /* Asap_Condensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F192B63B726D490CA30E7BF1 /* Asap_Condensed-Medium.ttf */; };
+		A5AEBBBB80CF4723927AD317 /* Asap_Condensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F214D3241489461498562970 /* Asap_Condensed-SemiBold.ttf */; };
+		A6299D56D1894B919488BAC4 /* Asap-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66CEABEF99524E44BFC11CA7 /* Asap-MediumItalic.ttf */; };
+		A6D01F3D56D042AC80894232 /* Asap_Condensed-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 860E5F825B644D5EBE4000DB /* Asap_Condensed-SemiBoldItalic.ttf */; };
+		A6F7253F984044D7A5C0FCC3 /* Asap-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD0CF6351E904DF79FF0E9CD /* Asap-BlackItalic.ttf */; };
+		A95D917FCDBD4D619F8A580E /* Asap_SemiCondensed-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CEC6D7AD475F495CA1CA2F70 /* Asap_SemiCondensed-MediumItalic.ttf */; };
+		AD260384851345B6B2B50F4E /* Asap_Condensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BB59ED958034651B2669E53 /* Asap_Condensed-Bold.ttf */; };
+		AEDEE27E1C7440828236CAA5 /* Asap_Condensed-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D289849972E4C2387E53672 /* Asap_Condensed-MediumItalic.ttf */; };
+		AF246424A9614A4A85918D74 /* Asap_Expanded-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7619FCBB7474C17A6581465 /* Asap_Expanded-LightItalic.ttf */; };
+		B03B30521F5B459EBF8E0604 /* Asap_Condensed-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AABCEF61A6BF44FEA418E0B2 /* Asap_Condensed-Italic.ttf */; };
+		B51027D495B249F883600805 /* Asap_Condensed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EB86C9111C04D7A88643832 /* Asap_Condensed-ExtraLight.ttf */; };
+		B56843CDBD7A4502B3CCE64B /* Asap_Condensed-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98ADE03AA7554786AEF69633 /* Asap_Condensed-Black.ttf */; };
+		B6919DE3AF294D3B9B97DE1B /* Asap_SemiExpanded-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37420F3762F3405E96D02AED /* Asap_SemiExpanded-Black.ttf */; };
+		B79C4CF8153A44B38C4EA9C6 /* Asap-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E45F813C561C4879B74DEDE3 /* Asap-ThinItalic.ttf */; };
+		C1C000657636441E860C4B64 /* Asap_Expanded-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC20D1213B6C417FA089671C /* Asap_Expanded-Light.ttf */; };
+		C33FC9C7FA094C6D864E9A69 /* Asap_Expanded-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4DB37EF29384867A806CB6C /* Asap_Expanded-SemiBoldItalic.ttf */; };
+		C39186C2075D4E18B9D12C4E /* Asap_Expanded-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB45BC7511D14F848CDB0F6E /* Asap_Expanded-BoldItalic.ttf */; };
+		C402F8DE177449D6832B620A /* Asap_Condensed-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EAAF257716B04DD7B64F6FE2 /* Asap_Condensed-ExtraBold.ttf */; };
+		CBB7037195964DB7A028221A /* Asap_SemiExpanded-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 489220E4C13C41BD8BD9102F /* Asap_SemiExpanded-MediumItalic.ttf */; };
+		D5C85C9928DC47219616D4F2 /* Asap-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0DC7FF8E40B6494091B7347D /* Asap-BoldItalic.ttf */; };
+		D68D7562346642D787E694DF /* Asap_SemiExpanded-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCE7FDEDD04547A49C2980C2 /* Asap_SemiExpanded-ThinItalic.ttf */; };
+		D7F8FFAC4DC34ED1BF0BB07F /* Asap_SemiCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F258A0EFE2C74AA2BD775CC7 /* Asap_SemiCondensed-Regular.ttf */; };
+		D9E1105441D24044B92D37B5 /* Asap_SemiExpanded-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 572CB71668EC4B24AAA22CFE /* Asap_SemiExpanded-SemiBold.ttf */; };
+		DB3D1EA64E1945AFB0A3BA20 /* Asap-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BBF8A52EFF1A46CE8A0AA600 /* Asap-Black.ttf */; };
+		DE63133B34024A7292DCA640 /* Asap_SemiCondensed-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 845320A118DD4AFCA85242DE /* Asap_SemiCondensed-ExtraLight.ttf */; };
+		DF01DA08DF1B406BA1F27C49 /* Asap_SemiCondensed-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44F2C07CD50A44648C6D0297 /* Asap_SemiCondensed-ExtraLightItalic.ttf */; };
+		E60C0E7345F546C0BDE30B73 /* Asap_SemiExpanded-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF003931AC8E4EEF977DCB58 /* Asap_SemiExpanded-Light.ttf */; };
+		E691C965727345FA8B686A4C /* Asap_Condensed-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A12B13864B8438CB8746D24 /* Asap_Condensed-ExtraBoldItalic.ttf */; };
+		E777BDF45B5146079C4CE6B9 /* Asap-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EAA4E9747224B6294701FF9 /* Asap-Bold.ttf */; };
+		E9083BC4119646A1BC44EB1E /* Asap_SemiExpanded-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86DCCF3E23A1417CBEC0548F /* Asap_SemiExpanded-Italic.ttf */; };
+		EAF01A56AE424D14AF4090EA /* Asap-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E1C7D76DA46E0898A4418 /* Asap-Italic.ttf */; };
+		F17EE78BCE2A4F5EBFA7C678 /* Asap_SemiCondensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D09BE792B0D469DA35E8417 /* Asap_SemiCondensed-Medium.ttf */; };
+		F58719FD773E473586F5AFB7 /* Asap_SemiCondensed-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26A17D42AB774B859F0E2AE6 /* Asap_SemiCondensed-LightItalic.ttf */; };
+		F9501E6D045E4B01BB04C127 /* Asap-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B09B8394CEF5466AA0FFC601 /* Asap-ExtraLight.ttf */; };
+		FD9FBEF86A3A436DB4E09D55 /* Asap-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2675D545B27B4F0A992E557C /* Asap-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0443608623AB414B9DC645B4 /* Asap_Expanded-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-ThinItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-ThinItalic.ttf"; sourceTree = "<group>"; };
+		0AB965D1151342BDB102F4B4 /* Asap_SemiExpanded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-Medium.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-Medium.ttf"; sourceTree = "<group>"; };
+		0DC7FF8E40B6494091B7347D /* Asap-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-BoldItalic.ttf"; path = "../src/assets/fonts/Asap-BoldItalic.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* LGESComplaints.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LGESComplaints.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = LGESComplaints/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = LGESComplaints/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = LGESComplaints/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13FB544F9C6B42A596DA6B0F /* Asap_SemiCondensed-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-Black.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-Black.ttf"; sourceTree = "<group>"; };
+		19E54403C95349C287A7B28A /* Asap_Condensed-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-ThinItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-ThinItalic.ttf"; sourceTree = "<group>"; };
+		1BB59ED958034651B2669E53 /* Asap_Condensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-Bold.ttf"; path = "../src/assets/fonts/Asap_Condensed-Bold.ttf"; sourceTree = "<group>"; };
+		1DC585ECA2D8477ABA96401D /* Asap_SemiExpanded-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		216ADB18518549E493608BBE /* Asap_SemiCondensed-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-ThinItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-ThinItalic.ttf"; sourceTree = "<group>"; };
+		25571521204848C39CA6A6F2 /* Asap_SemiCondensed-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-ExtraBold.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-ExtraBold.ttf"; sourceTree = "<group>"; };
+		2675D545B27B4F0A992E557C /* Asap-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-Medium.ttf"; path = "../src/assets/fonts/Asap-Medium.ttf"; sourceTree = "<group>"; };
+		26A17D42AB774B859F0E2AE6 /* Asap_SemiCondensed-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-LightItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-LightItalic.ttf"; sourceTree = "<group>"; };
+		26C8FE3D73344820931A92C2 /* Asap_SemiCondensed-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-Bold.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-Bold.ttf"; sourceTree = "<group>"; };
+		27E1E3B61A4E422AADF66EC1 /* Asap-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Asap-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		2AF51318F4A046B88721CD57 /* Asap_Condensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-Light.ttf"; path = "../src/assets/fonts/Asap_Condensed-Light.ttf"; sourceTree = "<group>"; };
+		2B5EE4718DF940CEBB2E3910 /* Asap_Condensed-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-BoldItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-BoldItalic.ttf"; sourceTree = "<group>"; };
+		37420F3762F3405E96D02AED /* Asap_SemiExpanded-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-Black.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-Black.ttf"; sourceTree = "<group>"; };
+		3A82C4ECEF0948AEB3A13A9C /* Asap_SemiExpanded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-Bold.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-Bold.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-LGESComplaints.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LGESComplaints.debug.xcconfig"; path = "Target Support Files/Pods-LGESComplaints/Pods-LGESComplaints.debug.xcconfig"; sourceTree = "<group>"; };
+		3E6CFF8493884BC48AB6A382 /* Asap_Expanded-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-Medium.ttf"; path = "../src/assets/fonts/Asap_Expanded-Medium.ttf"; sourceTree = "<group>"; };
+		3EAD85EC07DD4059837BE175 /* Asap_Expanded-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-ExtraLight.ttf"; path = "../src/assets/fonts/Asap_Expanded-ExtraLight.ttf"; sourceTree = "<group>"; };
+		3F2CC0AD8A8741CCA199DA1A /* Asap_SemiCondensed-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-Thin.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-Thin.ttf"; sourceTree = "<group>"; };
+		422774F52AB34615A8B182E1 /* Asap_SemiCondensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-SemiBold.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-SemiBold.ttf"; sourceTree = "<group>"; };
+		4234BC797C2E499CB8B4B493 /* Asap_SemiExpanded-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		44F2C07CD50A44648C6D0297 /* Asap_SemiCondensed-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		45F289D35ABD4427910AB1CA /* Asap_SemiCondensed-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-BoldItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-BoldItalic.ttf"; sourceTree = "<group>"; };
+		489220E4C13C41BD8BD9102F /* Asap_SemiExpanded-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-MediumItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-MediumItalic.ttf"; sourceTree = "<group>"; };
+		4AB36420FF92477381B3D3F7 /* Asap_Expanded-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-Black.ttf"; path = "../src/assets/fonts/Asap_Expanded-Black.ttf"; sourceTree = "<group>"; };
+		4D09BE792B0D469DA35E8417 /* Asap_SemiCondensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-Medium.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-Medium.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-LGESComplaints.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LGESComplaints.release.xcconfig"; path = "Target Support Files/Pods-LGESComplaints/Pods-LGESComplaints.release.xcconfig"; sourceTree = "<group>"; };
+		572CB71668EC4B24AAA22CFE /* Asap_SemiExpanded-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-SemiBold.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-SemiBold.ttf"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-LGESComplaints.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LGESComplaints.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E4E1C7D76DA46E0898A4418 /* Asap-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-Italic.ttf"; path = "../src/assets/fonts/Asap-Italic.ttf"; sourceTree = "<group>"; };
+		5EAA4E9747224B6294701FF9 /* Asap-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-Bold.ttf"; path = "../src/assets/fonts/Asap-Bold.ttf"; sourceTree = "<group>"; };
+		5EAA677408AF477A917589D0 /* Asap_Expanded-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-Bold.ttf"; path = "../src/assets/fonts/Asap_Expanded-Bold.ttf"; sourceTree = "<group>"; };
+		6025D9EC4E764F1A8D6F7993 /* Asap_Expanded-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-MediumItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-MediumItalic.ttf"; sourceTree = "<group>"; };
+		633E4EBEE71D4C4BA2858350 /* Asap-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-Light.ttf"; path = "../src/assets/fonts/Asap-Light.ttf"; sourceTree = "<group>"; };
+		645631617CA8445E9EB10F69 /* Asap_Expanded-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-ExtraBold.ttf"; path = "../src/assets/fonts/Asap_Expanded-ExtraBold.ttf"; sourceTree = "<group>"; };
+		669D35CC18034CBB9E2B0BD5 /* Asap_Expanded-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-BlackItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-BlackItalic.ttf"; sourceTree = "<group>"; };
+		66CEABEF99524E44BFC11CA7 /* Asap-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-MediumItalic.ttf"; path = "../src/assets/fonts/Asap-MediumItalic.ttf"; sourceTree = "<group>"; };
+		6B217E4A7DC24048A16C24AA /* Asap_SemiExpanded-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-ExtraLight.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-ExtraLight.ttf"; sourceTree = "<group>"; };
+		6CB199ABF0EB4DC588372BD9 /* Asap_SemiExpanded-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-Thin.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-Thin.ttf"; sourceTree = "<group>"; };
+		6EFF8F15CBDD49C09C7E4A30 /* Asap_SemiExpanded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-Regular.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-Regular.ttf"; sourceTree = "<group>"; };
+		71A1DDA4B989482AAB67B2F0 /* Asap-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-Regular.ttf"; path = "../src/assets/fonts/Asap-Regular.ttf"; sourceTree = "<group>"; };
+		7404A483048C44B8B57103E0 /* Asap-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-LightItalic.ttf"; path = "../src/assets/fonts/Asap-LightItalic.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = LGESComplaints/AppDelegate.swift; sourceTree = "<group>"; };
+		76F9B6A7DA9B4F0B832D67C2 /* Asap_SemiExpanded-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-ExtraBold.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-ExtraBold.ttf"; sourceTree = "<group>"; };
+		7B57F979DF1B446598E6BE42 /* Asap-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Asap-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		7EB86C9111C04D7A88643832 /* Asap_Condensed-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-ExtraLight.ttf"; path = "../src/assets/fonts/Asap_Condensed-ExtraLight.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LGESComplaints/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		81DB6F31EBD040B39B8286F5 /* Asap_SemiExpanded-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		845320A118DD4AFCA85242DE /* Asap_SemiCondensed-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-ExtraLight.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-ExtraLight.ttf"; sourceTree = "<group>"; };
+		860E5F825B644D5EBE4000DB /* Asap_Condensed-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		8620DA3D5A684533A674B23D /* Asap_SemiCondensed-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-Italic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-Italic.ttf"; sourceTree = "<group>"; };
+		86DCCF3E23A1417CBEC0548F /* Asap_SemiExpanded-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-Italic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-Italic.ttf"; sourceTree = "<group>"; };
+		8D289849972E4C2387E53672 /* Asap_Condensed-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-MediumItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-MediumItalic.ttf"; sourceTree = "<group>"; };
+		932741527E964BB48F22DDCE /* Asap_Expanded-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-Italic.ttf"; path = "../src/assets/fonts/Asap_Expanded-Italic.ttf"; sourceTree = "<group>"; };
+		95CFEBA5FD5341A28D91BE76 /* Asap_SemiExpanded-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-BoldItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-BoldItalic.ttf"; sourceTree = "<group>"; };
+		98ADE03AA7554786AEF69633 /* Asap_Condensed-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-Black.ttf"; path = "../src/assets/fonts/Asap_Condensed-Black.ttf"; sourceTree = "<group>"; };
+		992C28CBD45045D2AF58733D /* Asap-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-ExtraBold.ttf"; path = "../src/assets/fonts/Asap-ExtraBold.ttf"; sourceTree = "<group>"; };
+		9A12B13864B8438CB8746D24 /* Asap_Condensed-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		9B7A38447B174A92BB9C3EE8 /* Asap_SemiCondensed-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-Light.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-Light.ttf"; sourceTree = "<group>"; };
+		9FFF5559EED2492F87F132BF /* Asap_SemiCondensed-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		A5A57CB55A1C48CDB4EFBD7B /* Asap_Condensed-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-Thin.ttf"; path = "../src/assets/fonts/Asap_Condensed-Thin.ttf"; sourceTree = "<group>"; };
+		A7619FCBB7474C17A6581465 /* Asap_Expanded-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-LightItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-LightItalic.ttf"; sourceTree = "<group>"; };
+		A98322BFB42C46A086F6CBF1 /* Asap_SemiExpanded-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-BlackItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-BlackItalic.ttf"; sourceTree = "<group>"; };
+		AABCEF61A6BF44FEA418E0B2 /* Asap_Condensed-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-Italic.ttf"; path = "../src/assets/fonts/Asap_Condensed-Italic.ttf"; sourceTree = "<group>"; };
+		AD0CF6351E904DF79FF0E9CD /* Asap-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-BlackItalic.ttf"; path = "../src/assets/fonts/Asap-BlackItalic.ttf"; sourceTree = "<group>"; };
+		AF2EFAEED56941CFBFB00ECD /* Asap-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-Thin.ttf"; path = "../src/assets/fonts/Asap-Thin.ttf"; sourceTree = "<group>"; };
+		B09B8394CEF5466AA0FFC601 /* Asap-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-ExtraLight.ttf"; path = "../src/assets/fonts/Asap-ExtraLight.ttf"; sourceTree = "<group>"; };
+		B269927DA442428C9F20DE0D /* Asap_SemiExpanded-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-LightItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-LightItalic.ttf"; sourceTree = "<group>"; };
+		B4DB37EF29384867A806CB6C /* Asap_Expanded-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		B6375230C3D0420492AC3CD7 /* Asap_Condensed-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-LightItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-LightItalic.ttf"; sourceTree = "<group>"; };
+		BBF8A52EFF1A46CE8A0AA600 /* Asap-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-Black.ttf"; path = "../src/assets/fonts/Asap-Black.ttf"; sourceTree = "<group>"; };
+		C45054447F4E416E922258E1 /* Asap_Condensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-Regular.ttf"; path = "../src/assets/fonts/Asap_Condensed-Regular.ttf"; sourceTree = "<group>"; };
+		C987486CC1D34BE1AC3ADAB0 /* Asap_Expanded-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-Thin.ttf"; path = "../src/assets/fonts/Asap_Expanded-Thin.ttf"; sourceTree = "<group>"; };
+		CBAB52ED377B48D895C11F56 /* Asap_SemiCondensed-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-BlackItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-BlackItalic.ttf"; sourceTree = "<group>"; };
+		CC20D1213B6C417FA089671C /* Asap_Expanded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-Light.ttf"; path = "../src/assets/fonts/Asap_Expanded-Light.ttf"; sourceTree = "<group>"; };
+		CCE7FDEDD04547A49C2980C2 /* Asap_SemiExpanded-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-ThinItalic.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-ThinItalic.ttf"; sourceTree = "<group>"; };
+		CE4F15FE73054BC08B1966A4 /* Asap_Expanded-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-Regular.ttf"; path = "../src/assets/fonts/Asap_Expanded-Regular.ttf"; sourceTree = "<group>"; };
+		CEC6D7AD475F495CA1CA2F70 /* Asap_SemiCondensed-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-MediumItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-MediumItalic.ttf"; sourceTree = "<group>"; };
+		CED0E60A5D704C5FA87714BD /* Asap_Expanded-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		CFF78776D092459EA9F8EF5C /* Asap_Expanded-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		D7E1270CE5924CBC8531F921 /* Asap_Expanded-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-SemiBold.ttf"; path = "../src/assets/fonts/Asap_Expanded-SemiBold.ttf"; sourceTree = "<group>"; };
+		DB45BC7511D14F848CDB0F6E /* Asap_Expanded-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Expanded-BoldItalic.ttf"; path = "../src/assets/fonts/Asap_Expanded-BoldItalic.ttf"; sourceTree = "<group>"; };
+		E27ACC29708042558A85E393 /* Asap_Condensed-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		E45F813C561C4879B74DEDE3 /* Asap-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-ThinItalic.ttf"; path = "../src/assets/fonts/Asap-ThinItalic.ttf"; sourceTree = "<group>"; };
+		EAAF257716B04DD7B64F6FE2 /* Asap_Condensed-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-ExtraBold.ttf"; path = "../src/assets/fonts/Asap_Condensed-ExtraBold.ttf"; sourceTree = "<group>"; };
+		ED26DA23671F407A834FE6AF /* Asap_SemiCondensed-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F192B63B726D490CA30E7BF1 /* Asap_Condensed-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-Medium.ttf"; path = "../src/assets/fonts/Asap_Condensed-Medium.ttf"; sourceTree = "<group>"; };
+		F214D3241489461498562970 /* Asap_Condensed-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-SemiBold.ttf"; path = "../src/assets/fonts/Asap_Condensed-SemiBold.ttf"; sourceTree = "<group>"; };
+		F248B37FDCED4DCDB768B50A /* Asap_Condensed-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_Condensed-BlackItalic.ttf"; path = "../src/assets/fonts/Asap_Condensed-BlackItalic.ttf"; sourceTree = "<group>"; };
+		F258A0EFE2C74AA2BD775CC7 /* Asap_SemiCondensed-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiCondensed-Regular.ttf"; path = "../src/assets/fonts/Asap_SemiCondensed-Regular.ttf"; sourceTree = "<group>"; };
+		F3BAD3A9922D45B796565432 /* Asap-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-SemiBold.ttf"; path = "../src/assets/fonts/Asap-SemiBold.ttf"; sourceTree = "<group>"; };
+		F45934CF102947F59E4E5CBA /* Asap-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Asap-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		FF003931AC8E4EEF977DCB58 /* Asap_SemiExpanded-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Asap_SemiExpanded-Light.ttf"; path = "../src/assets/fonts/Asap_SemiExpanded-Light.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +255,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				93AC6E1E4BE54AFEA7D8F45B /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -87,6 +268,103 @@
 				13B07F961A680F5B00A75B9A /* LGESComplaints.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		93AC6E1E4BE54AFEA7D8F45B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BBF8A52EFF1A46CE8A0AA600 /* Asap-Black.ttf */,
+				AD0CF6351E904DF79FF0E9CD /* Asap-BlackItalic.ttf */,
+				5EAA4E9747224B6294701FF9 /* Asap-Bold.ttf */,
+				0DC7FF8E40B6494091B7347D /* Asap-BoldItalic.ttf */,
+				992C28CBD45045D2AF58733D /* Asap-ExtraBold.ttf */,
+				7B57F979DF1B446598E6BE42 /* Asap-ExtraBoldItalic.ttf */,
+				B09B8394CEF5466AA0FFC601 /* Asap-ExtraLight.ttf */,
+				27E1E3B61A4E422AADF66EC1 /* Asap-ExtraLightItalic.ttf */,
+				5E4E1C7D76DA46E0898A4418 /* Asap-Italic.ttf */,
+				633E4EBEE71D4C4BA2858350 /* Asap-Light.ttf */,
+				7404A483048C44B8B57103E0 /* Asap-LightItalic.ttf */,
+				2675D545B27B4F0A992E557C /* Asap-Medium.ttf */,
+				66CEABEF99524E44BFC11CA7 /* Asap-MediumItalic.ttf */,
+				71A1DDA4B989482AAB67B2F0 /* Asap-Regular.ttf */,
+				F3BAD3A9922D45B796565432 /* Asap-SemiBold.ttf */,
+				F45934CF102947F59E4E5CBA /* Asap-SemiBoldItalic.ttf */,
+				AF2EFAEED56941CFBFB00ECD /* Asap-Thin.ttf */,
+				E45F813C561C4879B74DEDE3 /* Asap-ThinItalic.ttf */,
+				98ADE03AA7554786AEF69633 /* Asap_Condensed-Black.ttf */,
+				F248B37FDCED4DCDB768B50A /* Asap_Condensed-BlackItalic.ttf */,
+				1BB59ED958034651B2669E53 /* Asap_Condensed-Bold.ttf */,
+				2B5EE4718DF940CEBB2E3910 /* Asap_Condensed-BoldItalic.ttf */,
+				EAAF257716B04DD7B64F6FE2 /* Asap_Condensed-ExtraBold.ttf */,
+				9A12B13864B8438CB8746D24 /* Asap_Condensed-ExtraBoldItalic.ttf */,
+				7EB86C9111C04D7A88643832 /* Asap_Condensed-ExtraLight.ttf */,
+				E27ACC29708042558A85E393 /* Asap_Condensed-ExtraLightItalic.ttf */,
+				AABCEF61A6BF44FEA418E0B2 /* Asap_Condensed-Italic.ttf */,
+				2AF51318F4A046B88721CD57 /* Asap_Condensed-Light.ttf */,
+				B6375230C3D0420492AC3CD7 /* Asap_Condensed-LightItalic.ttf */,
+				F192B63B726D490CA30E7BF1 /* Asap_Condensed-Medium.ttf */,
+				8D289849972E4C2387E53672 /* Asap_Condensed-MediumItalic.ttf */,
+				C45054447F4E416E922258E1 /* Asap_Condensed-Regular.ttf */,
+				F214D3241489461498562970 /* Asap_Condensed-SemiBold.ttf */,
+				860E5F825B644D5EBE4000DB /* Asap_Condensed-SemiBoldItalic.ttf */,
+				A5A57CB55A1C48CDB4EFBD7B /* Asap_Condensed-Thin.ttf */,
+				19E54403C95349C287A7B28A /* Asap_Condensed-ThinItalic.ttf */,
+				4AB36420FF92477381B3D3F7 /* Asap_Expanded-Black.ttf */,
+				669D35CC18034CBB9E2B0BD5 /* Asap_Expanded-BlackItalic.ttf */,
+				5EAA677408AF477A917589D0 /* Asap_Expanded-Bold.ttf */,
+				DB45BC7511D14F848CDB0F6E /* Asap_Expanded-BoldItalic.ttf */,
+				645631617CA8445E9EB10F69 /* Asap_Expanded-ExtraBold.ttf */,
+				CED0E60A5D704C5FA87714BD /* Asap_Expanded-ExtraBoldItalic.ttf */,
+				3EAD85EC07DD4059837BE175 /* Asap_Expanded-ExtraLight.ttf */,
+				CFF78776D092459EA9F8EF5C /* Asap_Expanded-ExtraLightItalic.ttf */,
+				932741527E964BB48F22DDCE /* Asap_Expanded-Italic.ttf */,
+				CC20D1213B6C417FA089671C /* Asap_Expanded-Light.ttf */,
+				A7619FCBB7474C17A6581465 /* Asap_Expanded-LightItalic.ttf */,
+				3E6CFF8493884BC48AB6A382 /* Asap_Expanded-Medium.ttf */,
+				6025D9EC4E764F1A8D6F7993 /* Asap_Expanded-MediumItalic.ttf */,
+				CE4F15FE73054BC08B1966A4 /* Asap_Expanded-Regular.ttf */,
+				D7E1270CE5924CBC8531F921 /* Asap_Expanded-SemiBold.ttf */,
+				B4DB37EF29384867A806CB6C /* Asap_Expanded-SemiBoldItalic.ttf */,
+				C987486CC1D34BE1AC3ADAB0 /* Asap_Expanded-Thin.ttf */,
+				0443608623AB414B9DC645B4 /* Asap_Expanded-ThinItalic.ttf */,
+				13FB544F9C6B42A596DA6B0F /* Asap_SemiCondensed-Black.ttf */,
+				CBAB52ED377B48D895C11F56 /* Asap_SemiCondensed-BlackItalic.ttf */,
+				26C8FE3D73344820931A92C2 /* Asap_SemiCondensed-Bold.ttf */,
+				45F289D35ABD4427910AB1CA /* Asap_SemiCondensed-BoldItalic.ttf */,
+				25571521204848C39CA6A6F2 /* Asap_SemiCondensed-ExtraBold.ttf */,
+				9FFF5559EED2492F87F132BF /* Asap_SemiCondensed-ExtraBoldItalic.ttf */,
+				845320A118DD4AFCA85242DE /* Asap_SemiCondensed-ExtraLight.ttf */,
+				44F2C07CD50A44648C6D0297 /* Asap_SemiCondensed-ExtraLightItalic.ttf */,
+				8620DA3D5A684533A674B23D /* Asap_SemiCondensed-Italic.ttf */,
+				9B7A38447B174A92BB9C3EE8 /* Asap_SemiCondensed-Light.ttf */,
+				26A17D42AB774B859F0E2AE6 /* Asap_SemiCondensed-LightItalic.ttf */,
+				4D09BE792B0D469DA35E8417 /* Asap_SemiCondensed-Medium.ttf */,
+				CEC6D7AD475F495CA1CA2F70 /* Asap_SemiCondensed-MediumItalic.ttf */,
+				F258A0EFE2C74AA2BD775CC7 /* Asap_SemiCondensed-Regular.ttf */,
+				422774F52AB34615A8B182E1 /* Asap_SemiCondensed-SemiBold.ttf */,
+				ED26DA23671F407A834FE6AF /* Asap_SemiCondensed-SemiBoldItalic.ttf */,
+				3F2CC0AD8A8741CCA199DA1A /* Asap_SemiCondensed-Thin.ttf */,
+				216ADB18518549E493608BBE /* Asap_SemiCondensed-ThinItalic.ttf */,
+				37420F3762F3405E96D02AED /* Asap_SemiExpanded-Black.ttf */,
+				A98322BFB42C46A086F6CBF1 /* Asap_SemiExpanded-BlackItalic.ttf */,
+				3A82C4ECEF0948AEB3A13A9C /* Asap_SemiExpanded-Bold.ttf */,
+				95CFEBA5FD5341A28D91BE76 /* Asap_SemiExpanded-BoldItalic.ttf */,
+				76F9B6A7DA9B4F0B832D67C2 /* Asap_SemiExpanded-ExtraBold.ttf */,
+				1DC585ECA2D8477ABA96401D /* Asap_SemiExpanded-ExtraBoldItalic.ttf */,
+				6B217E4A7DC24048A16C24AA /* Asap_SemiExpanded-ExtraLight.ttf */,
+				4234BC797C2E499CB8B4B493 /* Asap_SemiExpanded-ExtraLightItalic.ttf */,
+				86DCCF3E23A1417CBEC0548F /* Asap_SemiExpanded-Italic.ttf */,
+				FF003931AC8E4EEF977DCB58 /* Asap_SemiExpanded-Light.ttf */,
+				B269927DA442428C9F20DE0D /* Asap_SemiExpanded-LightItalic.ttf */,
+				0AB965D1151342BDB102F4B4 /* Asap_SemiExpanded-Medium.ttf */,
+				489220E4C13C41BD8BD9102F /* Asap_SemiExpanded-MediumItalic.ttf */,
+				6EFF8F15CBDD49C09C7E4A30 /* Asap_SemiExpanded-Regular.ttf */,
+				572CB71668EC4B24AAA22CFE /* Asap_SemiExpanded-SemiBold.ttf */,
+				81DB6F31EBD040B39B8286F5 /* Asap_SemiExpanded-SemiBoldItalic.ttf */,
+				6CB199ABF0EB4DC588372BD9 /* Asap_SemiExpanded-Thin.ttf */,
+				CCE7FDEDD04547A49C2980C2 /* Asap_SemiExpanded-ThinItalic.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -161,6 +439,96 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				29B985C298D88B989B50DBD6 /* PrivacyInfo.xcprivacy in Resources */,
+				DB3D1EA64E1945AFB0A3BA20 /* Asap-Black.ttf in Resources */,
+				A6F7253F984044D7A5C0FCC3 /* Asap-BlackItalic.ttf in Resources */,
+				E777BDF45B5146079C4CE6B9 /* Asap-Bold.ttf in Resources */,
+				D5C85C9928DC47219616D4F2 /* Asap-BoldItalic.ttf in Resources */,
+				8AF53DD6EAD84F0BAFE81D7A /* Asap-ExtraBold.ttf in Resources */,
+				7DF0125E9FFD4934A1E3EDC4 /* Asap-ExtraBoldItalic.ttf in Resources */,
+				F9501E6D045E4B01BB04C127 /* Asap-ExtraLight.ttf in Resources */,
+				9EE9CE1E45CF452193301FC6 /* Asap-ExtraLightItalic.ttf in Resources */,
+				EAF01A56AE424D14AF4090EA /* Asap-Italic.ttf in Resources */,
+				9EB2B99EB4AC42B09A08DF82 /* Asap-Light.ttf in Resources */,
+				552BBE3F214146D8BA36C741 /* Asap-LightItalic.ttf in Resources */,
+				FD9FBEF86A3A436DB4E09D55 /* Asap-Medium.ttf in Resources */,
+				A6299D56D1894B919488BAC4 /* Asap-MediumItalic.ttf in Resources */,
+				953D9CA78E4542FD962C7F19 /* Asap-Regular.ttf in Resources */,
+				8E9CF4FA5E91478BAB017F63 /* Asap-SemiBold.ttf in Resources */,
+				35A5683020BD43B4B8EEBAE3 /* Asap-SemiBoldItalic.ttf in Resources */,
+				8307C7826AF84D72A7068A07 /* Asap-Thin.ttf in Resources */,
+				B79C4CF8153A44B38C4EA9C6 /* Asap-ThinItalic.ttf in Resources */,
+				B56843CDBD7A4502B3CCE64B /* Asap_Condensed-Black.ttf in Resources */,
+				8FA020DBF950419689A22B2A /* Asap_Condensed-BlackItalic.ttf in Resources */,
+				AD260384851345B6B2B50F4E /* Asap_Condensed-Bold.ttf in Resources */,
+				2233495257F04A088CF2B7F6 /* Asap_Condensed-BoldItalic.ttf in Resources */,
+				C402F8DE177449D6832B620A /* Asap_Condensed-ExtraBold.ttf in Resources */,
+				E691C965727345FA8B686A4C /* Asap_Condensed-ExtraBoldItalic.ttf in Resources */,
+				B51027D495B249F883600805 /* Asap_Condensed-ExtraLight.ttf in Resources */,
+				0E44FCAA82964B899BC3FEF1 /* Asap_Condensed-ExtraLightItalic.ttf in Resources */,
+				B03B30521F5B459EBF8E0604 /* Asap_Condensed-Italic.ttf in Resources */,
+				95A8A5A1735B4026862D78E5 /* Asap_Condensed-Light.ttf in Resources */,
+				2767027450C04935B6EC5BBB /* Asap_Condensed-LightItalic.ttf in Resources */,
+				A2E069CBC8114E4C86795915 /* Asap_Condensed-Medium.ttf in Resources */,
+				AEDEE27E1C7440828236CAA5 /* Asap_Condensed-MediumItalic.ttf in Resources */,
+				22AC37BFC3F6453890610242 /* Asap_Condensed-Regular.ttf in Resources */,
+				A5AEBBBB80CF4723927AD317 /* Asap_Condensed-SemiBold.ttf in Resources */,
+				A6D01F3D56D042AC80894232 /* Asap_Condensed-SemiBoldItalic.ttf in Resources */,
+				12EDBEDBE4334FB6B47763A8 /* Asap_Condensed-Thin.ttf in Resources */,
+				762DA7CB374D4507B42049F5 /* Asap_Condensed-ThinItalic.ttf in Resources */,
+				43DD2EB80B6D40EFBE00D641 /* Asap_Expanded-Black.ttf in Resources */,
+				0B23BFA8FADA47D6BE456CA2 /* Asap_Expanded-BlackItalic.ttf in Resources */,
+				577B1ABA69BE49609FB879ED /* Asap_Expanded-Bold.ttf in Resources */,
+				C39186C2075D4E18B9D12C4E /* Asap_Expanded-BoldItalic.ttf in Resources */,
+				1F92F0225CA04D5CA93D9231 /* Asap_Expanded-ExtraBold.ttf in Resources */,
+				44866E26912E41DD83891479 /* Asap_Expanded-ExtraBoldItalic.ttf in Resources */,
+				211DA60F4D9542C79E9FA476 /* Asap_Expanded-ExtraLight.ttf in Resources */,
+				1A876272156F4966930C3AE5 /* Asap_Expanded-ExtraLightItalic.ttf in Resources */,
+				31DB6915EC624958A0DF81CE /* Asap_Expanded-Italic.ttf in Resources */,
+				C1C000657636441E860C4B64 /* Asap_Expanded-Light.ttf in Resources */,
+				AF246424A9614A4A85918D74 /* Asap_Expanded-LightItalic.ttf in Resources */,
+				2E5E03F46CAB4C0AAD1FDFC5 /* Asap_Expanded-Medium.ttf in Resources */,
+				56E76DA8CD0F45E894471FAB /* Asap_Expanded-MediumItalic.ttf in Resources */,
+				1339323902FE45A5912C2DCC /* Asap_Expanded-Regular.ttf in Resources */,
+				980A1BC657C1477C8B130252 /* Asap_Expanded-SemiBold.ttf in Resources */,
+				C33FC9C7FA094C6D864E9A69 /* Asap_Expanded-SemiBoldItalic.ttf in Resources */,
+				6A1FB07F665C4818A864C438 /* Asap_Expanded-Thin.ttf in Resources */,
+				46F99CE6A21F438F9585AA03 /* Asap_Expanded-ThinItalic.ttf in Resources */,
+				0FA19DB292B84D3A9EB08A62 /* Asap_SemiCondensed-Black.ttf in Resources */,
+				5592466DBDC84C1BB99CC459 /* Asap_SemiCondensed-BlackItalic.ttf in Resources */,
+				96FC29D667F7487586B1FB27 /* Asap_SemiCondensed-Bold.ttf in Resources */,
+				59FF0BD0B17D400AA9AC7D72 /* Asap_SemiCondensed-BoldItalic.ttf in Resources */,
+				9E53A449D0B247EA99AF4933 /* Asap_SemiCondensed-ExtraBold.ttf in Resources */,
+				29448B8B7EEE471F8F65EE1F /* Asap_SemiCondensed-ExtraBoldItalic.ttf in Resources */,
+				DE63133B34024A7292DCA640 /* Asap_SemiCondensed-ExtraLight.ttf in Resources */,
+				DF01DA08DF1B406BA1F27C49 /* Asap_SemiCondensed-ExtraLightItalic.ttf in Resources */,
+				A110D3026E0D4C88B0651F13 /* Asap_SemiCondensed-Italic.ttf in Resources */,
+				789FCC7E5D93405AB607C5A1 /* Asap_SemiCondensed-Light.ttf in Resources */,
+				F58719FD773E473586F5AFB7 /* Asap_SemiCondensed-LightItalic.ttf in Resources */,
+				F17EE78BCE2A4F5EBFA7C678 /* Asap_SemiCondensed-Medium.ttf in Resources */,
+				A95D917FCDBD4D619F8A580E /* Asap_SemiCondensed-MediumItalic.ttf in Resources */,
+				D7F8FFAC4DC34ED1BF0BB07F /* Asap_SemiCondensed-Regular.ttf in Resources */,
+				822431C971934E27A97277F2 /* Asap_SemiCondensed-SemiBold.ttf in Resources */,
+				7A21EE9FAD844E6FB14370B8 /* Asap_SemiCondensed-SemiBoldItalic.ttf in Resources */,
+				77AC672D3FED46A89E154778 /* Asap_SemiCondensed-Thin.ttf in Resources */,
+				24ADA5C3FE144DA2ACD28116 /* Asap_SemiCondensed-ThinItalic.ttf in Resources */,
+				B6919DE3AF294D3B9B97DE1B /* Asap_SemiExpanded-Black.ttf in Resources */,
+				784558EBDD264232A6910190 /* Asap_SemiExpanded-BlackItalic.ttf in Resources */,
+				353E2CDD6A5A429D9CEAE657 /* Asap_SemiExpanded-Bold.ttf in Resources */,
+				80DEF9F4BDB34B02B333601F /* Asap_SemiExpanded-BoldItalic.ttf in Resources */,
+				23472213BA3C4479B84E80A6 /* Asap_SemiExpanded-ExtraBold.ttf in Resources */,
+				23CAD264626C42B1A3252D0E /* Asap_SemiExpanded-ExtraBoldItalic.ttf in Resources */,
+				87A1F3AEC2E5439486780B90 /* Asap_SemiExpanded-ExtraLight.ttf in Resources */,
+				890AC775B13D4C26B55B0F56 /* Asap_SemiExpanded-ExtraLightItalic.ttf in Resources */,
+				E9083BC4119646A1BC44EB1E /* Asap_SemiExpanded-Italic.ttf in Resources */,
+				E60C0E7345F546C0BDE30B73 /* Asap_SemiExpanded-Light.ttf in Resources */,
+				5C166EAFD0C94BDBAA1790AF /* Asap_SemiExpanded-LightItalic.ttf in Resources */,
+				89895F8E43FB49199E9FAAC1 /* Asap_SemiExpanded-Medium.ttf in Resources */,
+				CBB7037195964DB7A028221A /* Asap_SemiExpanded-MediumItalic.ttf in Resources */,
+				3D8B622718384DFF94170710 /* Asap_SemiExpanded-Regular.ttf in Resources */,
+				D9E1105441D24044B92D37B5 /* Asap_SemiExpanded-SemiBold.ttf in Resources */,
+				A084E4BFFABA41338BB40F57 /* Asap_SemiExpanded-SemiBoldItalic.ttf in Resources */,
+				9BB46C71CA2F4ED4B2D5EC9E /* Asap_SemiExpanded-Thin.ttf in Resources */,
+				D68D7562346642D787E694DF /* Asap_SemiExpanded-ThinItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +627,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LGESComplaints/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -275,6 +646,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = LGESComplaints;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -287,7 +659,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LGESComplaints/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -302,6 +677,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = LGESComplaints;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
