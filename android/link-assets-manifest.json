@@ -1,0 +1,365 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Asap-Black.ttf",
+      "sha1": "791c58c96b423d79515e2177e694a9a22c64b8a6"
+    },
+    {
+      "path": "src/assets/fonts/Asap-BlackItalic.ttf",
+      "sha1": "3cbb2bb88bfbb8a45a41040be81df4bcf5bddaf7"
+    },
+    {
+      "path": "src/assets/fonts/Asap-Bold.ttf",
+      "sha1": "039a8152efc702afbaaf2089a7875df8ade44878"
+    },
+    {
+      "path": "src/assets/fonts/Asap-BoldItalic.ttf",
+      "sha1": "c9fed64ab9575d7e466030fd66be091b78372d88"
+    },
+    {
+      "path": "src/assets/fonts/Asap-ExtraBold.ttf",
+      "sha1": "bb3a193b2a5578fc24a441c8d2c5b88a39a0abb4"
+    },
+    {
+      "path": "src/assets/fonts/Asap-ExtraBoldItalic.ttf",
+      "sha1": "1b4750336a8decf8a9743417da128dca2a6f81f4"
+    },
+    {
+      "path": "src/assets/fonts/Asap-ExtraLight.ttf",
+      "sha1": "51ac6ff8cdbe82fb7b34efda57c0a6f535f5d244"
+    },
+    {
+      "path": "src/assets/fonts/Asap-ExtraLightItalic.ttf",
+      "sha1": "ce72878bf99de8825bc9c57713c6d1447d920992"
+    },
+    {
+      "path": "src/assets/fonts/Asap-Italic.ttf",
+      "sha1": "16a9d047ebf48228a169eb3cff74c7e86ac4310f"
+    },
+    {
+      "path": "src/assets/fonts/Asap-Light.ttf",
+      "sha1": "c8ee9ca5f1690766c44c11ff896c3a151c4d4a87"
+    },
+    {
+      "path": "src/assets/fonts/Asap-LightItalic.ttf",
+      "sha1": "8c39936502c6b97b05a8faf730fa0fce6c092dcb"
+    },
+    {
+      "path": "src/assets/fonts/Asap-Medium.ttf",
+      "sha1": "f9c4de7c5926ee7bf1bdb0d79cb49ab836bac297"
+    },
+    {
+      "path": "src/assets/fonts/Asap-MediumItalic.ttf",
+      "sha1": "75ba8a0737d56085c66ac072aef38e744d79ba26"
+    },
+    {
+      "path": "src/assets/fonts/Asap-Regular.ttf",
+      "sha1": "216c0da7c3bad6f9b3a6c47408f8061dd53d3b20"
+    },
+    {
+      "path": "src/assets/fonts/Asap-SemiBold.ttf",
+      "sha1": "6381e368bce8a6fc85c9a7b068b4327d47b7bd04"
+    },
+    {
+      "path": "src/assets/fonts/Asap-SemiBoldItalic.ttf",
+      "sha1": "34a80f984375ce3a6479ccaa45a3c37875ce5454"
+    },
+    {
+      "path": "src/assets/fonts/Asap-Thin.ttf",
+      "sha1": "c514dfbe856b152a83652f31243ed8bdfda943b9"
+    },
+    {
+      "path": "src/assets/fonts/Asap-ThinItalic.ttf",
+      "sha1": "3a1bb13227aaffe5e1de3a5e9efd399f79e59e53"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-Black.ttf",
+      "sha1": "d95fbded1a04bf020198ec0ea784921d5458f1f5"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-BlackItalic.ttf",
+      "sha1": "2da4c7629f3423fb4ca62e1ba9aa5222d64ad36b"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-Bold.ttf",
+      "sha1": "0c09858be3862c6c2c70ee7e76030d2bf79c87f7"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-BoldItalic.ttf",
+      "sha1": "1770ffedf47e1b5602931c3311d5f1b6ad93d1d3"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-ExtraBold.ttf",
+      "sha1": "3ffecd1a3a0a5d39cdb5a9d81c85a4ca00fec88c"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-ExtraBoldItalic.ttf",
+      "sha1": "444561d8519ef07b839fce9aaa280d3a12b7e0ac"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-ExtraLight.ttf",
+      "sha1": "5d4d688c0a9e446122d567d05bcbd88cd36e5359"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-ExtraLightItalic.ttf",
+      "sha1": "f30a24bad3b299a3f0d114f7dc73e24a31245616"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-Italic.ttf",
+      "sha1": "e6b83f1eecd5798f7410099c164507695fb2ddb0"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-Light.ttf",
+      "sha1": "0342c5e005b589a1dd37135658eef6b9c0ef469d"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-LightItalic.ttf",
+      "sha1": "7e724f9c943c01536d8e223c6ac2e9858991c469"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-Medium.ttf",
+      "sha1": "1eae05feef22fcfa91061d8d922185eb17ccb29a"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-MediumItalic.ttf",
+      "sha1": "2563993c48abee73ee3121ba220aac3f3ec8c9e6"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-Regular.ttf",
+      "sha1": "c32a12021081e72032671f6830e19f3e88f5e679"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-SemiBold.ttf",
+      "sha1": "d2d91d52d4444e53b96512c51f8228a0f4f00b96"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-SemiBoldItalic.ttf",
+      "sha1": "c80bcd2d980eaed81c3f03711ff95322e7afffc2"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-Thin.ttf",
+      "sha1": "6f2f72361a835cda73992a66e81d0d886e24d2fe"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Condensed-ThinItalic.ttf",
+      "sha1": "c0736f59ee04e2c8c987d763ef7c3aa77bcb10f8"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-Black.ttf",
+      "sha1": "91a97eaad2ae1bd6fedf317c90f7a67c8b6ec829"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-BlackItalic.ttf",
+      "sha1": "181af8b45720aa7135bac05a9823b39b732e51bd"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-Bold.ttf",
+      "sha1": "a20bf3f009841190a41e30fa387b6cc1265369aa"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-BoldItalic.ttf",
+      "sha1": "be99388ecc29a363490117fa9f4c768be4d5b560"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-ExtraBold.ttf",
+      "sha1": "a77bbb3a591601d774bbcd31782c3ca44ac0040b"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-ExtraBoldItalic.ttf",
+      "sha1": "a3e39b262e2309c755c11c7e9d065259d313a86a"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-ExtraLight.ttf",
+      "sha1": "037641ca2d08975b8a9cc271854804d2f37cddbc"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-ExtraLightItalic.ttf",
+      "sha1": "92bb870982b6e2dc376ac6252452b68fb1c4a9f4"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-Italic.ttf",
+      "sha1": "1de64883f745f75c7dccee8b20d543afb7610a5f"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-Light.ttf",
+      "sha1": "4a6ead8ca99687b26ad0a9cacc97d21e869cee04"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-LightItalic.ttf",
+      "sha1": "24b097f2e547ab1c15f31485837a7ef08a1fe080"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-Medium.ttf",
+      "sha1": "43838d6b655fa9b478a9a3d613e5af2372a4c341"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-MediumItalic.ttf",
+      "sha1": "2e8d38da676e64c5c56a2b8568c5fcbaee17c966"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-Regular.ttf",
+      "sha1": "d6e29743dd451606d199b26e1e95a4baa966a80a"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-SemiBold.ttf",
+      "sha1": "3c48041d2211eaa61eba60203d90e6c96481d65c"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-SemiBoldItalic.ttf",
+      "sha1": "e580e97ea40edefab54260271ffd2b93df9a7b40"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-Thin.ttf",
+      "sha1": "133c02e29b23335a1b6a81e1fbcce9417b23f80c"
+    },
+    {
+      "path": "src/assets/fonts/Asap_Expanded-ThinItalic.ttf",
+      "sha1": "18fd35b89eafcccf747b6672ee4a57cc05302b68"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-Black.ttf",
+      "sha1": "3b3b605711fff489a88a4c421ad4f580e8c69eca"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-BlackItalic.ttf",
+      "sha1": "f32a9364e586c336623d313a2dbd234e7a943cb3"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-Bold.ttf",
+      "sha1": "9c0db4b9ed65d69abf6268723eaa7d1c4728c8f9"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-BoldItalic.ttf",
+      "sha1": "be674b77fefc9ecd95dfac0353df068bac28b715"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-ExtraBold.ttf",
+      "sha1": "6431053b869e8adbec39ef6c4d9c01c539d5f574"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-ExtraBoldItalic.ttf",
+      "sha1": "f37d39ec43ba39aded0223f17dd6a1758c0a6ffd"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-ExtraLight.ttf",
+      "sha1": "9cd84b13664ec9882e298d58bbe9e5e7dfef1b9a"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-ExtraLightItalic.ttf",
+      "sha1": "4c36b3c86e014f793f8cf01e046cd78d7ac24115"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-Italic.ttf",
+      "sha1": "d62c9dbb2775259ecac1450dc87e46eca0a02aee"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-Light.ttf",
+      "sha1": "280cb44efb06dd4ecc6a2a73777dd2f2b97a3a60"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-LightItalic.ttf",
+      "sha1": "ff6dead11cd016dcf252c99dd832a04ff16d223a"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-Medium.ttf",
+      "sha1": "909872fa5817b50ce8f2011ad5f6bf9ecea48a4f"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-MediumItalic.ttf",
+      "sha1": "b97940ac4cb410c3e4bf751eccf57a55f2101d0a"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-Regular.ttf",
+      "sha1": "f4c831b67a3387e7db4c22abad7f10c80b312883"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-SemiBold.ttf",
+      "sha1": "d3a1d60846d08d3dbc595b39ab7c2afc1f7cccde"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-SemiBoldItalic.ttf",
+      "sha1": "25b0686ad77c97ebaa1f1ee69749f981691a984f"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-Thin.ttf",
+      "sha1": "b643f03f999bc5ac3c3834af79d97390cfeae501"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiCondensed-ThinItalic.ttf",
+      "sha1": "29185e2dac2f041499a128b06931de8049db8de6"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-Black.ttf",
+      "sha1": "57c8a78f4e48d7a029de4fd3e8c97b4807c4b2cb"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-BlackItalic.ttf",
+      "sha1": "81db976998d2141faa2620d440fce6bca6b67c8a"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-Bold.ttf",
+      "sha1": "a7b621544c02d8a3991ba441e14c9bb547fdfe0c"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-BoldItalic.ttf",
+      "sha1": "a44341b7fdf9a0da861b2ca03de41db01b788c7d"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-ExtraBold.ttf",
+      "sha1": "198c0f427ec2899500e3df06f97b82753bdc5526"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-ExtraBoldItalic.ttf",
+      "sha1": "1e08e101f4ec0759dd3a136cf7865b82d15910eb"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-ExtraLight.ttf",
+      "sha1": "398aa13bc086d0b3f0f91d7dc414eca04f3f179b"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-ExtraLightItalic.ttf",
+      "sha1": "26f829c6cdc7d330f5d429d790c20be946a55fed"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-Italic.ttf",
+      "sha1": "ece6e9e6ff5dc41bdea0edaafc2069b85a4266f3"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-Light.ttf",
+      "sha1": "b4772c56e5693bd75422af5cdc0fc61a92dfbab8"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-LightItalic.ttf",
+      "sha1": "45791425ff461fe58a4aa0d2c6250c49e374a4ef"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-Medium.ttf",
+      "sha1": "bdec823b7cf8308382033919820bb1ef00541ae5"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-MediumItalic.ttf",
+      "sha1": "db86b0a6bcf3202cb0fe12696b17e61d2174f948"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-Regular.ttf",
+      "sha1": "19fc06d459aa434de02dfaf1792e4f10e9ffd9bd"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-SemiBold.ttf",
+      "sha1": "40b0b265b5b1595568ee33d3bea055f3d1830e0c"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-SemiBoldItalic.ttf",
+      "sha1": "f755f1dbb2c0874d98a7894cea511ee72bbdbd3e"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-Thin.ttf",
+      "sha1": "6ac0e2c5c98f2f98ba67db90ed93e4e41cfdd138"
+    },
+    {
+      "path": "src/assets/fonts/Asap_SemiExpanded-ThinItalic.ttf",
+      "sha1": "e7d750adcc152be385c71ef6a6e3360bfa4d10a1"
+    }
+  ]
+}
