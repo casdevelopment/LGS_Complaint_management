@@ -61,7 +61,7 @@ const Signup = ({ navigation }) => {
           </Text>
           <Image
             style={styles.profilePic}
-            source={require('../../assets/Images/Avatar.png')}
+            source={require('../../assets/Images/profile-picture.png')}
           />
           <View style={styles.inputContainer}>
             <TextInput
@@ -122,6 +122,7 @@ const Signup = ({ navigation }) => {
               labelField="label"
               valueField="value"
               placeholder="Select your Campus"
+              placeholderStyle={{ color: '#999' }}
               value={campus}
               onChange={item => setCampus(item.value)}
             />
@@ -132,29 +133,33 @@ const Signup = ({ navigation }) => {
               labelField="label"
               valueField="value"
               placeholder="Select your class"
+              placeholderStyle={{ color: '#999' }}
               value={classValue}
               onChange={item => setClassValue(item.value)}
             />
           </View>
 
           {/* Login button */}
-          <TouchableOpacity style={styles.loginButton}>
-            <Text style={styles.loginText}>Login</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('RoleSelectionScreen')}
+            style={styles.loginButton}
+          >
+            <Text style={styles.loginText}>Next</Text>
           </TouchableOpacity>
 
           {/* Forgot password */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.navigate('ForgotPassword')}
             style={styles.forgotButton}
           >
             <Text style={styles.forgotText}>Forgot password?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* Signup */}
           <View style={styles.signupContainer}>
-            <Text style={styles.signupText}>Don’t have an account? </Text>
-            <TouchableOpacity>
-              <Text style={styles.signupLink}>Signup!</Text>
+            <Text style={styles.signupText}>Already have account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.signupLink}>Signin!</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -192,6 +197,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Asap-Regular',
   },
   profilePic: {
+    height: 80,
+    width: 80,
+    marginBottom: 10,
     alignSelf: 'center',
   },
   roleContainer: {
@@ -251,6 +259,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loginButton: {
+    marginBottom: hp('8%'),
     backgroundColor: '#07294D',
     borderRadius: 10,
     paddingVertical: hp('2.2%'),
@@ -287,11 +296,12 @@ const styles = StyleSheet.create({
     color: '#0D1B2A',
   },
   dropdown: {
-    height: 50,
+    height: 60,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
     marginBottom: 16,
+    backgroundColor: '#f9f9f9',
   },
 });

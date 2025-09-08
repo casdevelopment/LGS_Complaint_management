@@ -85,7 +85,7 @@ const NewPassword = ({ navigation }) => {
           {/* Signup */}
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don’t have an account? </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
               <Text style={styles.signupLink}>Signup!</Text>
             </TouchableOpacity>
           </View>

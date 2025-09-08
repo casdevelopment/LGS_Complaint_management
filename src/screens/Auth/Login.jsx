@@ -6,7 +6,6 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Dimensions,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -15,8 +14,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
-const { width, height } = Dimensions.get('window');
 
 const Login = ({ navigation }) => {
   const [role, setRole] = useState('Parent');
@@ -94,7 +91,10 @@ const Login = ({ navigation }) => {
           </View>
 
           {/* Login button */}
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => navigation.navigate('HomeScreen')}
+          >
             <Text style={styles.loginText}>Login</Text>
           </TouchableOpacity>
 

@@ -8,6 +8,8 @@ import ForgotPassword from '../screens/Auth/ForgotPassword';
 import OTPVerification from '../screens/Auth/OTPVerification';
 import NewPassword from '../screens/Auth/NewPassword';
 import Signup from '../screens/Auth/Signup';
+import HomeScreen from '../screens/Home/HomeScreen';
+import RoleSelectionScreen from '../screens/Auth/RoleSelectionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,11 @@ export default function AuthStack() {
       <Stack.Screen name="OTPVerification" component={OTPVerification} />
       <Stack.Screen name="NewPassword" component={NewPassword} />
       <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen
+        name="RoleSelectionScreen"
+        component={RoleSelectionScreen}
+      />
     </Stack.Navigator>
   );
 }
