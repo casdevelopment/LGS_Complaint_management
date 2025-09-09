@@ -21,7 +21,7 @@ const categories = [
   {
     id: 2,
     title: 'Harassments',
-    image: require('../../assets/Images/education.png'),
+    image: require('../../assets/Images/oppression.png'),
   },
   {
     id: 3,
@@ -31,28 +31,33 @@ const categories = [
   {
     id: 4,
     title: 'Racism',
-    image: require('../../assets/Images/education.png'),
+    image: require('../../assets/Images/racsism.png'),
   },
   {
     id: 5,
     title: 'Cleanliness',
-    image: require('../../assets/Images/education.png'),
+    image: require('../../assets/Images/cleanliness.png'),
   },
   {
     id: 6,
     title: 'Transport Service',
-    image: require('../../assets/Images/education.png'),
+    image: require('../../assets/Images/transport.png'),
   },
 ];
 
 export default function CategoryScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../../assets/Images/turn-back.png')}
+      <TouchableOpacity
         style={styles.topLeft}
-        resizeMode="stretch"
-      />
+        onPress={() => navigation.goBack()}
+      >
+        <Image
+          source={require('../../assets/Images/turn-back.png')}
+          //style={styles.topLeft}
+          resizeMode="stretch"
+        />
+      </TouchableOpacity>
 
       <Image
         source={require('../../assets/Images/topRightDarkCurve.png')}
@@ -80,7 +85,9 @@ export default function CategoryScreen({ navigation }) {
           <TouchableOpacity
             key={item.id}
             style={styles.card}
-            onPress={() => alert(`${item.title} selected`)}
+            onPress={() =>
+              navigation.navigate('CampusScreen', { category: item })
+            }
           >
             <Image
               source={item.image}
@@ -164,10 +171,10 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardText: {
-    marginTop: 10,
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#0a1a2f',
+    marginTop: hp('4%'),
+    fontSize: 16,
+    fontFamily: 'Asap-SemiBold',
+    color: '#07294D',
     textAlign: 'center',
   },
 });

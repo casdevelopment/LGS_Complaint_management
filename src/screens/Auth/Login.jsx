@@ -86,7 +86,14 @@ const Login = ({ navigation }) => {
               onPress={() => setPasswordVisible(!passwordVisible)}
               style={styles.eyeButton}
             >
-              <Text>{passwordVisible ? '🙈' : '👁️'}</Text>
+              <Image
+                source={
+                  passwordVisible
+                    ? require('../../assets/Images/visible.png') // 👁️ visible
+                    : require('../../assets/Images/hide.png') // 🙈 hidden
+                }
+                style={styles.eyeIcon}
+              />
             </TouchableOpacity>
           </View>
 

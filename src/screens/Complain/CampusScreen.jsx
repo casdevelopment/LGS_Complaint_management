@@ -15,25 +15,28 @@ import {
 const categories = [
   {
     id: 1,
-    title: 'Education',
-    image: require('../../assets/Images/education.png'),
+    title: 'Garrison College For Boys',
+    image: require('../../assets/Images/studentMale.png'),
   },
   {
     id: 2,
-    title: 'Harassments',
-    image: require('../../assets/Images/education.png'),
+    title: 'Garrison College For Girls',
+    image: require('../../assets/Images/studentFemale.png'),
   },
 ];
 
 export default function CampusScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../../assets/Images/turn-back.png')}
+      <TouchableOpacity
         style={styles.topLeft}
-        resizeMode="stretch"
-      />
-
+        onPress={() => navigation.goBack()}
+      >
+        <Image
+          source={require('../../assets/Images/turn-back.png')}
+          resizeMode="stretch"
+        />
+      </TouchableOpacity>
       <Image
         source={require('../../assets/Images/topRightDarkCurve.png')}
         style={styles.topRight}
@@ -50,7 +53,7 @@ export default function CampusScreen({ navigation }) {
           <TouchableOpacity
             key={item.id}
             style={styles.card}
-            onPress={() => alert(`${item.title} selected`)}
+            onPress={() => navigation.navigate('ComplainForm')}
           >
             <Image
               source={item.image}
@@ -134,10 +137,11 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardText: {
-    marginTop: 10,
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#0a1a2f',
+    marginTop: hp('4%'),
+    width: wp('35%'),
+    fontSize: 16,
+    fontFamily: 'Asap-SemiBold',
+    color: '#07294D',
     textAlign: 'center',
   },
 });

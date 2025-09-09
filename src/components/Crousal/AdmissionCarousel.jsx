@@ -36,7 +36,7 @@ const AdmissionCarousel = () => {
     <Carousel
       ref={carouselRef}
       width={width - 40}
-      height={220}
+      height={180}
       //   autoPlay
       loop
       data={data}

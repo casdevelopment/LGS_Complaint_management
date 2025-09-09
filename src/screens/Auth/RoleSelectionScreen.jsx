@@ -95,7 +95,7 @@ const RoleSelectionScreen = ({ navigation }) => {
 
       {/* Login button */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('NewPassword')}
+        onPress={() => navigation.navigate('HomeScreen')}
         style={styles.loginButton}
       >
         <Text style={styles.loginText}>Continue</Text>
@@ -103,9 +103,9 @@ const RoleSelectionScreen = ({ navigation }) => {
 
       {/* Signup */}
       <View style={styles.signupContainer}>
-        <Text style={styles.signupText}>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signupLink}>Signup!</Text>
+        <Text style={styles.signupText}>Already have account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.signupLink}>Signin!</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
+    marginTop: hp('30%'),
     backgroundColor: '#07294D',
     borderRadius: 10,
     paddingVertical: hp('2.2%'),

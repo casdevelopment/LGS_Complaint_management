@@ -15,11 +15,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Header from '../../components/Header';
 
 const { width, height } = Dimensions.get('window');
 
-const NewPassword = ({ navigation }) => {
-  const [role, setRole] = useState('Parent');
+const UpdatePassword = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
@@ -31,17 +31,33 @@ const NewPassword = ({ navigation }) => {
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
       >
+        <Header title="Update Password" />
         <View style={styles.container}>
           {/* Top-right curve */}
-          <Image
-            source={require('../../assets/Images/topRightDarkCurve.png')}
-            style={styles.topRight}
-            resizeMode="stretch"
-          />
 
-          {/* Title */}
-          <Text style={styles.title}>Set New Password</Text>
-          <Text style={styles.subtitle}>Enter your new password below</Text>
+          {/* Password input */}
+          <Text style={styles.roleTitle}>Enter Old Password</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#999"
+              secureTextEntry={!passwordVisible}
+              style={styles.input}
+            />
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={styles.eyeButton}
+            >
+              <Image
+                source={
+                  passwordVisible
+                    ? require('../../assets/Images/visible.png') // 👁️ visible
+                    : require('../../assets/Images/hide.png') // 🙈 hidden
+                }
+                style={styles.eyeIcon}
+              />
+            </TouchableOpacity>
+          </View>
 
           {/* Password input */}
           <Text style={styles.roleTitle}>Password</Text>
@@ -66,8 +82,6 @@ const NewPassword = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-
-          {/* Password input */}
           <Text style={styles.roleTitle}>Confirm Password</Text>
           <View style={styles.inputContainer}>
             <TextInput
@@ -93,33 +107,27 @@ const NewPassword = ({ navigation }) => {
 
           {/* Login button */}
           <TouchableOpacity
-            onPress={() => navigation.navigate('Login')}
+            // onPress={() => navigation.navigate('Login')}
             style={styles.loginButton}
           >
-            <Text style={styles.loginText}>Submit</Text>
+            <Text style={styles.loginText}>Update</Text>
           </TouchableOpacity>
 
           {/* Signup */}
-          <View style={styles.signupContainer}>
-            <Text style={styles.signupText}>Don’t have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-              <Text style={styles.signupLink}>Signup!</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 };
 
-export default NewPassword;
+export default UpdatePassword;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
-    paddingTop: hp('13%'),
+    paddingTop: hp('8%'),
   },
   topRight: {
     position: 'absolute',
@@ -196,11 +204,12 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loginButton: {
+    marginTop: hp('28%'),
     backgroundColor: '#07294D',
     borderRadius: 10,
     paddingVertical: hp('2.2%'),
     alignItems: 'center',
-    marginTop: hp('14%'),
+    // marginTop: hp('14%'),
   },
   loginText: {
     color: '#fff',

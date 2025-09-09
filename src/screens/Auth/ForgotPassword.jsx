@@ -52,7 +52,6 @@ const ForgotPassword = ({ navigation }) => {
             <TextInput
               placeholder="Enter your email"
               placeholderTextColor="#999"
-              secureTextEntry={!passwordVisible}
               style={styles.input}
             />
             <TouchableOpacity

@@ -11,6 +11,12 @@ import Signup from '../screens/Auth/Signup';
 import HomeScreen from '../screens/Home/HomeScreen';
 import RoleSelectionScreen from '../screens/Auth/RoleSelectionScreen';
 import CategoryScreen from '../screens/Complain/CategoryScreen';
+import CampusScreen from '../screens/Complain/CampusScreen';
+import ComplainForm from '../screens/Complain/ComplainForm';
+import ClosedComplain from '../screens/Complain/ClosedComplain';
+import DroppedComplain from '../screens/Complain/DroppedComplain';
+import AccountScreen from '../screens/Profile/AccountScreen';
+import UpdatePassword from '../screens/Profile/UpdatePassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +36,12 @@ export default function AuthStack() {
         component={RoleSelectionScreen}
       />
       <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
+      <Stack.Screen name="CampusScreen" component={CampusScreen} />
+      <Stack.Screen name="ComplainForm" component={ComplainForm} />
+      <Stack.Screen name="ClosedComplain" component={ClosedComplain} />
+      <Stack.Screen name="DroppedComplain" component={DroppedComplain} />
+      <Stack.Screen name="AccountScreen" component={AccountScreen} />
+      <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
     </Stack.Navigator>
   );
 }
