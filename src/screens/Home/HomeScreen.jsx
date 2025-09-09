@@ -16,7 +16,7 @@ import AdmissionCarousel from '../../components/Crousal/AdmissionCarousel';
 
 const { width } = Dimensions.get('window');
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
@@ -143,9 +143,12 @@ const HomeScreen = () => {
         </View> */}
 
         {/* New Complaint Button */}
-        {/* <TouchableOpacity style={styles.newComplaintBtn} disabled>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CategoryScreen')}
+          style={styles.newComplaintBtn}
+        >
           <Text style={styles.newComplaintText}>New Complain</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </ScrollView>
 
       {/* Bottom Navigation */}

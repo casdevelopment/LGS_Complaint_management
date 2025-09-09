@@ -10,6 +10,7 @@ import NewPassword from '../screens/Auth/NewPassword';
 import Signup from '../screens/Auth/Signup';
 import HomeScreen from '../screens/Home/HomeScreen';
 import RoleSelectionScreen from '../screens/Auth/RoleSelectionScreen';
+import CategoryScreen from '../screens/Complain/CategoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ export default function AuthStack() {
         name="RoleSelectionScreen"
         component={RoleSelectionScreen}
       />
+      <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
     </Stack.Navigator>
   );
 }
