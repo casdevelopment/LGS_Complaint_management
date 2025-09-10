@@ -16,6 +16,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { COLORS } from '../../utils/colors';
 
 export default function AccountScreen({ navigation }) {
   return (
@@ -26,13 +27,11 @@ export default function AccountScreen({ navigation }) {
           <Image
             source={require('../../assets/Images/profile-picture.png')}
             style={styles.profileImage}
+            resizeMode="contain"
           />
 
           <TouchableOpacity style={styles.editImageButton}>
-            <Image
-              source={require('../../assets/Images/edit-line.png')}
-              // style={styles.profileImage}
-            />
+            <Image source={require('../../assets/Images/edit-line.png')} />
           </TouchableOpacity>
         </View>
         <View style={styles.profileDetails}>
@@ -43,10 +42,7 @@ export default function AccountScreen({ navigation }) {
           <Text style={styles.profileClass}>Class VII B</Text>
         </View>
         <TouchableOpacity style={styles.editProfileButton}>
-          <Image
-            source={require('../../assets/Images/edit-line.png')}
-            // style={styles.profileImage}
-          />
+          <Image source={require('../../assets/Images/edit-line.png')} />
         </TouchableOpacity>
       </View>
 
@@ -62,21 +58,20 @@ export default function AccountScreen({ navigation }) {
           title="Update Password"
           onPress={() => navigation.navigate('UpdatePassword')}
         />
-        {/* Add more ProfileMenuItem components here if needed */}
       </View>
 
-      {/* Logout Button */}
       <TouchableOpacity
-        style={styles.logoutButton}
+        style={[
+          styles.logoutButton,
+          { position: 'absolute', bottom: 40, left: 10 },
+        ]}
         onPress={() => console.log('Logout Pressed')}
       >
-        <Image source={require('../../assets/Images/out.png')} />
-        {/* <FontAwesome5
-          name="redo-alt"
-          size={18}
-          color="#dc3545"
+        <Image
           style={styles.logoutIcon}
-        /> */}
+          source={require('../../assets/Images/out.png')}
+        />
+
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
     </View>
@@ -91,7 +86,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: 20,
     padding: 20,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -104,11 +98,12 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    marginTop: hp('0.6%'),
+    width: wp('22%'),
+    height: hp('11.5%'),
+    borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#eee',
+    borderColor: COLORS.black,
   },
   editImageButton: {
     position: 'absolute',
@@ -122,29 +117,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 21,
+    fontFamily: 'Asap-SemiBold',
+    color: COLORS.primary,
   },
   profileEmail: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 13,
+    fontFamily: 'Asap-Medium',
+    color: COLORS.primary,
     marginTop: 2,
   },
   profilePhone: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 13,
+    fontFamily: 'Asap-Medium',
+    color: COLORS.primary,
     marginTop: 2,
   },
   profileCollege: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: '600',
+    fontSize: 16,
+    fontFamily: 'Asap-SemiBold',
+    color: COLORS.primary,
     marginTop: 8,
   },
   profileClass: {
-    fontSize: 13,
-    color: '#888',
+    fontSize: 12,
+    fontFamily: 'Asap-Light',
+    color: COLORS.primary,
     marginTop: 2,
   },
   editProfileButton: {
@@ -165,28 +163,16 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginLeft: 20,
     flexDirection: 'row',
-    marginTop: hp('30%'),
-    // justifyContent: 'center',
-    // flexDirection: 'row',
+
     alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: '#fff',
-    // borderRadius: 15,
-    // marginHorizontal: 20,
-    // paddingVertical: 15,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.1,
-    // shadowRadius: 5,
-    // elevation: 3,
   },
   logoutIcon: {
-    marginRight: 10,
+    marginRight: 4,
   },
   logoutText: {
     marginLeft: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#dc3545', // Red for logout
+    fontSize: 13,
+    fontFamily: 'Asap-SemiBold',
+    color: COLORS.red, // Red for logout
   },
 });

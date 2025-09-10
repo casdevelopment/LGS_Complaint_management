@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { COLORS } from '../utils/colors';
 
 const ProfileMenuItem = ({ iconName, title, onPress }) => {
   const icons = {
@@ -43,8 +44,9 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   menuTitle: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 13,
+    color: COLORS.black,
+    fontFamily: 'Asap-Regular',
   },
 });
 
