@@ -16,7 +16,10 @@ import AdmissionCarousel from '../../components/Crousal/AdmissionCarousel';
 
 const { width } = Dimensions.get('window');
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
+  const { role } = route.params || {};
+  console.log(role, 'mmmmtttttt');
+
   return (
     <View style={styles.container}>
       <Image
@@ -53,141 +56,256 @@ const HomeScreen = ({ navigation }) => {
         <AdmissionCarousel />
       </View>
 
-      {/* Announcement Card */}
-      {/* <View style={styles.announcementCard}>
-        <View style={styles.announcementText}>
-          <Text style={styles.announcementTitle}>School Admission Open</Text>
-          <Text style={styles.announcementDesc}>
-            Ensure your voice makes a real impact.
-          </Text>
-        </View>
-        <Image
-          source={require('../assets/girl.png')}
-          style={styles.announcementImage}
-          resizeMode="contain"
-        />
-      </View> */}
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {(!role || role === 'OIC') && (
+          <>
+            <View style={styles.card}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={require('../../assets/Images/bad-review.png')}
+                  style={{ marginRight: 10 }}
+                />
 
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        {/* Complaint Cards */}
-        <View style={styles.card}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image
-              source={require('../../assets/Images/bad-review.png')}
-              style={{ marginRight: 10 }}
-            />
-            <View style={{}}>
-              <Text style={styles.cardTitle}>Total Complaints</Text>
-              <Text style={styles.cardValue}>18</Text>
+                <View style={styles.rowBetween}>
+                  <Text style={styles.cardTitle}>Assigned Complaints</Text>
+                  <Text style={styles.cardValue}>1</Text>
+                </View>
+                <View style={{}}>
+                  <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text>
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
-        <View style={styles.card}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image
-              source={require('../../assets/Images/bad-review.png')}
-              style={{ marginRight: 10 }}
-            />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '90%',
 
-            <View style={styles.rowBetween}>
-              <Text style={styles.cardTitle}>Complaints Open</Text>
-              <Text style={styles.cardValue}>1</Text>
-            </View>
-            <View style={{}}>
-              <Text style={styles.cardDate}>12/20/2025</Text>
-              <Text style={styles.cardId}>ID #25844</Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '90%',
-
-            marginHorizontal: 20,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ClosedComplain')}
-              style={{ flexDirection: 'row' }}
+                marginHorizontal: 20,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
             >
-              <Image
-                source={require('../../assets/Images/attended.png')}
-                style={{ marginRight: 10 }}
-              />
-              <View style={{}}>
-                <Text style={styles.cardTitle}>Closed</Text>
-                <Text style={styles.cardValue}>18</Text>
+              <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ClosedComplain')}
+                  style={{ flexDirection: 'row' }}
+                >
+                  <Image
+                    source={require('../../assets/Images/attended.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{}}>
+                    <Text style={styles.cardTitle}>Attended</Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.card2}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('DroppedComplain')}
-              style={{ flexDirection: 'row' }}
+              <View style={styles.card2}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('DroppedComplain')}
+                  style={{ flexDirection: 'row' }}
+                >
+                  <Image
+                    source={require('../../assets/Images/bad-feedback.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{}}>
+                    <Text style={styles.cardTitle}>Un Attended</Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
+        )}
+        {(!role || role === 'Admin') && (
+          <>
+            <View style={styles.card}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={require('../../assets/Images/bad-review.png')}
+                  style={{ marginRight: 10 }}
+                />
+
+                <View style={styles.rowBetween}>
+                  <Text style={styles.cardTitle}>Total Complaints</Text>
+                  <Text style={styles.cardValue}>1</Text>
+                </View>
+                <View style={{}}>
+                  <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '90%',
+
+                marginHorizontal: 20,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
             >
-              <Image
-                source={require('../../assets/Images/bad-feedback.png')}
-                style={{ marginRight: 10 }}
-              />
-              <View style={{}}>
-                <Text style={styles.cardTitle}>Dropped</Text>
-                <Text style={styles.cardValue}>18</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: 20,
-            justifyContent: 'space-between',
-          }}
-        >
-          <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image
-                source={require('../../assets/Images/good-feedBack.png')}
-                style={{ marginRight: 10 }}
-              />
-              <View style={{ flexShrink: 1 }}>
-                <Text
-                  style={styles.cardTitle}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
+              <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ClosedComplain')}
+                  style={{ flexDirection: 'row' }}
                 >
-                  Implemented
-                </Text>
-                <Text style={styles.cardValue}>18</Text>
+                  <Image
+                    source={require('../../assets/Images/attended.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{}}>
+                    <Text style={styles.cardTitle}>Attended</Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.card2}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('DroppedComplain')}
+                  style={{ flexDirection: 'row' }}
+                >
+                  <Image
+                    source={require('../../assets/Images/bad-feedback.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{}}>
+                    <Text style={styles.cardTitle}>Un Attended</Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
-          </View>
-
-          <View style={[styles.card2, { flex: 1, marginLeft: 10 }]}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image
-                source={require('../../assets/Images/acknowledge.png')}
-                style={{ marginRight: 10 }}
-              />
-              <View style={{ flexShrink: 1 }}>
-                <Text
-                  style={styles.cardTitle}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  Acknowledged
-                </Text>
-                <Text style={styles.cardValue}>18</Text>
+          </>
+        )}
+        {(!role || role === 'Parent') && (
+          <>
+            {/* Complaint Cards */}
+            <View style={styles.card}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={require('../../assets/Images/bad-review.png')}
+                  style={{ marginRight: 10 }}
+                />
+                <View style={{}}>
+                  <Text style={styles.cardTitle}>Total Complaints</Text>
+                  <Text style={styles.cardValue}>18</Text>
+                </View>
               </View>
             </View>
-          </View>
-        </View>
+            <View style={styles.card}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={require('../../assets/Images/bad-review.png')}
+                  style={{ marginRight: 10 }}
+                />
 
-        {/* Grid Stats */}
-        {/* <View style={styles.grid}>
+                <View style={styles.rowBetween}>
+                  <Text style={styles.cardTitle}>Complaints Open</Text>
+                  <Text style={styles.cardValue}>1</Text>
+                </View>
+                <View style={{}}>
+                  <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '90%',
+
+                marginHorizontal: 20,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ClosedComplain')}
+                  style={{ flexDirection: 'row' }}
+                >
+                  <Image
+                    source={require('../../assets/Images/attended.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{}}>
+                    <Text style={styles.cardTitle}>Closed</Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.card2}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('DroppedComplain')}
+                  style={{ flexDirection: 'row' }}
+                >
+                  <Image
+                    source={require('../../assets/Images/bad-feedback.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{}}>
+                    <Text style={styles.cardTitle}>Dropped</Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginHorizontal: 20,
+                justifyContent: 'space-between',
+              }}
+            >
+              <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../../assets/Images/good-feedBack.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{ flexShrink: 1 }}>
+                    <Text
+                      style={styles.cardTitle}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      Implemented
+                    </Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={[styles.card2, { flex: 1, marginLeft: 10 }]}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../../assets/Images/acknowledge.png')}
+                    style={{ marginRight: 10 }}
+                  />
+                  <View style={{ flexShrink: 1 }}>
+                    <Text
+                      style={styles.cardTitle}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      Acknowledged
+                    </Text>
+                    <Text style={styles.cardValue}>18</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            {/* Grid Stats */}
+            {/* <View style={styles.grid}>
           {[
             { title: 'Closed', value: 15 },
             { title: 'Dropped', value: 2 },
@@ -201,31 +319,20 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </View> */}
 
-        {/* New Complaint Button */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('CategoryScreen')}
-          style={styles.newComplaintBtn}
-        >
-          <Image
-            source={require('../../assets/Images/angry-customer.png')}
-            style={{ marginRight: 10 }}
-          />
-          <Text style={styles.newComplaintText}>New Complain</Text>
-        </TouchableOpacity>
+            {/* New Complaint Button */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CategoryScreen')}
+              style={styles.newComplaintBtn}
+            >
+              <Image
+                source={require('../../assets/Images/angry-customer.png')}
+                style={{ marginRight: 10 }}
+              />
+              <Text style={styles.newComplaintText}>New Complain</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </ScrollView>
-
-      {/* Bottom Navigation */}
-      {/* <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navActive}>🏠 Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text>🔍</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text>👤</Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };
@@ -235,7 +342,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   topRight: {
     position: 'absolute',

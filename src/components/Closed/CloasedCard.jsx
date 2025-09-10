@@ -3,7 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
 // import { FontAwesome5 } from '@expo/vector-icons';
 
-const ClosedCard = ({ id, date, assignedTo, department, text, rating }) => {
+const ClosedCard = ({
+  id,
+  date,
+  assignedTo,
+  department,
+  text,
+  rating,
+  onPressSummary,
+}) => {
   const renderStars = rating => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -51,7 +59,7 @@ const ClosedCard = ({ id, date, assignedTo, department, text, rating }) => {
         </View>
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressSummary}>
           <Text style={styles.viewSummaryText}>View Summary</Text>
         </TouchableOpacity>
         <View style={styles.starsContainer}>{renderStars(rating)}</View>

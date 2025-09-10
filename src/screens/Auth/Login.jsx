@@ -17,6 +17,7 @@ import {
 
 const Login = ({ navigation }) => {
   const [role, setRole] = useState('Parent');
+  console.log(role, 'mmmmmmmu');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
@@ -100,7 +101,12 @@ const Login = ({ navigation }) => {
           {/* Login button */}
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={() => navigation.navigate('HomeScreen')}
+            onPress={() =>
+              navigation.navigate('HomeScreen', {
+                screen: 'Home',
+                params: { role },
+              })
+            }
           >
             <Text style={styles.loginText}>Login</Text>
           </TouchableOpacity>

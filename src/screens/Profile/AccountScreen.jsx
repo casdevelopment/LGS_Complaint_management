@@ -51,7 +51,7 @@ export default function AccountScreen({ navigation }) {
         <ProfileMenuItem
           iconName="bell"
           title="Notification & Offer"
-          onPress={() => console.log('Notification & Offer Pressed')}
+          onPress={() => navigation.navigate('NotificationScreen')}
         />
         <ProfileMenuItem
           iconName="lock"

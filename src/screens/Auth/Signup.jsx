@@ -16,6 +16,11 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { Dropdown } from 'react-native-element-dropdown';
+import { Formik } from 'formik';
+import CustomDropdown from '../../components/Form/CustomDropdown';
+import CustomInput from '../../components/Form/CustomInput';
+import { signupSchema } from '../../utils/validationSchemas';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const campusData = [
   { label: 'Campus A', value: 'a' },
@@ -36,6 +41,45 @@ const Signup = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [campus, setCampus] = useState(null);
   const [classValue, setClassValue] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const selectImage = () => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
+      if (!response.didCancel && !response.errorCode) {
+        setProfileImage(response.assets[0]);
+      }
+    });
+  };
+  const handleSignup = async values => {
+    console.log(values, 'mmmmmmmmuip');
+    const formData = new FormData();
+    formData.append('name', values.name);
+    formData.append('email', values.email);
+    formData.append('regNumber', values.regNumber);
+    formData.append('password', values.password);
+    formData.append('campus', values.campus);
+    formData.append('classValue', values.classValue);
+
+    if (profileImage) {
+      formData.append('profileImage', {
+        uri: profileImage.uri,
+        type: profileImage.type,
+        name: profileImage.fileName,
+      });
+    }
+
+    // try {
+    //   const res = await fetch('https://your-api/signup', {
+    //     method: 'POST',
+    //     body: formData,
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    //   });
+    //   const data = await res.json();
+    //   console.log('Signup success:', data);
+    //   navigation.navigate('RoleSelectionScreen');
+    // } catch (err) {
+    //   console.error('Signup error:', err);
+    // }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -47,7 +91,6 @@ const Signup = ({ navigation }) => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.container}>
-          {/* Top-right curve */}
           <Image
             source={require('../../assets/Images/topRightDarkCurve.png')}
             style={styles.topRight}
@@ -59,10 +102,105 @@ const Signup = ({ navigation }) => {
           <Text style={styles.subtitle}>
             Enter your credentials to get login
           </Text>
-          <Image
-            style={styles.profilePic}
-            source={require('../../assets/Images/profile-picture.png')}
-          />
+          <TouchableOpacity
+            onPress={selectImage}
+            style={{ alignSelf: 'center' }}
+          >
+            <Image
+              source={
+                profileImage
+                  ? { uri: profileImage.uri }
+                  : require('../../assets/Images/profile-picture.png')
+              }
+              style={styles.profilePic}
+            />
+          </TouchableOpacity>
+
+          {/* <Formik
+            initialValues={{
+              name: '',
+              email: '',
+              regNumber: '',
+              password: '',
+              confirmPassword: '',
+              campus: '',
+              classValue: '',
+            }}
+            validationSchema={signupSchema}
+            onSubmit={handleSignup}
+          >
+            {({
+              handleChange,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              setFieldValue,
+            }) => (
+              <>
+                <CustomInput
+                  placeholder="Your full name"
+                  value={values.name}
+                  onChangeText={handleChange('name')}
+                  error={touched.name && errors.name}
+                />
+
+                <CustomInput
+                  placeholder="Your mail"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  error={touched.email && errors.email}
+                />
+
+                <CustomInput
+                  placeholder="Enter your register number"
+                  value={values.regNumber}
+                  onChangeText={handleChange('regNumber')}
+                  error={touched.regNumber && errors.regNumber}
+                />
+
+                <CustomInput
+                  placeholder="Password"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  error={touched.password && errors.password}
+                  showToggle
+                />
+
+                <CustomInput
+                  placeholder="Confirm Password"
+                  value={values.confirmPassword}
+                  onChangeText={handleChange('confirmPassword')}
+                  error={touched.confirmPassword && errors.confirmPassword}
+                  showToggle
+                />
+
+                <CustomDropdown
+                  data={campusData}
+                  placeholder="Select your Campus"
+                  value={values.campus}
+                  onChange={val => setFieldValue('campus', val)}
+                  error={touched.campus && errors.campus}
+                />
+
+                <CustomDropdown
+                  data={classData}
+                  placeholder="Select your class"
+                  value={values.classValue}
+                  onChange={val => setFieldValue('classValue', val)}
+                  error={touched.classValue && errors.classValue}
+                />
+
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  style={styles.loginButton}
+                >
+                  <Text style={styles.loginText}>Next</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </Formik> */}
+
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Your full name"
@@ -100,8 +238,8 @@ const Signup = ({ navigation }) => {
               <Image
                 source={
                   passwordVisible
-                    ? require('../../assets/Images/visible.png') // 👁️ visible
-                    : require('../../assets/Images/hide.png') // 🙈 hidden
+                    ? require('../../assets/Images/visible.png')
+                    : require('../../assets/Images/hide.png')
                 }
                 style={styles.eyeIcon}
               />
@@ -122,8 +260,8 @@ const Signup = ({ navigation }) => {
               <Image
                 source={
                   passwordVisible
-                    ? require('../../assets/Images/visible.png') // 👁️ visible
-                    : require('../../assets/Images/hide.png') // 🙈 hidden
+                    ? require('../../assets/Images/visible.png')
+                    : require('../../assets/Images/hide.png')
                 }
                 style={styles.eyeIcon}
               />
@@ -153,7 +291,6 @@ const Signup = ({ navigation }) => {
             />
           </View>
 
-          {/* Login button */}
           <TouchableOpacity
             onPress={() => navigation.navigate('RoleSelectionScreen')}
             style={styles.loginButton}
@@ -161,15 +298,6 @@ const Signup = ({ navigation }) => {
             <Text style={styles.loginText}>Next</Text>
           </TouchableOpacity>
 
-          {/* Forgot password */}
-          {/* <TouchableOpacity
-            onPress={() => navigation.navigate('ForgotPassword')}
-            style={styles.forgotButton}
-          >
-            <Text style={styles.forgotText}>Forgot password?</Text>
-          </TouchableOpacity> */}
-
-          {/* Signup */}
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Already have account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -215,6 +343,7 @@ const styles = StyleSheet.create({
     width: 80,
     marginBottom: 10,
     alignSelf: 'center',
+    borderRadius: 40,
   },
   roleContainer: {
     flexDirection: 'row',
