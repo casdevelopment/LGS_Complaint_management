@@ -1,26 +1,65 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Image,
-  TextInput,
   TouchableOpacity,
   Dimensions,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import CustomInput from '../../components/Form/CustomInput';
+import { resetPassword } from '../../Network/apis';
 
 const { width, height } = Dimensions.get('window');
 
-const NewPassword = ({ navigation }) => {
-  const [role, setRole] = useState('Parent');
-  const [passwordVisible, setPasswordVisible] = useState(false);
+const validationSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Required'),
+});
+
+const NewPassword = ({ navigation, route }) => {
+  const email = route.params?.email; // 👈 from OTPVerification
+
+  const handleSubmitForm = async (values, { setSubmitting }) => {
+    try {
+      const res = await resetPassword({
+        email,
+        password: values.password,
+        confirmPassword: values.password,
+      });
+
+      console.log('Password reset success:', res);
+
+      Alert.alert(
+        'Success',
+        'Your password has been reset successfully. Please login with your new password.',
+        [{ text: 'OK', onPress: () => navigation.navigate('Login') }],
+      );
+    } catch (error) {
+      console.error('Reset password failed:', error?.response?.data || error);
+      Alert.alert(
+        'Error',
+        error?.response?.data?.message ||
+          'Failed to reset password. Please try again.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -43,61 +82,62 @@ const NewPassword = ({ navigation }) => {
           <Text style={styles.title}>Set New Password</Text>
           <Text style={styles.subtitle}>Enter your new password below</Text>
 
-          {/* Password input */}
-          <Text style={styles.roleTitle}>Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#999"
-              secureTextEntry={!passwordVisible}
-              style={styles.input}
-            />
-            <TouchableOpacity
-              onPress={() => setPasswordVisible(!passwordVisible)}
-              style={styles.eyeButton}
-            >
-              <Image
-                source={
-                  passwordVisible
-                    ? require('../../assets/Images/visible.png') // 👁️ visible
-                    : require('../../assets/Images/hide.png') // 🙈 hidden
-                }
-                style={styles.eyeIcon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          {/* Password input */}
-          <Text style={styles.roleTitle}>Confirm Password</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#999"
-              secureTextEntry={!passwordVisible}
-              style={styles.input}
-            />
-            <TouchableOpacity
-              onPress={() => setPasswordVisible(!passwordVisible)}
-              style={styles.eyeButton}
-            >
-              <Image
-                source={
-                  passwordVisible
-                    ? require('../../assets/Images/visible.png') // 👁️ visible
-                    : require('../../assets/Images/hide.png') // 🙈 hidden
-                }
-                style={styles.eyeIcon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          {/* Login button */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Login')}
-            style={styles.loginButton}
+          {/* Formik form */}
+          <Formik
+            initialValues={{ password: '', confirmPassword: '' }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmitForm}
           >
-            <Text style={styles.loginText}>Submit</Text>
-          </TouchableOpacity>
+            {({
+              handleChange,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              isSubmitting,
+            }) => (
+              <>
+                {/* Password */}
+                <Text style={styles.label}>Password</Text>
+                <CustomInput
+                  placeholder="Password"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  secureTextEntry
+                  showToggle
+                  error={
+                    touched.password && errors.password ? errors.password : ''
+                  }
+                />
+
+                {/* Confirm Password */}
+                <Text style={styles.label}>Confirm Password</Text>
+                <CustomInput
+                  placeholder="Confirm Password"
+                  value={values.confirmPassword}
+                  onChangeText={handleChange('confirmPassword')}
+                  secureTextEntry
+                  showToggle
+                  error={
+                    touched.confirmPassword && errors.confirmPassword
+                      ? errors.confirmPassword
+                      : ''
+                  }
+                />
+
+                {/* Submit Button */}
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  disabled={isSubmitting}
+                  style={[styles.loginButton, isSubmitting && { opacity: 0.6 }]}
+                >
+                  <Text style={styles.loginText}>
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                  </Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </Formik>
 
           {/* Signup */}
           <View style={styles.signupContainer}>
@@ -136,84 +176,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#07294D',
     marginBottom: hp('8%'),
-
     fontFamily: 'Asap-Regular',
   },
-  roleContainer: {
-    flexDirection: 'row',
-    marginVertical: hp('2%'),
-  },
-  roleTitle: {
+  label: {
     marginBottom: hp('1%'),
     fontFamily: 'Asap-Regular',
     fontSize: 16,
     color: '#07294D',
-  },
-  roleOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 20,
-  },
-  radioOuter: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    borderWidth: 2,
-    borderColor: '#0D1B2A',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 6,
-  },
-  radioOuterActive: {
-    borderColor: '#0D1B2A',
-  },
-  radioInner: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#0D1B2A',
-  },
-  roleText: {
-    fontSize: 14,
-    color: '#333',
-  },
-  inputContainer: {
-    marginBottom: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#f9f9f9',
-  },
-  input: {
-    flex: 1,
-    paddingVertical: hp('2.2%'),
-    fontSize: 14,
-  },
-  eyeButton: {
-    padding: 5,
   },
   loginButton: {
     backgroundColor: '#07294D',
     borderRadius: 10,
     paddingVertical: hp('2.2%'),
     alignItems: 'center',
-    marginTop: hp('14%'),
+    marginTop: hp('8%'),
   },
   loginText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
-  },
-  forgotButton: {
-    alignSelf: 'flex-end',
-    marginTop: 10,
-  },
-  forgotText: {
-    fontSize: 13,
-    color: '#0D1B2A',
   },
   signupContainer: {
     alignSelf: 'center',

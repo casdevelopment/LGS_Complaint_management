@@ -4,10 +4,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  ScrollView,
   Image,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -17,15 +15,17 @@ import {
 const RoleSelectionScreen = ({ navigation }) => {
   const [selectedRole, setSelectedRole] = useState(null);
 
+  const handleContinue = () => {
+    console.log(selectedRole, 'rolee');
+    if (!selectedRole) {
+      Alert.alert('Selection Required', 'Please select a role to continue.');
+      return;
+    }
+
+    navigation.navigate('Signup', { role: selectedRole }); // 👈 passing role
+  };
+
   return (
-    // <KeyboardAvoidingView
-    //   style={{ flex: 1, backgroundColor: 'red' }}
-    //   behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    // >
-    //   <ScrollView
-    //     contentContainerStyle={{ flexGrow: 1 }}
-    //     keyboardShouldPersistTaps="handled"
-    //   >
     <View style={styles.container}>
       {/* Top-right curve */}
       <Image
@@ -43,15 +43,15 @@ const RoleSelectionScreen = ({ navigation }) => {
         <TouchableOpacity
           style={[
             styles.roleBox,
-            selectedRole === 'Parent' && styles.selectedRole,
+            selectedRole === 'parent' && styles.selectedRole,
           ]}
-          onPress={() => setSelectedRole('Parent')}
+          onPress={() => setSelectedRole('parent')}
         >
           <Image
             source={
-              selectedRole === 'Parent'
-                ? require('../../assets/Images/familywhite.png') // white version
-                : require('../../assets/Images/familyBlack.png') // black version
+              selectedRole === 'parent'
+                ? require('../../assets/Images/familywhite.png')
+                : require('../../assets/Images/familyBlack.png')
             }
             style={{ width: 50, height: 50, marginBottom: 10 }}
             resizeMode="contain"
@@ -59,7 +59,7 @@ const RoleSelectionScreen = ({ navigation }) => {
           <Text
             style={[
               styles.roleText,
-              selectedRole === 'Parent' && { color: '#fff' }, // text turns white on dark bg
+              selectedRole === 'parent' && { color: '#fff' },
             ]}
           >
             Parent
@@ -69,13 +69,13 @@ const RoleSelectionScreen = ({ navigation }) => {
         <TouchableOpacity
           style={[
             styles.roleBox,
-            selectedRole === 'Employee' && styles.selectedRole,
+            selectedRole === 'employee' && styles.selectedRole,
           ]}
-          onPress={() => setSelectedRole('Employee')}
+          onPress={() => setSelectedRole('employee')}
         >
           <Image
             source={
-              selectedRole === 'Employee'
+              selectedRole === 'employee'
                 ? require('../../assets/Images/employeeWhite.png') // white version
                 : require('../../assets/Images/employeeBlack.png') // black version
             }
@@ -85,7 +85,7 @@ const RoleSelectionScreen = ({ navigation }) => {
           <Text
             style={[
               styles.roleText,
-              selectedRole === 'Employee' && { color: '#fff' },
+              selectedRole === 'employee' && { color: '#fff' },
             ]}
           >
             Employee
@@ -94,10 +94,7 @@ const RoleSelectionScreen = ({ navigation }) => {
       </View>
 
       {/* Login button */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('HomeScreen')}
-        style={styles.loginButton}
-      >
+      <TouchableOpacity onPress={handleContinue} style={styles.loginButton}>
         <Text style={styles.loginText}>Continue</Text>
       </TouchableOpacity>
 
@@ -109,8 +106,6 @@ const RoleSelectionScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     </View>
-    //   </ScrollView>
-    // </KeyboardAvoidingView>
   );
 };
 

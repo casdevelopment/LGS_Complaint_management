@@ -13,12 +13,16 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import AdmissionCarousel from '../../components/Crousal/AdmissionCarousel';
+import HomeHeader from '../../components/HomeHeader';
+import { useSelector } from 'react-redux';
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation, route }) => {
   const { role } = route.params || {};
   console.log(role, 'mmmmtttttt');
+  const user = useSelector(state => state.auth.user);
+  console.log(user, 'nmmmmmm');
 
   return (
     <View style={styles.container}>
@@ -28,30 +32,12 @@ const HomeScreen = ({ navigation, route }) => {
         resizeMode="stretch"
       />
       {/* HEADER */}
-      <View style={styles.header}>
-        <View style={styles.userInfo}>
-          <Image
-            source={require('../../assets/Images/profile-picture.png')}
-            style={styles.avatar}
-          />
-          <TouchableOpacity
-            onPress={() => navigation.navigate('AccountScreen')}
-          >
-            <Text style={styles.userName}>Ahmed Hassan</Text>
-            <Text style={styles.userClass}>Class VII B</Text>
-          </TouchableOpacity>
-        </View>
+      <HomeHeader
+        userName={user?.name}
+        userClass={user?.campusclass}
+        navigation={navigation}
+      />
 
-        <TouchableOpacity style={styles.notification}>
-          <Image
-            source={require('../../assets/Images/mail.png')}
-            style={styles.bellIcon}
-          />
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>0</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
       <View style={styles.announcementCard}>
         <AdmissionCarousel />
       </View>

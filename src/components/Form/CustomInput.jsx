@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   eyeButton: { padding: 5 },
-  eyeIcon: { width: 20, height: 20, tintColor: '#555' },
+  eyeIcon: { width: 20, height: 20, tintColor: '#CED1D7' },
   error: { fontSize: 12, color: 'red', marginTop: 4 },
 });

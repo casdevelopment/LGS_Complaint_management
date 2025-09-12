@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -21,66 +22,142 @@ import CustomDropdown from '../../components/Form/CustomDropdown';
 import CustomInput from '../../components/Form/CustomInput';
 import { signupSchema } from '../../utils/validationSchemas';
 import { launchImageLibrary } from 'react-native-image-picker';
-
-const campusData = [
-  { label: 'Campus A', value: 'a' },
-  { label: 'Campus B', value: 'b' },
-  { label: 'Campus C', value: 'c' },
-];
-
-const classData = [
-  { label: 'Class 1', value: '1' },
-  { label: 'Class 2', value: '2' },
-  { label: 'Class 3', value: '3' },
-];
+import { getAllCampus, getAllClasses } from '../../Network/apis';
+import Loader from '../../components/Loader/Loader';
+import { signupUser } from '../../Network/apis';
 
 const { width, height } = Dimensions.get('window');
 
-const Signup = ({ navigation }) => {
-  const [role, setRole] = useState('Parent');
+const Signup = ({ navigation, route }) => {
+  const { role } = route.params || {}; // 👈 role comes here
+  console.log('Selected role:', role);
+  // const [role, setRole] = useState('Parent');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [campus, setCampus] = useState(null);
-  const [classValue, setClassValue] = useState(null);
+  const [campusData, setCampusData] = useState([]);
+  const [classData, setClassData] = useState([]);
+  const [loader, setLoader] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
-  const selectImage = () => {
-    launchImageLibrary({ mediaType: 'photo' }, response => {
-      if (!response.didCancel && !response.errorCode) {
-        setProfileImage(response.assets[0]);
+  const [campusLoading, setCampusLoading] = useState(false);
+  const [classLoading, setClassLoading] = useState(false);
+  const [signupLoading, setSignupLoading] = useState(false);
+  // Fetch campus list on mount
+  useEffect(() => {
+    const fetchCampuses = async () => {
+      setCampusLoading(true); // 👈 show loader
+      try {
+        const res = await getAllCampus();
+        const formatted = res?.data?.map(item => ({
+          label: item.school, // 👈 depends on API response key
+          value: item.schoolId,
+        }));
+        setCampusData(formatted || []);
+      } catch (err) {
+        console.error('Error loading campuses:', err);
+      } finally {
+        setCampusLoading(false); // 👈 hide loader
       }
-    });
-  };
-  const handleSignup = async values => {
-    console.log(values, 'mmmmmmmmuip');
-    const formData = new FormData();
-    formData.append('name', values.name);
-    formData.append('email', values.email);
-    formData.append('regNumber', values.regNumber);
-    formData.append('password', values.password);
-    formData.append('campus', values.campus);
-    formData.append('classValue', values.classValue);
+    };
+    fetchCampuses();
+  }, []);
+  const handleCampusChange = async (campusId, setFieldValue) => {
+    setFieldValue('campus', campusId);
+    setFieldValue('classValue', ''); // reset class
+    setClassData([]); // reset old class list
 
-    if (profileImage) {
-      formData.append('profileImage', {
-        uri: profileImage.uri,
-        type: profileImage.type,
-        name: profileImage.fileName,
-      });
+    try {
+      setClassLoading(true); // 👈 specific state for dropdown
+      const res = await getAllClasses(campusId);
+      const formatted = res?.data?.map(item => ({
+        label: item.class, // 👈 depends on API response key
+        value: item.classId,
+      }));
+      setClassData(formatted || []);
+    } catch (err) {
+      console.error('Error loading classes:', err);
+    } finally {
+      setClassLoading(false);
     }
-
-    // try {
-    //   const res = await fetch('https://your-api/signup', {
-    //     method: 'POST',
-    //     body: formData,
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   });
-    //   const data = await res.json();
-    //   console.log('Signup success:', data);
-    //   navigation.navigate('RoleSelectionScreen');
-    // } catch (err) {
-    //   console.error('Signup error:', err);
-    // }
   };
 
+  // Pick image with base64
+  const selectImage = setFieldValue => {
+    launchImageLibrary(
+      { mediaType: 'photo', includeBase64: true },
+      response => {
+        if (!response.didCancel && !response.errorCode) {
+          const asset = response.assets[0];
+          setFieldValue('profileImage', {
+            uri: asset.uri,
+            base64: asset.base64,
+            type: asset.type,
+            fileName: asset.fileName,
+          });
+        }
+      },
+    );
+  };
+
+  const handleSignup = async values => {
+    try {
+      setSignupLoading(true);
+
+      const body = {
+        name: values.name,
+        email: values.email,
+        phone: values.regNumber,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        userType: role?.toLowerCase(),
+        profilePic: values.profileImage?.base64
+          ? `data:${values.profileImage.type};base64,${values.profileImage.base64}`
+          : null,
+        ...(role?.toLowerCase() === 'parent' && {
+          campus: String(values.campus),
+          class: String(values.classValue),
+        }),
+      };
+      console.log(body, 'body for the user');
+      const data = await signupUser(body); // 🔹 call API function
+      console.log('Signup success:', data);
+
+      if (data?.messageCode === 200) {
+        Alert.alert(
+          'Success',
+          data?.message || 'Signup successful!',
+          [
+            {
+              text: 'OK',
+              onPress: () =>
+                navigation.navigate('OTPVerification', {
+                  from: 'signup',
+                  email: values.email,
+                }),
+            },
+          ],
+          { cancelable: false },
+        );
+      } else {
+        Alert.alert(
+          'Error',
+          data?.message || 'Signup failed. Please try again.',
+        );
+      }
+
+      // navigation.navigate('OTPVerification', {
+      //   from: 'signup', // 👈 tell OTP screen this is signup flow
+      //   email: values.email,
+      // });
+    } catch (error) {
+      console.error('Signup failed:', error);
+      Alert.alert(
+        'Error',
+        error?.response?.data?.message ||
+          'Something went wrong. Please try again.',
+      );
+    } finally {
+      setSignupLoading(false);
+    }
+  };
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -102,7 +179,7 @@ const Signup = ({ navigation }) => {
           <Text style={styles.subtitle}>
             Enter your credentials to get login
           </Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={selectImage}
             style={{ alignSelf: 'center' }}
           >
@@ -114,9 +191,9 @@ const Signup = ({ navigation }) => {
               }
               style={styles.profilePic}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          {/* <Formik
+          <Formik
             initialValues={{
               name: '',
               email: '',
@@ -125,8 +202,9 @@ const Signup = ({ navigation }) => {
               confirmPassword: '',
               campus: '',
               classValue: '',
+              profileImage: null,
             }}
-            validationSchema={signupSchema}
+            validationSchema={signupSchema(role)}
             onSubmit={handleSignup}
           >
             {({
@@ -138,6 +216,19 @@ const Signup = ({ navigation }) => {
               setFieldValue,
             }) => (
               <>
+                <TouchableOpacity
+                  onPress={() => selectImage(setFieldValue)}
+                  style={{ alignSelf: 'center' }}
+                >
+                  <Image
+                    source={
+                      values.profileImage
+                        ? { uri: values.profileImage.uri }
+                        : require('../../assets/Images/profile-picture.png')
+                    }
+                    style={styles.profilePic}
+                  />
+                </TouchableOpacity>
                 <CustomInput
                   placeholder="Your full name"
                   value={values.name}
@@ -175,21 +266,30 @@ const Signup = ({ navigation }) => {
                   showToggle
                 />
 
-                <CustomDropdown
-                  data={campusData}
-                  placeholder="Select your Campus"
-                  value={values.campus}
-                  onChange={val => setFieldValue('campus', val)}
-                  error={touched.campus && errors.campus}
-                />
+                {role?.toLowerCase() === 'parent' && (
+                  <>
+                    <CustomDropdown
+                      data={campusData}
+                      placeholder="Select your Campus"
+                      value={values.campus}
+                      onChange={val => handleCampusChange(val, setFieldValue)}
+                      error={touched.campus && errors.campus}
+                    />
 
-                <CustomDropdown
-                  data={classData}
-                  placeholder="Select your class"
-                  value={values.classValue}
-                  onChange={val => setFieldValue('classValue', val)}
-                  error={touched.classValue && errors.classValue}
-                />
+                    <CustomDropdown
+                      data={classData}
+                      placeholder={
+                        classLoading
+                          ? 'Loading classes...'
+                          : 'Select your class'
+                      }
+                      value={values.classValue}
+                      onChange={val => setFieldValue('classValue', val)}
+                      error={touched.classValue && errors.classValue}
+                      disabled={classLoading || !values.campus}
+                    />
+                  </>
+                )}
 
                 <TouchableOpacity
                   onPress={handleSubmit}
@@ -199,9 +299,9 @@ const Signup = ({ navigation }) => {
                 </TouchableOpacity>
               </>
             )}
-          </Formik> */}
+          </Formik>
 
-          <View style={styles.inputContainer}>
+          {/* <View style={styles.inputContainer}>
             <TextInput
               placeholder="Your full name"
               placeholderTextColor="#999"
@@ -296,7 +396,7 @@ const Signup = ({ navigation }) => {
             style={styles.loginButton}
           >
             <Text style={styles.loginText}>Next</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Already have account? </Text>
@@ -306,6 +406,7 @@ const Signup = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      {(campusLoading || signupLoading) && <Loader />}
     </KeyboardAvoidingView>
   );
 };

@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -18,14 +19,88 @@ import {
 import InputField from '../../components/Form/InputField';
 import Timer from '../../components/Timer/TimerSection';
 import DigitInput from '../../components/Form/DigitInput';
+import Loader from '../../components/Loader/Loader';
+import { verifySignupOTP, verifyForgotOtp } from '../../Network/apis';
 
 const { width, height } = Dimensions.get('window');
 
-const OTPVerification = ({ navigation }) => {
+const OTPVerification = ({ navigation, route }) => {
+  const { from, email } = route.params || {}; // 👈 data passed from Signup or ForgotPassword
+  console.log(from, email, 'mmmmmmmm');
   const [value, setValue] = useState('');
   const [OTP, setOTP] = useState('');
 
+  const [loading, setLoading] = useState(false);
+
   const [reset, setReset] = useState(false);
+  const handleVerify = async () => {
+    try {
+      setLoading(true);
+
+      if (from === 'signup') {
+        // 🔹 Call signup verification API
+        const res = await verifySignupOTP({
+          email,
+          otp: OTP,
+        });
+        console.log('Signup OTP verified:', res);
+
+        if (res?.messageCode === 200) {
+          Alert.alert(
+            'Success',
+            res?.message || 'OTP verified successfully!',
+            [
+              {
+                text: 'OK',
+                onPress: () => navigation.navigate('Login'),
+              },
+            ],
+            { cancelable: false },
+          );
+        } else {
+          Alert.alert(
+            'Error',
+            res?.message || 'OTP verification failed. Please try again.',
+          );
+        }
+      } else if (from === 'forgotPassword') {
+        // 🔹 Call forgot password verification API
+        const res = await verifyForgotOtp({
+          email,
+          otp: OTP,
+        });
+        console.log('Forgot Password OTP verified:', res);
+
+        if (res?.messageCode === 200) {
+          Alert.alert(
+            'Success',
+            res?.message || 'OTP verified successfully!',
+            [
+              {
+                text: 'OK',
+                onPress: () => navigation.navigate('NewPassword', { email }),
+              },
+            ],
+            { cancelable: false },
+          );
+        } else {
+          Alert.alert(
+            'Error',
+            res?.message || 'OTP verification failed. Please try again.',
+          );
+        }
+      }
+    } catch (error) {
+      console.error('OTP verification failed:', error?.response?.data || error);
+      Alert.alert(
+        'Error',
+        error?.response?.data?.message ||
+          'Something went wrong. Please try again.',
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -60,11 +135,10 @@ const OTPVerification = ({ navigation }) => {
           />
 
           {/* Login button */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate('NewPassword')}
-            style={styles.loginButton}
-          >
-            <Text style={styles.loginText}>Submit</Text>
+          <TouchableOpacity onPress={handleVerify} style={styles.loginButton}>
+            <Text style={styles.loginText}>
+              {from === 'signup' ? 'Verification' : 'Submit'}
+            </Text>
           </TouchableOpacity>
 
           {/* Signup */}
@@ -76,6 +150,7 @@ const OTPVerification = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      {loading && <Loader />}
     </KeyboardAvoidingView>
   );
 };
