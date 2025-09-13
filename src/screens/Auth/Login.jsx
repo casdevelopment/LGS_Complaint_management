@@ -17,7 +17,7 @@ import CustomInput from '../../components/Form/CustomInput';
 import { loginUser } from '../../Network/apis';
 import Loader from '../../components/Loader/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setCredentials } from '../../Redux/slices/AuthSlice';
+import { setCredentials, setAuthenticated } from '../../Redux/slices/AuthSlice';
 import { useDispatch } from 'react-redux';
 
 const Login = ({ navigation }) => {
@@ -31,7 +31,7 @@ const Login = ({ navigation }) => {
       .min(4, 'Too short'),
     password: Yup.string()
       .required('Password is required')
-      .min(6, 'Password must be at least 6 characters'),
+      .min(5, 'Password must be at least 5 characters'),
   });
 
   // ✅ Submit Handler
@@ -59,10 +59,11 @@ const Login = ({ navigation }) => {
             user: res?.data?.user,
           }),
         );
-        navigation.navigate('HomeScreen', {
-          screen: 'Home',
-          params: { role },
-        });
+        dispatch(setAuthenticated({ isAuthenticated: true }));
+        // navigation.navigate('HomeScreen', {
+        //   screen: 'Home',
+        //   params: { role },
+        // });
       } else {
         Alert.alert('Error', res?.message || 'Invalid credentials.');
       }

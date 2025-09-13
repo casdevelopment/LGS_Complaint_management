@@ -19,9 +19,10 @@ import { useSelector } from 'react-redux';
 const { width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation, route }) => {
-  const { role } = route.params || {};
+  // const { role } = route.params || {};
   console.log(role, 'mmmmtttttt');
   const user = useSelector(state => state.auth.user);
+  const role = user?.role;
   console.log(user, 'nmmmmmm');
 
   return (
@@ -47,7 +48,7 @@ const HomeScreen = ({ navigation, route }) => {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {(!role || role === 'OIC') && (
+        {(!role || role === 'oic') && (
           <>
             <View style={styles.card}>
               <View style={{ flexDirection: 'row' }}>
@@ -109,7 +110,7 @@ const HomeScreen = ({ navigation, route }) => {
             </View>
           </>
         )}
-        {(!role || role === 'Admin') && (
+        {(!role || role === 'admin') && (
           <>
             <View style={styles.card}>
               <View style={{ flexDirection: 'row' }}>
@@ -171,7 +172,7 @@ const HomeScreen = ({ navigation, route }) => {
             </View>
           </>
         )}
-        {(!role || role === 'Parent') && (
+        {(!role || role === 'parent') && (
           <>
             {/* Complaint Cards */}
             <View style={styles.card}>

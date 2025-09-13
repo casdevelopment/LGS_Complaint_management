@@ -34,7 +34,7 @@ export default function AuthStack() {
         <Stack.Screen name="OTPVerification" component={OTPVerification} />
         <Stack.Screen name="NewPassword" component={NewPassword} />
         <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="HomeScreen" component={BottomTabNav} />
+        {/* <Stack.Screen name="HomeScreen" component={BottomTabNav} /> */}
         <Stack.Screen
           name="RoleSelectionScreen"
           component={RoleSelectionScreen}
@@ -44,12 +44,6 @@ export default function AuthStack() {
         <Stack.Screen name="ComplainForm" component={ComplainForm} />
         <Stack.Screen name="ClosedComplain" component={ClosedComplain} />
         <Stack.Screen name="DroppedComplain" component={DroppedComplain} />
-        <Stack.Screen name="AccountScreen" component={AccountScreen} />
-        <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
-        <Stack.Screen
-          name="NotificationScreen"
-          component={NotificationScreen}
-        />
       </Stack.Navigator>
     </BottomSheetModalProvider>
   );

@@ -7,7 +7,8 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  ScrollView, // Using ScrollView in case content overflows
+  ScrollView,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import Header from '../../components/Header';
@@ -17,17 +18,52 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS } from '../../utils/colors';
+import { logout, resetAuth } from '../../Redux/slices/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AccountScreen({ navigation }) {
+  const user = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    try {
+      Alert.alert(
+        'Logout',
+        'Are you sure you want to log out?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Logout',
+            onPress: async () => {
+              // 2. Remove token from AsyncStorage
+              await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+
+              // 3. Dispatch Redux logout action
+              dispatch(logout());
+              dispatch(resetAuth());
+            },
+          },
+        ],
+        { cancelable: true },
+      );
+    } catch (error) {
+      console.error('Logout Error:', error);
+      Alert.alert('Logout Failed', 'Something went wrong. Please try again.');
+    }
+  };
   return (
     <View style={styles.container}>
       <Header title="My Account" />
       <View style={styles.profileCard}>
         <View style={styles.profileImageContainer}>
           <Image
-            source={require('../../assets/Images/profile-picture.png')}
+            source={
+              user?.profilePic
+                ? { uri: user.profilePic } // base64 or remote image
+                : require('../../assets/Images/profile-picture.png') // fallback dummy
+            }
             style={styles.profileImage}
-            resizeMode="contain"
           />
 
           <TouchableOpacity style={styles.editImageButton}>
@@ -35,13 +71,16 @@ export default function AccountScreen({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.profileDetails}>
-          <Text style={styles.profileName}>Ahmed Hassan</Text>
-          <Text style={styles.profileEmail}>youremail@domain.com</Text>
-          <Text style={styles.profilePhone}>📞 +01 234 567 89</Text>
-          <Text style={styles.profileCollege}>Garrison College Boys</Text>
-          <Text style={styles.profileClass}>Class VII B</Text>
+          <Text style={styles.profileName}>{user?.name}</Text>
+          <Text style={styles.profileEmail}>{user?.email}</Text>
+          <Text style={styles.profilePhone}>📞 {user?.phone}</Text>
+          <Text style={styles.profileCollege}>{user?.campus}</Text>
+          <Text style={styles.profileClass}>{user?.campusclass}</Text>
         </View>
-        <TouchableOpacity style={styles.editProfileButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('UpdateProfile')}
+          style={styles.editProfileButton}
+        >
           <Image source={require('../../assets/Images/edit-line.png')} />
         </TouchableOpacity>
       </View>
@@ -63,9 +102,9 @@ export default function AccountScreen({ navigation }) {
       <TouchableOpacity
         style={[
           styles.logoutButton,
-          { position: 'absolute', bottom: 40, left: 10 },
+          { position: 'absolute', bottom: 100, left: 10 },
         ]}
-        onPress={() => console.log('Logout Pressed')}
+        onPress={handleLogout}
       >
         <Image
           style={styles.logoutIcon}

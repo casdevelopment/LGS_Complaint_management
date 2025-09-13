@@ -92,67 +92,13 @@ const HistoryScreen = () => {
           )}
         />
       </View>
-      <HistoryModal
+      {/* <HistoryModal
         ref={filterModalRef}
-        data={[]}
-        filterData={[]}
+        data={[1, 2, 3]}
+        filterData={[1, 2, 3]}
         // onSelectFilters={setSelectedFilters}
         // onSelectCategory={setSelectedCategory}
-      />
-
-      {/* Bottom Sheet */}
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1} // Start with sheet closed
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-      >
-        <View style={styles.sheetContent}>
-          {/* {selectedComplaint ? (
-            <>
-              <Text style={styles.sheetHeader}>Complaint Summary</Text>
-              <Text style={styles.sectionTitle}>Complaint</Text>
-              <Text style={styles.boldText}>{selectedComplaint.title}</Text>
-              <Text style={styles.paragraph}>
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking at its layout.
-              </Text>
-              <Text style={styles.sectionTitle}>Track Record</Text>
-              <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
-              <Text style={styles.boldText}>
-                It is a long established fact that a reader will be
-              </Text>
-              <View style={styles.trackItem}>
-                <Text style={styles.boldText}>OIC/Admin → Fazil Khan</Text>
-                <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
-                <Text style={styles.paragraph}>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking.
-                </Text>
-              </View>
-              <Text style={styles.sectionTitle}>Closing Remarks</Text>
-              <Text style={styles.row}>
-                <Text style={styles.boldText}>Closed By: </Text> Fazil Khan
-              </Text>
-              <Text style={styles.row}>
-                <Text style={styles.boldText}>Closed Date: </Text> 25 Dec 2025
-                09:10 AM
-              </Text>
-              <Text style={styles.boldText}>Remarks</Text>
-              <Text style={styles.paragraph}>
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking.
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.paragraph}>
-              Select a complaint to view summary
-            </Text>
-          )} */}
-        </View>
-      </BottomSheet>
+      /> */}
     </SafeAreaView>
   );
 };
