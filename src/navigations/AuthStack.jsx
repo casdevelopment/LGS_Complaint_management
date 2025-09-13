@@ -18,33 +18,30 @@ import DroppedComplain from '../screens/Complain/DroppedComplain';
 import AccountScreen from '../screens/Profile/AccountScreen';
 import UpdatePassword from '../screens/Profile/UpdatePassword';
 import BottomTabNav from './BottomTabs/BottomTabNav';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import NotificationScreen from '../screens/Profile/NotificationScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function AuthStack() {
   return (
-    <BottomSheetModalProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={Splash} />
-        <Stack.Screen name="Onboarding" component={Onboarding} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-        <Stack.Screen name="OTPVerification" component={OTPVerification} />
-        <Stack.Screen name="NewPassword" component={NewPassword} />
-        <Stack.Screen name="Signup" component={Signup} />
-        {/* <Stack.Screen name="HomeScreen" component={BottomTabNav} /> */}
-        <Stack.Screen
-          name="RoleSelectionScreen"
-          component={RoleSelectionScreen}
-        />
-        <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
-        <Stack.Screen name="CampusScreen" component={CampusScreen} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Splash" component={Splash} />
+      <Stack.Screen name="Onboarding" component={Onboarding} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="OTPVerification" component={OTPVerification} />
+      <Stack.Screen name="NewPassword" component={NewPassword} />
+      <Stack.Screen name="Signup" component={Signup} />
+      {/* <Stack.Screen name="HomeScreen" component={BottomTabNav} /> */}
+      <Stack.Screen
+        name="RoleSelectionScreen"
+        component={RoleSelectionScreen}
+      />
+
+      {/* <Stack.Screen name="CampusScreen" component={CampusScreen} />
         <Stack.Screen name="ComplainForm" component={ComplainForm} />
         <Stack.Screen name="ClosedComplain" component={ClosedComplain} />
-        <Stack.Screen name="DroppedComplain" component={DroppedComplain} />
-      </Stack.Navigator>
-    </BottomSheetModalProvider>
+        <Stack.Screen name="DroppedComplain" component={DroppedComplain} /> */}
+    </Stack.Navigator>
   );
 }

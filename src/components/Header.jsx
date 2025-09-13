@@ -11,7 +11,6 @@ export default function Header({ title }) {
   return (
     <View
       style={{
-        backgroundColor: '#fff',
         paddingTop: hp('10%'),
       }}
     >

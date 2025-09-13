@@ -1,8 +1,10 @@
 // apis/configuration.js
 import axios from 'axios';
 import Server from '../Constant/server';
+import axiosInstance from '../utils/axiosInstance';
 
 export const getAllCampus = async () => {
+  console.log();
   try {
     const response = await axios.post(
       `${Server}/api/configuration/get-campus-list`,
@@ -12,6 +14,7 @@ export const getAllCampus = async () => {
         },
       },
     );
+
     return response?.data;
   } catch (error) {
     console.error(
@@ -162,6 +165,146 @@ export const resetPassword = async payload => {
   } catch (error) {
     console.error(
       'Reset Password error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+// 🔹 Update Profile
+export const updateProfile = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/profile/update-profile',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Update Profile error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const updateProfilePic = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/profile/update-profile-picture',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Update Profile error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+
+// 🔹 Update Password
+export const updatePassword = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/profile/profile-password',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Update Password error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getConplainCategories = async () => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/configuration/get-complaint-category',
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching campus lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getConplainTypes = async () => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/configuration/get-complaint-type',
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching campus lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const launchComplaint = async formData => {
+  try {
+    const response = await axiosInstance.post(
+      `${Server}/api/complaint/launch-complaint`, // 🔹 replace with your actual endpoint
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error launching complaint:', error.response?.data || error);
+    throw error;
+  }
+};
+
+export const complainDashboard = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/complaint/complaint-dashboard',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Complain Dashboard error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+
+export const complainHistory = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/complaint/complaint-list',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Complain History error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const complainHistorySummary = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/complaint/complaint-summary',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Complain History summary error:',
       error.response?.data || error.message,
     );
     throw error;

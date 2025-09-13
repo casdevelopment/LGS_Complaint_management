@@ -50,12 +50,20 @@ const ClosedCard = ({
       <View style={styles.detailsRow}>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Assigned To</Text>
-          <Text style={styles.detailValue}>{assignedTo}</Text>
+          <Text style={styles.detailValue}>
+            {assignedTo && assignedTo.trim() !== ''
+              ? assignedTo
+              : '--------------'}
+          </Text>
         </View>
         <Text style={{ marginHorizontal: 7 }}>|</Text>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Department</Text>
-          <Text style={styles.detailValue}>{department}</Text>
+          <Text style={styles.detailValue}>
+            {department && department.trim() !== ''
+              ? department
+              : '---------------'}
+          </Text>
         </View>
       </View>
       <View style={styles.footer}>

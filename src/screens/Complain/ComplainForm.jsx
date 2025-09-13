@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,14 +9,96 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { Dropdown } from 'react-native-element-dropdown';
+import { getConplainTypes } from '../../Network/apis';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { useSelector } from 'react-redux';
+import { launchComplaint } from '../../Network/apis';
 
-export default function ComplainForm({ navigation }) {
+export default function ComplainForm({ navigation, route }) {
+  const user = useSelector(state => state.auth.user);
+
+  const { campus, category } = route.params; // 👈 now you have both!
+  console.log(campus, category, 'oooooppp');
+  const [complainTypes, setComplainTypes] = useState([]);
+  const [selectedType, setSelectedType] = useState(null);
+  const [location, setLocation] = useState('');
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+    fetchComplainTypes();
+  }, []);
+
+  const fetchComplainTypes = async () => {
+    try {
+      const res = await getConplainTypes();
+      const formatted = res.data?.map(item => ({
+        label: item.complainType,
+        value: item.complainTypeId,
+      }));
+      setComplainTypes(formatted);
+    } catch (err) {
+      console.error('Error fetching complain types:', err);
+    }
+  };
+  const pickImage = async () => {
+    if (images.length >= 5) {
+      Alert.alert('Limit Reached', 'You can upload up to 5 images only.');
+      return;
+    }
+    const result = await launchImageLibrary({ mediaType: 'photo' });
+    if (!result.didCancel && result.assets?.length > 0) {
+      setImages([...images, result.assets[0]]);
+    }
+  };
+  const submitComplaint = async () => {
+    if (!location || !subject || !description || !selectedType) {
+      Alert.alert('Error', 'Please fill all required fields');
+      return;
+    }
+    // console.log(category.complainCategoryId, 'category');
+    // console.log(campus.schoolId, 'campus');
+    // console.log('complain_type_id', selectedType);
+    // console.log('location', location);
+    // console.log('subject', subject);
+    // console.log('description', description);
+    // console.log(images, 'images');
+
+    const formData = new FormData();
+    formData.append('CampusId', campus.schoolId);
+    formData.append('ComplaintCategoryId', category.complainCategoryId);
+    formData.append('ComplaintTypeId', selectedType);
+    formData.append('LocationAddress', location);
+    formData.append('ComplaintSubject', subject);
+    formData.append('Latitude', '31.582045');
+    formData.append('Longitude', '74.329376');
+    formData.append('Description', description);
+    formData.append('UserId', user.id);
+    // 🔹 Add images as file1, file2, ...
+    images.forEach((img, index) => {
+      formData.append(`file${index + 1}`, {
+        uri: img.uri,
+        type: img.type || 'image/jpeg',
+        name: img.fileName || `complain_${index + 1}.jpg`,
+      });
+    });
+
+    try {
+      const res = await launchComplaint(formData);
+      Alert.alert('Success', 'Complaint submitted successfully!');
+      navigation.navigate('HomeScreen');
+    } catch (err) {
+      console.error('Error submitting complaint:', err.response?.data || err);
+      Alert.alert('Error', 'Failed to submit complaint');
+    }
+  };
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -52,6 +134,8 @@ export default function ComplainForm({ navigation }) {
               placeholder="Enter Location"
               placeholderTextColor="#999"
               style={styles.input}
+              value={location}
+              onChangeText={text => setLocation(text)}
             />
 
             <Image
@@ -64,25 +148,24 @@ export default function ComplainForm({ navigation }) {
           <View>
             <Dropdown
               style={styles.dropdown}
-              data={[]}
+              data={complainTypes}
               labelField="label"
               valueField="value"
               placeholder="Complain Type"
               placeholderStyle={{ color: '#999' }}
-              //   value={campus}
-              //   onChange={item => setCampus(item.value)}
+              value={selectedType}
+              onChange={item => setSelectedType(item.value)}
             />
 
-            <Dropdown
-              style={styles.dropdown}
-              data={[]}
-              labelField="label"
-              valueField="value"
-              placeholder="Subject"
-              placeholderStyle={{ color: '#999' }}
-              //   value={classValue}
-              //   onChange={item => setClassValue(item.value)}
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Enter Subject"
+                placeholderTextColor="#999"
+                style={styles.input}
+                value={subject}
+                onChangeText={text => setSubject(text)}
+              />
+            </View>
           </View>
           {/* Description Field */}
           <TextInput
@@ -91,10 +174,34 @@ export default function ComplainForm({ navigation }) {
             placeholderTextColor="#999"
             multiline={true}
             textAlignVertical="top"
+            value={description}
+            onChangeText={text => setDescription(text)}
           />
 
           {/* Image Upload Row */}
           <View style={styles.imageRow}>
+            {images.map((img, i) => (
+              <View key={i} style={styles.imageWrapper}>
+                <Image source={{ uri: img.uri }} style={styles.previewImage} />
+                <TouchableOpacity
+                  style={styles.removeBtn}
+                  onPress={() =>
+                    setImages(images.filter((_, index) => index !== i))
+                  }
+                >
+                  <Text style={styles.removeText}>×</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+
+            {images.length < 5 && (
+              <TouchableOpacity onPress={pickImage} style={styles.addImageBox}>
+                <Text style={styles.addImageText}>+</Text>
+                <Text style={styles.addLabel}>Add</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+          {/* <View style={styles.imageRow}>
             {[1, 2, 3, 4, 5].map(i => (
               <TouchableOpacity key={i} style={styles.imageBox}>
                 <Image
@@ -103,7 +210,7 @@ export default function ComplainForm({ navigation }) {
                 />
               </TouchableOpacity>
             ))}
-          </View>
+          </View> */}
           <Text style={styles.fileNote}>
             File size should be less than 500kb
           </Text>
@@ -116,10 +223,7 @@ export default function ComplainForm({ navigation }) {
           />
 
           {/* Launch Button */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate('HomeScreen')}
-            style={styles.launchBtn}
-          >
+          <TouchableOpacity onPress={submitComplaint} style={styles.launchBtn}>
             <Text style={styles.launchText}>Launch Complain</Text>
           </TouchableOpacity>
         </View>
@@ -257,5 +361,66 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontFamily: 'Asap-SemiBold',
+  },
+  imageRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    marginVertical: 10,
+  },
+
+  imageWrapper: {
+    position: 'relative',
+    margin: 5,
+  },
+
+  previewImage: {
+    width: wp('20%'),
+    height: wp('20%'),
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+
+  removeBtn: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#ff4444',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 3,
+  },
+
+  removeText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  addImageBox: {
+    width: wp('20%'),
+    height: wp('20%'),
+    margin: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 12,
+    backgroundColor: '#f2f2f2',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  addImageText: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#666',
+  },
+
+  addLabel: {
+    fontSize: 12,
+    color: '#666',
   },
 });

@@ -47,7 +47,7 @@ const Login = ({ navigation }) => {
       };
 
       const res = await loginUser(body);
-      console.log('Login res:', res);
+      console.log('Login res:', res.data);
       if (res?.messageCode === 200) {
         console.log('====99998===');
         await AsyncStorage.setItem('accessToken', res?.data?.accessToken);

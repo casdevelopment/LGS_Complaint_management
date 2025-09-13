@@ -16,6 +16,7 @@ const CustomInput = ({
   secureTextEntry = false,
   showToggle = false,
   error,
+  editable = true,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -29,6 +30,7 @@ const CustomInput = ({
           value={value}
           onChangeText={onChangeText}
           secureTextEntry={showToggle ? !visible : secureTextEntry}
+          editable={editable}
         />
 
         {showToggle && (

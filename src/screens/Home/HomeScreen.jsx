@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -15,15 +15,37 @@ import {
 import AdmissionCarousel from '../../components/Crousal/AdmissionCarousel';
 import HomeHeader from '../../components/HomeHeader';
 import { useSelector } from 'react-redux';
+import { complainDashboard } from '../../Network/apis';
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation, route }) => {
   // const { role } = route.params || {};
-  console.log(role, 'mmmmtttttt');
+  const [stats, setStat] = useState([]);
+
+  const [loading, setLoading] = useState(true);
   const user = useSelector(state => state.auth.user);
   const role = user?.role;
-  console.log(user, 'nmmmmmm');
+  console.log(role);
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const body = {
+        UserId: user?.id,
+      };
+      const res = await complainDashboard(body);
+      if (res?.result === 'success') {
+        setStat(res?.data[0] || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -183,7 +205,7 @@ const HomeScreen = ({ navigation, route }) => {
                 />
                 <View style={{}}>
                   <Text style={styles.cardTitle}>Total Complaints</Text>
-                  <Text style={styles.cardValue}>18</Text>
+                  <Text style={styles.cardValue}>{stats?.totalComplaints}</Text>
                 </View>
               </View>
             </View>
@@ -196,11 +218,11 @@ const HomeScreen = ({ navigation, route }) => {
 
                 <View style={styles.rowBetween}>
                   <Text style={styles.cardTitle}>Complaints Open</Text>
-                  <Text style={styles.cardValue}>1</Text>
+                  <Text style={styles.cardValue}>{stats?.complaintsOpen}</Text>
                 </View>
                 <View style={{}}>
-                  <Text style={styles.cardDate}>12/20/2025</Text>
-                  <Text style={styles.cardId}>ID #25844</Text>
+                  {/* <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text> */}
                 </View>
               </View>
             </View>
@@ -225,7 +247,7 @@ const HomeScreen = ({ navigation, route }) => {
                   />
                   <View style={{}}>
                     <Text style={styles.cardTitle}>Closed</Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.closed}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -240,7 +262,7 @@ const HomeScreen = ({ navigation, route }) => {
                   />
                   <View style={{}}>
                     <Text style={styles.cardTitle}>Dropped</Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.dropped}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -266,7 +288,7 @@ const HomeScreen = ({ navigation, route }) => {
                     >
                       Implemented
                     </Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.implemented}</Text>
                   </View>
                 </View>
               </View>
@@ -285,7 +307,7 @@ const HomeScreen = ({ navigation, route }) => {
                     >
                       Acknowledged
                     </Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.acknowledged}</Text>
                   </View>
                 </View>
               </View>

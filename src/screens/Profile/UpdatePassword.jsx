@@ -17,8 +17,9 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import Header from '../../components/Header';
-import { updatePassword } from '../../apis/auth'; // 👈 API function
+import { updatePassword } from '../../Network/apis';
 import CustomInput from '../../components/Form/CustomInput';
+import { useSelector } from 'react-redux';
 
 // ✅ Validation Schema
 const UpdatePasswordSchema = Yup.object().shape({
@@ -32,6 +33,8 @@ const UpdatePasswordSchema = Yup.object().shape({
 });
 
 const UpdatePassword = ({ navigation }) => {
+  const user = useSelector(state => state.auth.user);
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -53,8 +56,8 @@ const UpdatePassword = ({ navigation }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               try {
                 const payload = {
-                  UserId: 1, // 👉 replace with logged-in user id
-                  Role: 'employee', // 👉 replace dynamically if needed
+                  UserId: user?.id, // 👉 replace with logged-in user id
+                  Role: user?.role, // 👉 replace dynamically if needed
                   OldPassword: values.oldPassword,
                   NewPassword: values.newPassword,
                 };

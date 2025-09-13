@@ -16,12 +16,14 @@ import CustomInput from '../../components/Form/CustomInput';
 import CustomDropdown from '../../components/Form/CustomDropdown';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader/Loader';
+import { getAllCampus, getAllClasses, updateProfile } from '../../Network/apis';
 import {
-  getAllCampus,
-  getAllClasses,
-  updateUserProfile,
-} from '../../Network/apis';
-import { updateUser } from '../../Redux/slices/AuthSlice'; // <- update in Redux
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { setCredentials } from '../../Redux/slices/AuthSlice';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UpdateProfile = ({ navigation }) => {
   const user = useSelector(state => state.auth.user);
@@ -31,26 +33,39 @@ const UpdateProfile = ({ navigation }) => {
   const [classData, setClassData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [campusLoading, setCampusLoading] = useState(false);
+  const [classLoading, setClassLoading] = useState(false);
+
+  const isEmployeeOrAdmin =
+    user?.role?.toLowerCase() === 'employee' ||
+    user?.role?.toLowerCase() === 'admin';
+
   // Fetch campuses
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await getAllCampus();
-        const formatted = res?.data?.map(item => ({
-          label: item.school,
-          value: item.schoolId,
-        }));
-        setCampusData(formatted);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, []);
+    if (!isEmployeeOrAdmin) {
+      (async () => {
+        try {
+          setCampusLoading(true);
+          const res = await getAllCampus();
+          const formatted = res?.data?.map(item => ({
+            label: item.school,
+            value: item.schoolId,
+          }));
+          setCampusData(formatted);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setCampusLoading(false);
+        }
+      })();
+    }
+  }, [isEmployeeOrAdmin]);
 
   const handleCampusChange = async (campusId, setFieldValue) => {
     setFieldValue('campus', campusId);
     setFieldValue('classValue', '');
     try {
+      setClassLoading(true);
       const res = await getAllClasses(campusId);
       const formatted = res?.data?.map(item => ({
         label: item.class,
@@ -59,45 +74,56 @@ const UpdateProfile = ({ navigation }) => {
       setClassData(formatted);
     } catch (err) {
       console.error(err);
+    } finally {
+      setClassLoading(false);
     }
-  };
-
-  const selectImage = setFieldValue => {
-    launchImageLibrary(
-      { mediaType: 'photo', includeBase64: true },
-      response => {
-        if (!response.didCancel && !response.errorCode) {
-          const asset = response.assets[0];
-          setFieldValue('profileImage', {
-            uri: asset.uri,
-            base64: asset.base64,
-            type: asset.type,
-            fileName: asset.fileName,
-          });
-        }
-      },
-    );
   };
 
   const handleUpdate = async values => {
     try {
+      if (!isEmployeeOrAdmin) {
+        // if campus changed but no class selected
+        if (values.campus !== String(user?.campusid) && !values.classValue) {
+          Alert.alert('Error', 'Please select a class after changing campus');
+          return;
+        }
+      }
+
       setLoading(true);
 
+      // Build body dynamically
       const body = {
+        UserId: user?.id,
+        Role: user?.role,
         name: values.name,
         email: values.email,
         phone: values.phone,
-        campus: String(values.campus),
-        class: String(values.classValue),
-        profilePic: values.profileImage?.base64
-          ? `data:${values.profileImage.type};base64,${values.profileImage.base64}`
-          : user?.profilePic,
       };
 
-      const res = await updateUserProfile(body);
+      if (!isEmployeeOrAdmin) {
+        body.campus = values.campus
+          ? String(values.campus)
+          : String(user?.campusid);
+
+        body.class = values.classValue
+          ? String(values.classValue)
+          : String(user?.campusclassid);
+      }
+
+      console.log('Update body:', body);
+
+      const res = await updateProfile(body);
 
       if (res?.messageCode === 200) {
-        dispatch(updateUser(body)); // update Redux
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
+        dispatch(
+          setCredentials({
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            user: res?.data?.user,
+          }),
+        );
         Alert.alert('Success', 'Profile updated successfully');
         navigation.goBack();
       } else {
@@ -118,20 +144,27 @@ const UpdateProfile = ({ navigation }) => {
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Header title="Update Profile" />
-        <Formik
-          initialValues={{
-            name: user?.name || '',
-            email: user?.email || '',
-            phone: user?.phone || '',
-            campus: user?.campus || '',
-            classValue: user?.campusclass || '',
-            profileImage: null,
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingTop: hp('6%'),
           }}
-          onSubmit={handleUpdate}
         >
-          {({ handleChange, handleSubmit, values, setFieldValue }) => (
-            <>
-              {/* <TouchableOpacity
+          <Formik
+            initialValues={{
+              name: user?.name || '',
+              email: user?.email || '',
+              phone: user?.phone || '',
+              campus: user?.campusid || '',
+              classValue: user?.campusclassid || '',
+              profileImage: null,
+            }}
+            onSubmit={handleUpdate}
+          >
+            {({ handleChange, handleSubmit, values, setFieldValue }) => (
+              <>
+                {/* <TouchableOpacity
                 onPress={() => selectImage(setFieldValue)}
                 style={{ alignSelf: 'center', marginBottom: 20 }}
               >
@@ -151,52 +184,59 @@ const UpdateProfile = ({ navigation }) => {
                 />
               </TouchableOpacity> */}
 
-              <CustomInput
-                placeholder="Your full name"
-                value={values.name}
-                onChangeText={handleChange('name')}
-              />
-              <CustomInput
-                placeholder="Your mail"
-                value={values.email}
-                onChangeText={handleChange('email')}
-              />
-              <CustomInput
-                placeholder="Phone"
-                value={values.phone}
-                onChangeText={handleChange('phone')}
-              />
+                <CustomInput
+                  placeholder="Your full name"
+                  value={values.name}
+                  onChangeText={handleChange('name')}
+                />
+                <CustomInput
+                  placeholder="Your mail"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  editable={false}
+                />
+                <CustomInput
+                  placeholder="Phone"
+                  value={values.phone}
+                  onChangeText={handleChange('phone')}
+                />
 
-              <CustomDropdown
-                data={campusData}
-                placeholder={values.campus}
-                value={values.campus}
-                onChange={val => handleCampusChange(val, setFieldValue)}
-              />
+                {/* Show dropdowns only if not employee/admin */}
+                {!isEmployeeOrAdmin && (
+                  <>
+                    <CustomDropdown
+                      data={campusData}
+                      placeholder={user?.campus || 'Select Campus'}
+                      value={values.campus}
+                      onChange={val => handleCampusChange(val, setFieldValue)}
+                    />
 
-              <CustomDropdown
-                data={classData}
-                placeholder={values.classValue}
-                value={values.classValue}
-                onChange={val => setFieldValue('classValue', val)}
-                disabled={!values.campus}
-              />
+                    <CustomDropdown
+                      data={classData}
+                      placeholder={user?.campusclass || 'Select Class'}
+                      value={values.classValue}
+                      onChange={val => setFieldValue('classValue', val)}
+                      disabled={!values.campus}
+                    />
+                  </>
+                )}
 
-              <TouchableOpacity
-                onPress={handleSubmit}
-                style={{
-                  marginTop: 20,
-                  backgroundColor: '#07294D',
-                  padding: 15,
-                  borderRadius: 10,
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ color: '#fff', fontSize: 16 }}>Update</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </Formik>
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  style={{
+                    marginTop: 20,
+                    backgroundColor: '#07294D',
+                    padding: 15,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontSize: 16 }}>Update</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </Formik>
+        </View>
         {loading && <Loader />}
       </ScrollView>
     </KeyboardAvoidingView>

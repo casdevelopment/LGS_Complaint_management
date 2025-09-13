@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,55 +6,56 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
-const categories = [
-  {
-    id: 1,
-    title: 'Education',
-    image: require('../../assets/Images/education.png'),
-  },
-  {
-    id: 2,
-    title: 'Harassments',
-    image: require('../../assets/Images/oppression.png'),
-  },
-  {
-    id: 3,
-    title: 'Safety & Welfare',
-    image: require('../../assets/Images/bully.png'),
-  },
-  {
-    id: 4,
-    title: 'Racism',
-    image: require('../../assets/Images/racsism.png'),
-  },
-  {
-    id: 5,
-    title: 'Cleanliness',
-    image: require('../../assets/Images/cleanliness.png'),
-  },
-  {
-    id: 6,
-    title: 'Transport Service',
-    image: require('../../assets/Images/transport.png'),
-  },
-];
+import { getConplainCategories } from '../../Network/apis';
 
 export default function CategoryScreen({ navigation }) {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await getConplainCategories();
+      if (res?.result === 'success') {
+        setCategories(res.data || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('CampusScreen', { category: item })}
+    >
+      <Image
+        source={{ uri: item.categoryIcon }} // assuming API gives image URL
+        style={styles.cardImage}
+        resizeMode="contain"
+      />
+      <Text style={styles.cardText}>{item.complainCategory}</Text>
+    </TouchableOpacity>
+  );
   return (
     <View style={styles.container}>
+      {/* Back Button */}
       <TouchableOpacity
         style={styles.topLeft}
         onPress={() => navigation.goBack()}
       >
         <Image
           source={require('../../assets/Images/turn-back.png')}
-          //style={styles.topLeft}
           resizeMode="stretch"
         />
       </TouchableOpacity>
@@ -68,41 +69,27 @@ export default function CategoryScreen({ navigation }) {
       {/* Title */}
       <Text style={styles.title}>Complaint Form</Text>
       <Text style={styles.subtitle}>Select Category</Text>
-      {/* Header */}
-      {/* <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back-outline" size={24} color="#0a1a2f" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Complaint Form</Text>
-      </View>
 
-    
-      <Text style={styles.subTitle}>Select Category</Text> */}
-
-      {/* Grid */}
-      <View style={styles.grid}>
-        {categories.map(item => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.card}
-            onPress={() =>
-              navigation.navigate('CampusScreen', { category: item })
-            }
-          >
-            <Image
-              source={item.image}
-              style={styles.cardImage}
-              resizeMode="contain"
-            />
-
-            <Text style={styles.cardText}>{item.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {/* Loader */}
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#07294D"
+          style={{ marginTop: hp('10%') }}
+        />
+      ) : (
+        <FlatList
+          data={categories}
+          renderItem={renderItem}
+          keyExtractor={item => item.complainCategoryId.toString()}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      )}
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -134,23 +121,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'Asap-Regular',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#0a1a2f',
-    marginLeft: 10,
-  },
-  subTitle: {
-    fontSize: 16,
-    color: '#0a1a2f',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -169,6 +139,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  cardImage: {
+    width: 60,
+    height: 60,
   },
   cardText: {
     marginTop: hp('4%'),

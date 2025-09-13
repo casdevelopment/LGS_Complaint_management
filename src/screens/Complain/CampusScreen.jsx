@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,28 +6,57 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { getConplainCategories } from '../../Network/apis';
+import { getAllCampus } from '../../Network/apis';
 
-const categories = [
-  {
-    id: 1,
-    title: 'Garrison College For Boys',
-    image: require('../../assets/Images/studentMale.png'),
-  },
-  {
-    id: 2,
-    title: 'Garrison College For Girls',
-    image: require('../../assets/Images/studentFemale.png'),
-  },
-];
+export default function CampusScreen({ navigation, route }) {
+  const { category } = route.params;
 
-export default function CampusScreen({ navigation }) {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await getAllCampus();
+      if (res?.result === 'success') {
+        setCategories(res.data || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleCategorySelect = campus => {
+    // Combine campus + category and pass to ComplaintFormScreen
+    navigation.navigate('ComplainForm', { campus, category });
+  };
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => handleCategorySelect(item)}
+    >
+      <Image
+        source={{ uri: item.schoolIcon }} // assuming API gives image URL
+        style={styles.cardImage}
+        resizeMode="contain"
+      />
+      <Text style={styles.cardText}>{item.school}</Text>
+    </TouchableOpacity>
+  );
   return (
     <View style={styles.container}>
+      {/* Back Button */}
       <TouchableOpacity
         style={styles.topLeft}
         onPress={() => navigation.goBack()}
@@ -37,6 +66,7 @@ export default function CampusScreen({ navigation }) {
           resizeMode="stretch"
         />
       </TouchableOpacity>
+
       <Image
         source={require('../../assets/Images/topRightDarkCurve.png')}
         style={styles.topRight}
@@ -47,28 +77,26 @@ export default function CampusScreen({ navigation }) {
       <Text style={styles.title}>Complaint Form</Text>
       <Text style={styles.subtitle}>Select Campus</Text>
 
-      {/* Grid */}
-      <View style={styles.grid}>
-        {categories.map(item => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.card}
-            onPress={() => navigation.navigate('ComplainForm')}
-          >
-            <Image
-              source={item.image}
-              style={styles.cardImage}
-              resizeMode="contain"
-            />
-
-            <Text style={styles.cardText}>{item.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {/* Loader */}
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#07294D"
+          style={{ marginTop: hp('10%') }}
+        />
+      ) : (
+        <FlatList
+          data={categories}
+          renderItem={renderItem}
+          keyExtractor={item => item.schoolId.toString()}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      )}
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,23 +128,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'Asap-Regular',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#0a1a2f',
-    marginLeft: 10,
-  },
-  subTitle: {
-    fontSize: 16,
-    color: '#0a1a2f',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -136,9 +147,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
+  cardImage: {
+    width: 60,
+    height: 60,
+  },
   cardText: {
     marginTop: hp('4%'),
-    width: wp('35%'),
+    width: wp('30%'),
     fontSize: 16,
     fontFamily: 'Asap-SemiBold',
     color: '#07294D',

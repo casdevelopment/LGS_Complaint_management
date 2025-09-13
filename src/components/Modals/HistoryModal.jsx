@@ -5,292 +5,174 @@ import React, {
   useImperativeHandle,
   useCallback,
   useState,
-  useEffect,
 } from 'react';
-import { StyleSheet, Switch, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
 import {
   BottomSheetBackdrop,
-  BottomSheetHandle,
   BottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
 import { COLORS } from '../../utils/colors';
+import { complainHistorySummary } from '../../Network/apis';
+import { useSelector } from 'react-redux';
 
 const HistoryModal = forwardRef((props, ref) => {
   const modalRef = useRef(null);
   const snapPoints = useMemo(() => ['90%', '100%'], []);
-  //   const topInsets = useSafeAreaInsets()?.top;
-  const { data, filterData, onSelectFilters, onSelectCategory, onModalClose } =
-    props;
-  const [priceRange, setPriceRange] = useState([1, 100]);
-  const [isAvailableOnly, setIsAvailableOnly] = useState(false);
-  const [selectedComplaint, setSelectedComplaint] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedLevels, setSelectedLevels] = useState({}); // To store selected levels for each category
+  const user = useSelector(state => state.auth.user);
 
-  const handleSheetChanges = index => {
-    setIsModalOpen(index >= 0);
-  };
+  const [loading, setLoading] = useState(false);
+  const [summary, setSummary] = useState(null);
 
-  const [collapsedSections, setCollapsedSections] = useState({});
-
-  const handleSelectCategory = useCallback(
-    ({ categoryId, parentIds }) => {
-      if (onSelectCategory) {
-        onSelectCategory({ categoryId, parentIds });
-      }
-      modalRef.current?.dismiss();
-    },
-    [onSelectCategory],
-  );
-
-  // Now define your render functions that depend on state:
-  const renderLevels = useCallback(
-    (data, filterKey) => {
-      return <Text></Text>;
-    },
-    [selectedLevels],
-  );
-
-  const renderPrice = useCallback(() => {
-    return (
-      <View style={styles.priceContainer}>
-        <Text></Text>
-
-        <View style={styles.priceLabelsContainer}>
-          <View style={styles.priceLabel}>
-            <Text style={styles.priceLabelTitle}>Minimum</Text>
-            <Text style={styles.priceText}>€ {priceRange[0]}</Text>
-          </View>
-          <View style={styles.priceLabel}>
-            <Text style={styles.priceLabelTitle}>Maximum</Text>
-            <Text style={styles.priceText}>€ {priceRange[1]}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }, [priceRange]);
-
-  const renderCategories = useCallback(() => {
-    if (!data) {
-      return null;
-    }
-    return (
-      <View style={{ marginBottom: moderateScale(10) }}>
-        <Text></Text>
-      </View>
-    );
-  }, [data, collapsedSections, handleSelectCategory]);
-
-  const formatTitle = str => {
-    if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-  const sections = useMemo(() => {
-    if (!filterData?.filters) return [];
-
-    const dynamicSections = filterData.filters.map((filter, index) => ({
-      id: index,
-      title: formatTitle(filter.key),
-      content: renderLevels(filter.unique_values, filter.key),
-    }));
-
-    return [
-      ...dynamicSections,
-      {
-        id: dynamicSections.length, // continue the id sequence
-        title: 'Price',
-        content: renderPrice(),
-      },
-    ];
-  }, [filterData, renderCategories, renderLevels, renderPrice]);
-
-  // Expose imperative handle functions
   useImperativeHandle(ref, () => ({
-    openModal() {
-      modalRef.current.present();
+    // Add `id` as a parameter to the `openModal` function.
+    openModal: async id => {
+      modalRef.current?.present();
+
+      if (id) {
+        setLoading(true);
+        setSummary(null); // reset before fetch
+
+        const body = {
+          UserId: user?.id,
+          ComplaintId: id, // Use the ID passed as a parameter.
+        };
+
+        try {
+          const { data } = await complainHistorySummary(body);
+          setSummary(data || null);
+        } catch (err) {
+          console.log('Error fetching summary:', err);
+          setSummary(null);
+        } finally {
+          setLoading(false);
+        }
+      }
     },
-    closeModal() {
-      modalRef.current.dismiss();
-    },
+    closeModal: () => modalRef.current?.dismiss(),
   }));
 
-  // Render handle for the bottom sheet
-  const renderHandle = useCallback(props => {
-    return (
-      <BottomSheetHandle
-        {...props}
-        indicatorStyle={styles.indicatorStyle}
-        style={styles.handleStyle}
-      >
-        <View style={CommonStyles.flexrowJustifySpaceBetweenAlignCenter}>
-          <Text style={styles.title}>Filters</Text>
-        </View>
-      </BottomSheetHandle>
-    );
-  }, []);
-
-  // Render backdrop for the bottom sheet
-  const renderBackDrop = useCallback(props => {
-    return (
+  const renderBackDrop = useCallback(
+    props => (
       <BottomSheetBackdrop
         {...props}
         appearsOnIndex={0}
         disappearsOnIndex={-1}
         opacity={0.2}
       />
+    ),
+    [],
+  );
+
+  const renderFiles = () => {
+    const fileUrls = [
+      summary?.urlOne,
+      summary?.urlTwo,
+      summary?.urlThree,
+      summary?.urlFour,
+      summary?.urlFive,
+    ].filter(Boolean); // remove nulls
+
+    if (fileUrls.length === 0) return null;
+
+    return (
+      <View
+        style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: 10 }}
+      >
+        {fileUrls.map((url, index) => (
+          <Image
+            key={index}
+            source={{ uri: url }}
+            style={{ width: 60, height: 60, marginRight: 10, borderRadius: 4 }}
+          />
+        ))}
+      </View>
     );
-  }, []);
-
-  // Reset state when the modal is dismissed
-  const resetState = () => {
-    // Call onSelectFilters with selected filters when closing
-    if (onSelectFilters) {
-      onSelectFilters({
-        selectedLevels,
-        priceRange,
-        isAvailableOnly,
-      });
-    }
-    if (onModalClose) {
-      setPriceRange([1, 100]);
-      setSelectedLevels({});
-      onModalClose(); // e.g., refetch products
-    }
-    if (filterData?.filters) {
-      const collapsedState = {};
-      filterData.filters.forEach(filter => {
-        collapsedState[formatTitle(filter.key)] = true;
-      });
-      setCollapsedSections(collapsedState);
-    }
   };
 
-  const applyFilters = () => {
-    if (onSelectFilters) {
-      onSelectFilters({
-        selectedLevels,
-        priceRange,
-        isAvailableOnly,
-      });
-    }
+  const renderTrackRecords = () => {
+    if (!summary?.trackRecord?.length) return null;
 
-    modalRef.current?.dismiss(); // Close modal
+    return summary.trackRecord.map((item, index) => (
+      <View key={index} style={styles.trackItem}>
+        <Text style={styles.boldText}>
+          {item?.assignedFrom} → {item?.assignedTo}
+        </Text>
+        <Text style={styles.timelineDate}>{item?.dateTime}</Text>
+        <Text style={styles.paragraph}>{item?.remarks}</Text>
+      </View>
+    ));
   };
-  const resetFilters = () => {
-    const initialRange = [1, 100];
 
-    setPriceRange(initialRange);
-    setIsAvailableOnly(false);
-    setSelectedLevels({});
+  const renderClosedRemarks = () => {
+    if (!summary?.closedRemarks?.length) return null;
 
-    if (filterData?.filters) {
-      const collapsedState = {};
-      filterData.filters.forEach(filter => {
-        collapsedState[formatTitle(filter.key)] = true;
-      });
-      collapsedState['Price'] = true;
-      setCollapsedSections(collapsedState);
-    }
-
-    // Call the callback
-    if (onSelectFilters) {
-      onSelectFilters({
-        selectedLevels: {},
-        priceRange: initialRange,
-        isAvailableOnly: false,
-      });
-    }
-
-    modalRef.current?.dismiss(); // Close modal
+    const { closedBy, closedDate, remarks } = summary.closedRemarks[0]; // assuming one remark
+    return (
+      <>
+        <Text style={styles.sectionTitle}>Closing Remarks</Text>
+        <Text style={styles.row}>
+          <Text style={styles.boldText}>Closed By: </Text> {closedBy}
+        </Text>
+        <Text style={styles.row}>
+          <Text style={styles.boldText}>Closed Date: </Text> {closedDate}
+        </Text>
+        <Text style={styles.boldText}>Remarks</Text>
+        <Text style={styles.paragraph}>{remarks}</Text>
+      </>
+    );
   };
+
   return (
     <BottomSheetModal
       ref={modalRef}
-      // onDismiss={resetState}
       snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      //   topInset={topInsets}
-      enableDynamicSizing={false}
-      enablePanDownToClose={true}
-      enableOverDrag={false}
       backdropComponent={renderBackDrop}
-      style={styles.BottomSheetModalStyle}
-      //  handleComponent={renderHandle}
-      enableContentPanningGesture={false}
-      stackBehavior={'push'}
+      enablePanDownToClose
+      enableOverDrag={false}
+      stackBehavior="push"
       backgroundStyle={styles.bgStyle}
     >
       <BottomSheetScrollView
         style={styles.mainContainer}
         contentContainerStyle={styles.contentContainerStyle}
       >
-        <View style={styles.sheetContent}>
-          {true ? (
-            <>
-              <Text style={styles.sheetHeader}>Complaint Summary</Text>
-              <Text style={styles.sectionTitle}>Complaint</Text>
-              <Text style={styles.boldText}>
-                {' '}
-                It is a long established fact that a reader will be
-              </Text>
-              <Text style={styles.paragraph}>
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking at its layout.
-              </Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Image source={require('../../assets/Images/pdfFile.png')} />
-                <Image source={require('../../assets/Images/pdfFile.png')} />
-              </View>
-              <Text style={styles.sectionTitle}>Track Record</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  source={require('../../assets/Images/sort.png')}
-                  style={{ marginRight: 10 }}
-                />
-                <View>
-                  <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
-                  <Text style={styles.boldText}>
-                    It is a long established fact that a reader will be
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.trackItem}>
-                <Text style={styles.boldText}>OIC/Admin → Fazil Khan</Text>
-                <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
-                <Text style={styles.paragraph}>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking.
-                </Text>
-              </View>
-              <View style={styles.trackItem}>
-                <Text style={styles.boldText}>OIC/Admin → Fazil Khan</Text>
-                <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
-                <Text style={styles.paragraph}>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking.
-                </Text>
-              </View>
-              <Text style={styles.sectionTitle}>Closing Remarks</Text>
-              <Text style={styles.row}>
-                <Text style={styles.boldText}>Closed By: </Text> Fazil Khan
-              </Text>
-              <Text style={styles.row}>
-                <Text style={styles.boldText}>Closed Date: </Text> 25 Dec 2025
-                09:10 AM
-              </Text>
-              <Text style={styles.boldText}>Remarks</Text>
-              <Text style={styles.paragraph}>
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking.
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.paragraph}>
-              Select a complaint to view summary
-            </Text>
-          )}
-        </View>
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color={COLORS.primary}
+            style={{ marginTop: 20 }}
+          />
+        ) : summary ? (
+          <View style={styles.sheetContent}>
+            <Text style={styles.sheetHeader}>Complaint Summary</Text>
+
+            <Text style={styles.sectionTitle}>Complaint</Text>
+            <Text style={styles.boldText}>{summary?.complaintSubject}</Text>
+            <Text style={styles.paragraph}>{summary?.description}</Text>
+
+            {renderFiles()}
+
+            {summary?.trackRecord?.length > 0 && (
+              <>
+                <Text style={styles.sectionTitle}>Track Record</Text>
+                {renderTrackRecords()}
+              </>
+            )}
+
+            {renderClosedRemarks()}
+          </View>
+        ) : (
+          <Text
+            style={{
+              textAlign: 'center',
+              marginTop: 20,
+              color: COLORS.primary,
+            }}
+          >
+            No data found
+          </Text>
+        )}
       </BottomSheetScrollView>
     </BottomSheetModal>
   );
@@ -302,84 +184,12 @@ const styles = StyleSheet.create({
   bgStyle: {
     backgroundColor: 'rgba(253, 252, 252, 1)',
   },
-  indicatorStyle: {
-    backgroundColor: 'red',
-  },
-  handleStyle: {
-    paddingHorizontal: 20,
-  },
-  title: {
-    color: 'red',
-  },
-  numberOfItems: {
-    color: 'red',
-    textDecorationLine: 'underline',
-    textDecorationColor: 'red',
-    lineHeight: 17,
-    fontWeight: '500',
-  },
-  BottomSheetModalStyle: {
-    overflow: 'hidden',
-  },
   mainContainer: {
     flex: 1,
-  },
-  priceContainer: {
-    width: '100%',
-  },
-  priceLabelsContainer: {},
-  priceLabel: {
-    borderWidth: 1,
-    borderColor: 'rgba(40, 32, 24, 0.6)',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    padding: 6,
-  },
-  priceLabelTitle: {
-    color: 'rgba(40, 32, 24, 0.6)',
-    fontWeight: '400',
-    lineHeight: 12,
-  },
-  priceText: {
-    color: 'rgba(40, 32, 24, 0.6)',
-    fontWeight: '500',
-    lineHeight: 18,
   },
   contentContainerStyle: {
     paddingBottom: 150,
     paddingHorizontal: 20,
-  },
-  ShowAvailableItemContainer: {},
-  OtherText: {
-    color: 'rgba(40, 32, 24, 1)',
-    fontWeight: '500',
-    lineHeight: 36,
-  },
-  thumbStyle: {
-    borderWidth: 1,
-    borderColor: 'rgba(40, 32, 24, 0.5)',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-
-    elevation: 3,
-  },
-  bottomButtonsContainer: {
-    // marginLeft: 50,
-    width: '100%',
-  },
-  CancelText: {
-    fontSize: 17,
-    fontFamily: 'TT Chocolates Bold',
-    fontWeight: '600',
-    color: 'black',
-    width: '40%',
-    textAlign: 'center',
   },
   sheetContent: { flex: 1, padding: 5 },
   sheetHeader: {
@@ -420,3 +230,185 @@ const styles = StyleSheet.create({
   timelineDate: { fontSize: 12, color: '#777', marginBottom: 4 },
   row: { fontSize: 13, marginBottom: 4 },
 });
+
+// import React, {
+//   forwardRef,
+//   useRef,
+//   useMemo,
+//   useImperativeHandle,
+//   useCallback,
+//   useState,
+// } from 'react';
+// import { StyleSheet, Text, View, Image } from 'react-native';
+// import {
+//   BottomSheetBackdrop,
+//   BottomSheetModal,
+//   BottomSheetScrollView,
+// } from '@gorhom/bottom-sheet';
+// import { COLORS } from '../../utils/colors';
+// import { complainHistorySummary } from '../../Network/apis';
+// import { useSelector } from 'react-redux';
+
+// const HistoryModal = forwardRef(({ complaintId }, ref) => {
+//   console.log(complaintId, 'mmmmm');
+//   const modalRef = useRef(null);
+//   const snapPoints = useMemo(() => ['90%', '100%'], []);
+//   const user = useSelector(state => state.auth.user);
+//   const [loading, setLoading] = useState(false);
+//   const [summary, setSummary] = useState(null);
+//   useImperativeHandle(ref, () => ({
+//     // openModal: () => modalRef.current?.present(),
+//     openModal: async () => {
+//       modalRef.current?.present();
+//       if (complaintId) {
+//         setLoading(true);
+//         const body = {
+//           UserId: user?.id,
+//           ComplaintId: complaintId,
+//         };
+//         const data = await complainHistorySummary(body);
+
+//         setSummary(data?.data);
+//         setLoading(false);
+//       }
+//     },
+//     closeModal: () => modalRef.current?.dismiss(),
+//   }));
+
+//   const renderBackDrop = useCallback(
+//     props => (
+//       <BottomSheetBackdrop
+//         {...props}
+//         appearsOnIndex={0}
+//         disappearsOnIndex={-1}
+//         opacity={0.2}
+//       />
+//     ),
+//     [],
+//   );
+
+//   return (
+//     <BottomSheetModal
+//       ref={modalRef}
+//       snapPoints={snapPoints}
+//       backdropComponent={renderBackDrop}
+//       enablePanDownToClose
+//       enableOverDrag={false}
+//       stackBehavior="push"
+//       backgroundStyle={styles.bgStyle}
+//     >
+//       <BottomSheetScrollView
+//         style={styles.mainContainer}
+//         contentContainerStyle={styles.contentContainerStyle}
+//       >
+//         <View style={styles.sheetContent}>
+//           <Text style={styles.sheetHeader}>Complaint Summary</Text>
+
+//           <Text style={styles.sectionTitle}>Complaint</Text>
+//           <Text style={styles.boldText}>
+//             It is a long established fact that a reader will be
+//           </Text>
+//           <Text style={styles.paragraph}>
+//             It is a long established fact that a reader will be distracted by
+//             the readable content of a page when looking at its layout.
+//           </Text>
+
+//           <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+//             <Image source={require('../../assets/Images/pdfFile.png')} />
+//             <Image source={require('../../assets/Images/pdfFile.png')} />
+//           </View>
+
+//           <Text style={styles.sectionTitle}>Track Record</Text>
+//           <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+//             <Image
+//               source={require('../../assets/Images/sort.png')}
+//               style={{ marginRight: 10 }}
+//             />
+//             <View>
+//               <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
+//               <Text style={styles.boldText}>
+//                 It is a long established fact that a reader will be
+//               </Text>
+//             </View>
+//           </View>
+
+//           <View style={styles.trackItem}>
+//             <Text style={styles.boldText}>OIC/Admin → Fazil Khan</Text>
+//             <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
+//             <Text style={styles.paragraph}>
+//               It is a long established fact that a reader will be distracted by
+//               the readable content of a page when looking.
+//             </Text>
+//           </View>
+
+//           <Text style={styles.sectionTitle}>Closing Remarks</Text>
+//           <Text style={styles.row}>
+//             <Text style={styles.boldText}>Closed By: </Text> Fazil Khan
+//           </Text>
+//           <Text style={styles.row}>
+//             <Text style={styles.boldText}>Closed Date: </Text> 25 Dec 2025 09:10
+//             AM
+//           </Text>
+//           <Text style={styles.boldText}>Remarks</Text>
+//           <Text style={styles.paragraph}>
+//             It is a long established fact that a reader will be distracted by
+//             the readable content of a page when looking.
+//           </Text>
+//         </View>
+//       </BottomSheetScrollView>
+//     </BottomSheetModal>
+//   );
+// });
+
+// export default HistoryModal;
+
+// const styles = StyleSheet.create({
+//   bgStyle: {
+//     backgroundColor: 'rgba(253, 252, 252, 1)',
+//   },
+//   mainContainer: {
+//     flex: 1,
+//   },
+//   contentContainerStyle: {
+//     paddingBottom: 150,
+//     paddingHorizontal: 20,
+//   },
+//   sheetContent: { flex: 1, padding: 5 },
+//   sheetHeader: {
+//     fontSize: 24,
+//     fontFamily: 'Asap-SemiBold',
+//     marginBottom: 12,
+//     textAlign: 'center',
+//     color: COLORS.primary,
+//   },
+//   sectionTitle: {
+//     fontSize: 20,
+//     fontFamily: 'Asap-SemiBold',
+//     marginTop: 20,
+//     marginBottom: 8,
+//     color: COLORS.primary,
+//   },
+//   boldText: {
+//     fontSize: 14,
+//     fontFamily: 'Asap-SemiBold',
+//     marginBottom: 6,
+//     color: COLORS.primary,
+//   },
+//   paragraph: {
+//     fontSize: 14,
+//     color: COLORS.black,
+//     fontFamily: 'Asap-Light',
+//     marginBottom: 10,
+//     lineHeight: 20,
+//   },
+//   trackItem: {
+//     marginVertical: 10,
+//     padding: 10,
+//     borderLeftWidth: 3,
+//     borderColor: '#0A2342',
+//     backgroundColor: '#f8f8f8',
+//     borderRadius: 6,
+//   },
+//   timelineDate: { fontSize: 12, color: '#777', marginBottom: 4 },
+//   row: { fontSize: 13, marginBottom: 4 },
+// });

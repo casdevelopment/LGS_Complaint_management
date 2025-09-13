@@ -9,8 +9,9 @@ import {
   Dimensions,
   ScrollView,
   Alert,
+  Modal,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/Header';
 import ProfileMenuItem from '../../components/ProfileMenuItem';
 import {
@@ -21,10 +22,97 @@ import { COLORS } from '../../utils/colors';
 import { logout, resetAuth } from '../../Redux/slices/AuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { updateProfilePic } from '../../Network/apis';
+import { setCredentials } from '../../Redux/slices/AuthSlice';
 
 export default function AccountScreen({ navigation }) {
   const user = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [profileImage, setProfileImage] = useState(user?.profilePic || null);
+
+  const uploadProfilePic = async base64Image => {
+    try {
+      const body = {
+        UserId: user?.id,
+        Role: user?.role,
+        ProfilePic: base64Image,
+      };
+      console.log(body, 'imageee');
+      // 🔹 Call your API
+      const response = await updateProfilePic(body);
+
+      if (response?.result === 'success') {
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
+        dispatch(
+          setCredentials({
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            user: response?.data?.user,
+          }),
+        );
+
+        Alert.alert('Success', 'Profile picture updated successfully!');
+      } else {
+        Alert.alert(
+          'Failed',
+          response.data?.message || 'Something went wrong.',
+        );
+      }
+    } catch (error) {
+      console.error('Upload Error:', error.response?.data || error.message);
+      Alert.alert('Error', 'Could not update profile picture.');
+    }
+  };
+  const pickFromCamera = async () => {
+    try {
+      const result = await launchCamera({
+        mediaType: 'photo',
+        includeBase64: true,
+        quality: 0.7,
+      });
+
+      if (result.didCancel) return;
+
+      const image = result.assets[0];
+      const base64Image = `data:${image.type};base64,${image.base64}`;
+
+      setProfileImage(base64Image);
+      setModalVisible(false);
+
+      // 👇 Call API to upload
+      uploadProfilePic(base64Image);
+    } catch (error) {
+      console.error('Camera Error:', error);
+      Alert.alert('Error', 'Could not open camera.');
+    }
+  };
+
+  const pickFromGallery = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        includeBase64: true,
+        quality: 0.7,
+      });
+
+      if (result.didCancel) return;
+
+      const image = result.assets[0];
+      const base64Image = `data:${image.type};base64,${image.base64}`;
+
+      setProfileImage(base64Image);
+      setModalVisible(false);
+
+      // 👇 Call API to upload
+      uploadProfilePic(base64Image);
+    } catch (error) {
+      console.error('Gallery Error:', error);
+      Alert.alert('Error', 'Could not open gallery.');
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -66,7 +154,10 @@ export default function AccountScreen({ navigation }) {
             style={styles.profileImage}
           />
 
-          <TouchableOpacity style={styles.editImageButton}>
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={styles.editImageButton}
+          >
             <Image source={require('../../assets/Images/edit-line.png')} />
           </TouchableOpacity>
         </View>
@@ -113,6 +204,116 @@ export default function AccountScreen({ navigation }) {
 
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: '#FFFFFF',
+              paddingVertical: 20,
+              borderTopLeftRadius: 25,
+              borderTopRightRadius: 25,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: -3 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                marginHorizontal: 20,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontFamily: 'Asap-Regular',
+                  color: COLORS.primary,
+                }}
+              >
+                Edit profile picture
+              </Text>
+              <TouchableOpacity
+                style={{
+                  padding: 10,
+                }}
+                onPress={() => setModalVisible(false)}
+              >
+                <Image source={require('../../assets/Images/cross.png')} />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={{
+                marginTop: 15,
+                flexDirection: 'row',
+                marginHorizontal: 20,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+              onPress={pickFromCamera}
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: 'Asap-Regular',
+                  color: '#191B1E',
+                }}
+              >
+                Take photo
+              </Text>
+              <View
+                style={{
+                  padding: 10,
+                }}
+                onPress={() => setModalVisible(false)}
+              >
+                <Image source={require('../../assets/Images/camera.png')} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                marginHorizontal: 20,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+              onPress={pickFromGallery}
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: 'Asap-Regular',
+                  color: '#191B1E',
+                }}
+              >
+                Choose photo
+              </Text>
+              <View
+                style={{
+                  padding: 10,
+                }}
+                onPress={() => setModalVisible(false)}
+              >
+                <Image source={require('../../assets/Images/gallery.png')} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
