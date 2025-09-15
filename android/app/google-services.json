@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1076457894545",
+    "project_id": "lgs-complain",
+    "storage_bucket": "lgs-complain.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076457894545:android:0dce2c28c251808e868530",
+        "android_client_info": {
+          "package_name": "com.lgescomplaints"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7-k06TXK1Dk31WmDj-hjjPAtljJAnYkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

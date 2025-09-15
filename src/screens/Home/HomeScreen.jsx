@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -33,6 +35,27 @@ const HomeScreen = ({ navigation, route }) => {
     } else {
       fetchOICStats();
     }
+  }, []);
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        'Exit App',
+        'Are you sure you want to exit?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Exit', onPress: () => BackHandler.exitApp() },
+        ],
+        { cancelable: true },
+      );
+      return true; // prevent default back behavior
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   const fetchStats = async () => {

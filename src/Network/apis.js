@@ -243,6 +243,22 @@ export const getConplainCategories = async () => {
     throw error;
   }
 };
+export const getNotifications = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/notifications/notification-list',
+      payload,
+    );
+    console.log(response?.data);
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching notifications lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
 export const getConplainTypes = async () => {
   try {
     const response = await axiosInstance.post(

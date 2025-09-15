@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   Alert,
+  PermissionsAndroid,
 } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Formik } from 'formik';
@@ -19,11 +20,24 @@ import Loader from '../../components/Loader/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setCredentials, setAuthenticated } from '../../Redux/slices/AuthSlice';
 import { useDispatch } from 'react-redux';
+import messaging from '@react-native-firebase/messaging';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {
   const [role, setRole] = useState('Parent');
   const [loading, setLoading] = useState(false);
+  const [fcmToken, setFcmToken] = useState(null); // store token in state
   const dispatch = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS == 'android') {
+        requestPermissionAndroid();
+      } else {
+        requestIosPermission();
+      }
+    }, []),
+  );
+
   // ✅ Validation Schema
   const validationSchema = Yup.object().shape({
     emailOrPhone: Yup.string()
@@ -34,6 +48,28 @@ const Login = ({ navigation }) => {
       .min(5, 'Password must be at least 5 characters'),
   });
 
+  const requestPermissionAndroid = async () => {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      getToken();
+    } else {
+      getToken();
+    }
+  };
+  const getToken = async () => {
+    try {
+      const token = await messaging().getToken();
+      if (token) {
+        console.log('FCM Token:', token);
+        setFcmToken(token);
+      }
+    } catch (err) {
+      console.error('Error fetching FCM token:', err);
+    }
+  };
+
   // ✅ Submit Handler
   const handleLogin = async values => {
     try {
@@ -43,7 +79,7 @@ const Login = ({ navigation }) => {
         Role: role.toLowerCase(),
         EmailOrPhone: values.emailOrPhone,
         Password: values.password,
-        FCMToken: 'xyz',
+        FCMToken: fcmToken || '',
       };
       console.log(body, 'mmmmmmmmop');
       const res = await loginUser(body);
