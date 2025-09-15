@@ -9,34 +9,7 @@ import { useSelector } from 'react-redux';
 import AdminHistoryCard from '../../components/History/AdminHistoryCard';
 import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
 
-const DATA = [
-  {
-    id: '58964-1',
-    date: '25 Dec 2025',
-    assignedTo: 'John Doe',
-    department: 'Marketing',
-    text: 'It is a long established fact that a reader ',
-    rating: 4,
-  },
-  {
-    id: '58964-2',
-    date: '25 Dec 2025',
-    assignedTo: 'Jane Smith',
-    department: 'Sales',
-    text: 'The point of using Lorem Ipsum is that ',
-    rating: 5,
-  },
-  {
-    id: '58964-3',
-    date: '24 Dec 2025',
-    assignedTo: 'Peter Jones',
-    department: 'Finance',
-    text: 'Many desktop publishing packages and',
-    rating: 3,
-  },
-];
-
-const HistoryScreen = () => {
+const AttendedScreen = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false); // 👈 add loading state for refresh
@@ -46,9 +19,7 @@ const HistoryScreen = () => {
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
-  const openComplaintSummary = useCallback(id => {
-    filterModalRef.current?.openModal(id);
-  }, []);
+
   const openAdminComplaintSummary = useCallback(id => {
     adminHistortModalRef.current?.openModal(id);
   }, []);
@@ -60,12 +31,12 @@ const HistoryScreen = () => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
   const fetchHistory = async () => {
-    console.log('=======AliAmir=====');
+    console.log('======Amir=======');
     try {
       const body = {
         UserId: user?.id,
         Role: user?.role,
-        Status: '',
+        Status: 'attended',
       };
       const res = await complainHistory(body, user?.role);
       console.log(res, 'history');
@@ -81,18 +52,6 @@ const HistoryScreen = () => {
   };
   const renderItem = ({ item }) => {
     switch (user?.role) {
-      case 'parent':
-        return (
-          <ClosedCard
-            id={item?.complaintId}
-            date={item?.createdAt}
-            assignedTo={item.assignedTo}
-            department={item.department}
-            text={item.complaintSubject}
-            rating={4}
-            onPressSummary={() => openComplaintSummary(item?.complaintId)}
-          />
-        );
       case 'employee':
         return (
           <AdminHistoryCard
@@ -114,7 +73,7 @@ const HistoryScreen = () => {
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
-            rating={4}
+            rating={null}
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
           />
@@ -130,7 +89,7 @@ const HistoryScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="History" />
+      <Header title="In Process" />
 
       <FlatList
         data={history}
@@ -146,11 +105,7 @@ const HistoryScreen = () => {
         )}
       />
 
-      <HistoryModal
-        ref={filterModalRef}
-        complaintId={selectedComplaintId}
-        onDismiss={fetchHistory}
-      />
+      <HistoryModal ref={filterModalRef} complaintId={selectedComplaintId} />
       <AdminHistoryModal
         ref={adminHistortModalRef}
         onOpenForwardModal={id => forwardModalRef.current?.openModal(id)}
@@ -162,7 +117,7 @@ const HistoryScreen = () => {
   );
 };
 
-export default HistoryScreen;
+export default AttendedScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },

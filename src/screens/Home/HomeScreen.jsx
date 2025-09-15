@@ -15,20 +15,24 @@ import {
 import AdmissionCarousel from '../../components/Crousal/AdmissionCarousel';
 import HomeHeader from '../../components/HomeHeader';
 import { useSelector } from 'react-redux';
-import { complainDashboard } from '../../Network/apis';
+import { complainDashboard, oicDashboard } from '../../Network/apis';
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation, route }) => {
   // const { role } = route.params || {};
   const [stats, setStat] = useState([]);
-
+  console.log(stats, 'yyyyy');
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => state.auth.user);
   const role = user?.role;
-  console.log(role);
+
   useEffect(() => {
-    fetchStats();
+    if (user?.role === 'parent') {
+      fetchStats();
+    } else {
+      fetchOICStats();
+    }
   }, []);
 
   const fetchStats = async () => {
@@ -36,7 +40,23 @@ const HomeScreen = ({ navigation, route }) => {
       const body = {
         UserId: user?.id,
       };
-      const res = await complainDashboard(body);
+      const res = await complainDashboard(body, role);
+      if (res?.result === 'success') {
+        setStat(res?.data[0] || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchOICStats = async () => {
+    try {
+      const body = {
+        UserId: user?.id,
+        Role: user?.role,
+      };
+      const res = await oicDashboard(body, role);
       if (res?.result === 'success') {
         setStat(res?.data[0] || []);
       }
@@ -70,7 +90,7 @@ const HomeScreen = ({ navigation, route }) => {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {(!role || role === 'oic') && (
+        {(!role || role === 'employee') && (
           <>
             <View style={styles.card}>
               <View style={{ flexDirection: 'row' }}>
@@ -81,11 +101,11 @@ const HomeScreen = ({ navigation, route }) => {
 
                 <View style={styles.rowBetween}>
                   <Text style={styles.cardTitle}>Assigned Complaints</Text>
-                  <Text style={styles.cardValue}>1</Text>
+                  <Text style={styles.cardValue}>{stats?.totalComplaints}</Text>
                 </View>
                 <View style={{}}>
-                  <Text style={styles.cardDate}>12/20/2025</Text>
-                  <Text style={styles.cardId}>ID #25844</Text>
+                  {/* <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text> */}
                 </View>
               </View>
             </View>
@@ -101,7 +121,7 @@ const HomeScreen = ({ navigation, route }) => {
             >
               <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ClosedComplain')}
+                  onPress={() => navigation.navigate('AttendedScreen')}
                   style={{ flexDirection: 'row' }}
                 >
                   <Image
@@ -110,13 +130,13 @@ const HomeScreen = ({ navigation, route }) => {
                   />
                   <View style={{}}>
                     <Text style={styles.cardTitle}>Attended</Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.attended}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
               <View style={styles.card2}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('DroppedComplain')}
+                  onPress={() => navigation.navigate('UnattendedScreen')}
                   style={{ flexDirection: 'row' }}
                 >
                   <Image
@@ -125,14 +145,14 @@ const HomeScreen = ({ navigation, route }) => {
                   />
                   <View style={{}}>
                     <Text style={styles.cardTitle}>Un Attended</Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.unAttended}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
             </View>
           </>
         )}
-        {(!role || role === 'admin') && (
+        {(!role || role === 'oic') && (
           <>
             <View style={styles.card}>
               <View style={{ flexDirection: 'row' }}>
@@ -143,11 +163,11 @@ const HomeScreen = ({ navigation, route }) => {
 
                 <View style={styles.rowBetween}>
                   <Text style={styles.cardTitle}>Total Complaints</Text>
-                  <Text style={styles.cardValue}>1</Text>
+                  <Text style={styles.cardValue}>{stats?.totalComplaints}</Text>
                 </View>
                 <View style={{}}>
-                  <Text style={styles.cardDate}>12/20/2025</Text>
-                  <Text style={styles.cardId}>ID #25844</Text>
+                  {/* <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text> */}
                 </View>
               </View>
             </View>
@@ -163,7 +183,7 @@ const HomeScreen = ({ navigation, route }) => {
             >
               <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ClosedComplain')}
+                  onPress={() => navigation.navigate('AttendedScreen')}
                   style={{ flexDirection: 'row' }}
                 >
                   <Image
@@ -172,13 +192,13 @@ const HomeScreen = ({ navigation, route }) => {
                   />
                   <View style={{}}>
                     <Text style={styles.cardTitle}>Attended</Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.attended}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
               <View style={styles.card2}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('DroppedComplain')}
+                  onPress={() => navigation.navigate('UnattendedScreen')}
                   style={{ flexDirection: 'row' }}
                 >
                   <Image
@@ -187,7 +207,7 @@ const HomeScreen = ({ navigation, route }) => {
                   />
                   <View style={{}}>
                     <Text style={styles.cardTitle}>Un Attended</Text>
-                    <Text style={styles.cardValue}>18</Text>
+                    <Text style={styles.cardValue}>{stats?.unAttended}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -209,7 +229,10 @@ const HomeScreen = ({ navigation, route }) => {
                 </View>
               </View>
             </View>
-            <View style={styles.card}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('OpenedComplain')}
+              style={styles.card}
+            >
               <View style={{ flexDirection: 'row' }}>
                 <Image
                   source={require('../../assets/Images/bad-review.png')}
@@ -225,7 +248,7 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.cardId}>ID #25844</Text> */}
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
             <View
               style={{
                 flexDirection: 'row',

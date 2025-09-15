@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
 // import { FontAwesome5 } from '@expo/vector-icons';
 
-const ClosedCard = ({
+const AdminHistoryCard = ({
   id,
   date,
   assignedTo,
@@ -11,6 +11,7 @@ const ClosedCard = ({
   text,
   rating,
   onPressSummary,
+  onPressAssignAgent,
 }) => {
   const renderStars = rating =>
     Array.from({ length: 5 }, (_, i) => (
@@ -66,10 +67,18 @@ const ClosedCard = ({
         </View>
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity onPress={onPressSummary}>
-          <Text style={styles.viewSummaryText}>View Summary</Text>
-        </TouchableOpacity>
-        <View style={styles.starsContainer}>{renderStars(rating)}</View>
+        {assignedTo && assignedTo.trim() !== '' ? (
+          <TouchableOpacity onPress={onPressSummary}>
+            <Text style={styles.viewSummaryText}>View Summary</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={onPressAssignAgent}>
+            <Text style={styles.assignAgentText}>Assign Agent</Text>
+          </TouchableOpacity>
+        )}
+        {rating !== undefined && rating !== null && (
+          <View style={styles.starsContainer}>{renderStars(rating)}</View>
+        )}
       </View>
     </View>
   );
@@ -158,6 +167,13 @@ const styles = StyleSheet.create({
     color: '#FFC107',
     marginHorizontal: 1,
   },
+  assignAgentText: {
+    color: '#5175B2',
+    fontFamily: 'Asap-Medium',
+    fontSize: 12,
+    textDecorationLine: 'underline',
+    textDecorationColor: '#5175B2',
+  },
 });
 
-export default ClosedCard;
+export default AdminHistoryCard;

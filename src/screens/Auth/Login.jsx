@@ -45,11 +45,10 @@ const Login = ({ navigation }) => {
         Password: values.password,
         FCMToken: 'xyz',
       };
-
+      console.log(body, 'mmmmmmmmop');
       const res = await loginUser(body);
       console.log('Login res:', res.data);
       if (res?.messageCode === 200) {
-        console.log('====99998===');
         await AsyncStorage.setItem('accessToken', res?.data?.accessToken);
         await AsyncStorage.setItem('refreshToken', res?.data?.refreshToken);
         dispatch(
@@ -105,7 +104,7 @@ const Login = ({ navigation }) => {
 
           {/* Role selection */}
           <View style={styles.roleContainer}>
-            {['Parent', 'OIC', 'Admin'].map(item => (
+            {['Parent', 'Employee', 'OIC'].map(item => (
               <TouchableOpacity
                 key={item}
                 style={styles.roleOption}

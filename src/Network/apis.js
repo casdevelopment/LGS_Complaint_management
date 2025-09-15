@@ -3,6 +3,17 @@ import axios from 'axios';
 import Server from '../Constant/server';
 import axiosInstance from '../utils/axiosInstance';
 
+const historyEndpoints = {
+  parent: '/api/complaint/complaint-list',
+  employee: '/api/oic/complaint-list',
+  oic: '/api/oic/complaint-list',
+};
+const complainSummaryEndpoints = {
+  parent: '/api/complaint/complaint-summary',
+  employee: '/api/oic/complaint-summary',
+  oic: '/api/oic/complaint-summary',
+};
+
 export const getAllCampus = async () => {
   console.log();
   try {
@@ -279,13 +290,107 @@ export const complainDashboard = async payload => {
     throw error;
   }
 };
-
-export const complainHistory = async payload => {
+export const oicDashboard = async payload => {
   try {
     const response = await axiosInstance.post(
-      '/api/complaint/complaint-list',
+      '/api/oic/oic-dashboard',
       payload,
     );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Complain Dashboard error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getDepartments = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/oic/get-departments',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Get department error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getDepatmentEmployees = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/oic/get-department-employees',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Get department employee error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const forwardComplaint = async payload => {
+  try {
+    const response = await axiosInstance.post('/api/oic/assign-agent', payload);
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Forward complain error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const closeComplaint = async payload => {
+  try {
+    const response = await axiosInstance.post('/api/oic/agent-submit', payload);
+    return response?.data;
+  } catch (error) {
+    console.error('Agent submit error:', error.response?.data || error.message);
+    throw error;
+  }
+};
+export const parentReview = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/complaint/complaint-rating',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error('Agent submit error:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// export const complainHistory = async payload => {
+//   try {
+//     const response = await axiosInstance.post(
+//       '/api/complaint/complaint-list',
+//       payload,
+//     );
+//     return response?.data;
+//   } catch (error) {
+//     console.error(
+//       'Complain History error:',
+//       error.response?.data || error.message,
+//     );
+//     throw error;
+//   }
+// };
+export const complainHistory = async (payload, role) => {
+  console.log(payload, 'nnn');
+  try {
+    const url = historyEndpoints[role];
+    if (!url) throw new Error(`No endpoint defined for role: ${role}`);
+
+    const response = await axiosInstance.post(url, payload);
     return response?.data;
   } catch (error) {
     console.error(
@@ -295,12 +400,32 @@ export const complainHistory = async payload => {
     throw error;
   }
 };
-export const complainHistorySummary = async payload => {
+export const attendedComplaints = async (payload, role) => {
+  console.log(payload, 'nnn');
   try {
-    const response = await axiosInstance.post(
-      '/api/complaint/complaint-summary',
-      payload,
+    const url = historyEndpoints[role];
+    if (!url) throw new Error(`No endpoint defined for role: ${role}`);
+
+    const response = await axiosInstance.post(url, payload);
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Complain History error:',
+      error.response?.data || error.message,
     );
+    throw error;
+  }
+};
+export const complainHistorySummary = async (payload, role) => {
+  try {
+    const url = complainSummaryEndpoints[role];
+    if (!url) throw new Error(`No endpoint defined for role: ${role}`);
+
+    const response = await axiosInstance.post(url, payload);
+    // const response = await axiosInstance.post(
+    //   '/api/complaint/complaint-summary',
+    //   payload,
+    // );
     return response?.data;
   } catch (error) {
     console.error(

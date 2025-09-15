@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Alert,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -20,10 +22,12 @@ import { getConplainTypes } from '../../Network/apis';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useSelector } from 'react-redux';
 import { launchComplaint } from '../../Network/apis';
+import Loader from '../../components/Loader/Loader';
+import Geolocation from 'react-native-geolocation-service';
 
 export default function ComplainForm({ navigation, route }) {
   const user = useSelector(state => state.auth.user);
-
+  const [loading, setLoading] = useState(false);
   const { campus, category } = route.params; // 👈 now you have both!
   console.log(campus, category, 'oooooppp');
   const [complainTypes, setComplainTypes] = useState([]);
@@ -32,9 +36,72 @@ export default function ComplainForm({ navigation, route }) {
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
+  const [coords, setCoords] = useState({ latitude: null, longitude: null });
+  console.log(coords, 'coords');
+
   useEffect(() => {
+    let isMounted = true;
     fetchComplainTypes();
+    getLocation(isMounted);
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
+  const requestLocationPermission = async () => {
+    if (Platform.OS === 'android') {
+      const hasPermission = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (hasPermission) return true;
+
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'We need your location to submit complaints',
+          buttonPositive: 'OK',
+          buttonNegative: 'Cancel',
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    }
+    return true; // For iOS you should still add NSLocationWhenInUseUsageDescription in Info.plist
+  };
+
+  const getLocation = async isMounted => {
+    const hasPermission = await requestLocationPermission();
+    if (!hasPermission) {
+      Alert.alert(
+        'Permission required',
+        'Please enable location services in settings to submit complaints',
+      );
+      return;
+    }
+
+    Geolocation.getCurrentPosition(
+      pos => {
+        if (isMounted) {
+          setCoords({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          });
+          console.log(
+            'User location:',
+            pos.coords.latitude,
+            pos.coords.longitude,
+          );
+        }
+      },
+      error => {
+        console.error('Location error:', error);
+        if (isMounted) {
+          Alert.alert('Error', 'Unable to fetch location');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+    );
+  };
 
   const fetchComplainTypes = async () => {
     try {
@@ -63,13 +130,6 @@ export default function ComplainForm({ navigation, route }) {
       Alert.alert('Error', 'Please fill all required fields');
       return;
     }
-    // console.log(category.complainCategoryId, 'category');
-    // console.log(campus.schoolId, 'campus');
-    // console.log('complain_type_id', selectedType);
-    // console.log('location', location);
-    // console.log('subject', subject);
-    // console.log('description', description);
-    // console.log(images, 'images');
 
     const formData = new FormData();
     formData.append('CampusId', campus.schoolId);
@@ -77,8 +137,8 @@ export default function ComplainForm({ navigation, route }) {
     formData.append('ComplaintTypeId', selectedType);
     formData.append('LocationAddress', location);
     formData.append('ComplaintSubject', subject);
-    formData.append('Latitude', '31.582045');
-    formData.append('Longitude', '74.329376');
+    formData.append('Latitude', coords.latitude || '');
+    formData.append('Longitude', coords.longitude || '');
     formData.append('Description', description);
     formData.append('UserId', user.id);
     // 🔹 Add images as file1, file2, ...
@@ -91,12 +151,15 @@ export default function ComplainForm({ navigation, route }) {
     });
 
     try {
+      setLoading(true);
       const res = await launchComplaint(formData);
       Alert.alert('Success', 'Complaint submitted successfully!');
       navigation.navigate('HomeScreen');
     } catch (err) {
       console.error('Error submitting complaint:', err.response?.data || err);
       Alert.alert('Error', 'Failed to submit complaint');
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -228,6 +291,7 @@ export default function ComplainForm({ navigation, route }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {loading && <Loader />}
     </KeyboardAvoidingView>
   );
 }

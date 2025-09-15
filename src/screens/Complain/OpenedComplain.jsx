@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, SafeAreaView, Text } from 'react-native';
+import { View, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import Header from '../../components/Header';
 import ClosedCard from '../../components/Closed/CloasedCard';
 import HistoryModal from '../../components/Modals/HistoryModal';
@@ -36,11 +36,10 @@ const DATA = [
   },
 ];
 
-const HistoryScreen = () => {
+const OpenedComplain = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
-  const [loading, setLoading] = useState(false); // 👈 add loading state for refresh
-  const [refreshing, setRefreshing] = useState(false);
+
   console.log(history, 'state value');
   const filterModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
@@ -57,15 +56,14 @@ const HistoryScreen = () => {
     fetchHistory();
   }, []);
   const openForwardComplain = useCallback(id => {
-    forwardModalRef.current?.openModal(id, 'assign');
+    forwardModalRef.current?.openModal(id);
   }, []);
   const fetchHistory = async () => {
-    console.log('=======AliAmir=====');
     try {
       const body = {
         UserId: user?.id,
         Role: user?.role,
-        Status: '',
+        Status: 'open',
       };
       const res = await complainHistory(body, user?.role);
       console.log(res, 'history');
@@ -76,7 +74,6 @@ const HistoryScreen = () => {
       console.error(err);
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   };
   const renderItem = ({ item }) => {
@@ -123,56 +120,31 @@ const HistoryScreen = () => {
         return <Text>Unknown role</Text>;
     }
   };
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    fetchHistory();
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="History" />
+      <Header title="Complaints Open" />
 
       <FlatList
         data={history}
         keyExtractor={item => item?.complaintId.toString()}
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={renderItem}
-        refreshing={refreshing} // 👈 enable pull-to-refresh
-        onRefresh={onRefresh}
-        ListEmptyComponent={() => (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No complaints found</Text>
-          </View>
-        )}
       />
 
-      <HistoryModal
-        ref={filterModalRef}
-        complaintId={selectedComplaintId}
-        onDismiss={fetchHistory}
-      />
+      <HistoryModal ref={filterModalRef} complaintId={selectedComplaintId} />
       <AdminHistoryModal
         ref={adminHistortModalRef}
         onOpenForwardModal={id => forwardModalRef.current?.openModal(id)}
         complaintId={selectedComplaintId}
-        onDismiss={fetchHistory}
       />
-      <ForwardModal ref={forwardModalRef} onDismiss={fetchHistory} />
+      <ForwardModal ref={forwardModalRef} />
     </SafeAreaView>
   );
 };
 
-export default HistoryScreen;
+export default OpenedComplain;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#888',
-  },
 });

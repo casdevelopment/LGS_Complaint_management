@@ -6,7 +6,16 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -15,14 +24,19 @@ import {
 import { COLORS } from '../../utils/colors';
 import { complainHistorySummary } from '../../Network/apis';
 import { useSelector } from 'react-redux';
+import { parentReview } from '../../Network/apis';
 
 const HistoryModal = forwardRef((props, ref) => {
+  const { onDismiss } = props;
   const modalRef = useRef(null);
   const snapPoints = useMemo(() => ['90%', '100%'], []);
   const user = useSelector(state => state.auth.user);
-
+  const [complaintId, setComplaintId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState(null);
+  const [reviewText, setReviewText] = useState('');
+  const [rating, setRating] = useState(0); // 1–5 stars
+  const [submitting, setSubmitting] = useState(false);
 
   useImperativeHandle(ref, () => ({
     // Add `id` as a parameter to the `openModal` function.
@@ -30,6 +44,7 @@ const HistoryModal = forwardRef((props, ref) => {
       modalRef.current?.present();
 
       if (id) {
+        setComplaintId(id);
         setLoading(true);
         setSummary(null); // reset before fetch
 
@@ -39,7 +54,7 @@ const HistoryModal = forwardRef((props, ref) => {
         };
 
         try {
-          const { data } = await complainHistorySummary(body);
+          const { data } = await complainHistorySummary(body, user?.role);
           setSummary(data || null);
         } catch (err) {
           console.log('Error fetching summary:', err);
@@ -63,6 +78,39 @@ const HistoryModal = forwardRef((props, ref) => {
     ),
     [],
   );
+  const handleSubmitReview = async () => {
+    if (!rating || !reviewText.trim()) {
+      Alert.alert(
+        'Validation',
+        'Please add a rating and review before submitting.',
+      );
+      return;
+    }
+
+    const body = {
+      UserId: user?.id,
+      ComplaintId: complaintId,
+      Rating: rating,
+      Comments: reviewText.trim(),
+    };
+
+    try {
+      setSubmitting(true);
+      await parentReview(body); // <-- your API call
+      Alert.alert('Success', 'Review submitted successfully!');
+      setReviewText('');
+      setRating(0);
+      ref?.current?.closeModal(); // close bottomsheet
+    } catch (error) {
+      console.log('Error submitting review:', error);
+      Alert.alert(
+        'Error',
+        'Something went wrong while submitting your review.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const renderFiles = () => {
     const fileUrls = [
@@ -96,9 +144,9 @@ const HistoryModal = forwardRef((props, ref) => {
     return summary.trackRecord.map((item, index) => (
       <View key={index} style={styles.trackItem}>
         <Text style={styles.boldText}>
-          {item?.assignedFrom} → {item?.assignedTo}
+          {item?.fromName} → {item?.toName}
         </Text>
-        <Text style={styles.timelineDate}>{item?.dateTime}</Text>
+        <Text style={styles.timelineDate}>{item?.changedAt}</Text>
         <Text style={styles.paragraph}>{item?.remarks}</Text>
       </View>
     ));
@@ -119,8 +167,59 @@ const HistoryModal = forwardRef((props, ref) => {
         </Text>
         <Text style={styles.boldText}>Remarks</Text>
         <Text style={styles.paragraph}>{remarks}</Text>
+
+        {/* ⭐ Review UI Section */}
+        {(!summary?.rating || summary?.rating.length === 0) && (
+          <View style={styles.reviewBox}>
+            <TextInput
+              placeholder="Write Your Reviews"
+              placeholderTextColor="#bbb"
+              style={styles.reviewInput}
+              multiline
+              value={reviewText}
+              onChangeText={setReviewText}
+            />
+
+            {/* Rating Stars */}
+            <View style={styles.starsRow}>
+              {[1, 2, 3, 4, 5].map(star => (
+                <TouchableOpacity key={star} onPress={() => setRating(star)}>
+                  <Text
+                    style={[
+                      styles.star,
+                      { color: rating >= star ? '#FFD700' : '#ccc' },
+                    ]}
+                  >
+                    ★
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Submit Button */}
+            <TouchableOpacity
+              style={styles.submitBtn}
+              onPress={() => handleSubmitReview()}
+              disabled={submitting}
+            >
+              {submitting ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.submitBtnText}>Submit And Close</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        )}
       </>
     );
+  };
+  const resetState = () => {
+    setComplaintId(null);
+    setSummary(null);
+    setReviewText('');
+    setRating(0);
+    setLoading(false);
+    setSubmitting(false);
   };
 
   return (
@@ -132,6 +231,10 @@ const HistoryModal = forwardRef((props, ref) => {
       enableOverDrag={false}
       stackBehavior="push"
       backgroundStyle={styles.bgStyle}
+      onDismiss={() => {
+        resetState(); // clear modal states
+        onDismiss?.(); // tell parent to refetch
+      }}
     >
       <BottomSheetScrollView
         style={styles.mainContainer}
@@ -229,6 +332,44 @@ const styles = StyleSheet.create({
   },
   timelineDate: { fontSize: 12, color: '#777', marginBottom: 4 },
   row: { fontSize: 13, marginBottom: 4 },
+  reviewBox: {
+    marginTop: 20,
+
+    borderRadius: 8,
+    backgroundColor: '#fff',
+  },
+  reviewInput: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 14,
+    fontFamily: 'Asap-Light',
+    minHeight: 120,
+    textAlignVertical: 'top',
+    marginTop: 10,
+  },
+  starsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  star: {
+    fontSize: 28,
+    color: '#ccc', // later you can toggle yellow on press
+    marginHorizontal: 4,
+  },
+  submitBtn: {
+    backgroundColor: COLORS.primary,
+    paddingVertical: 12,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  submitBtnText: {
+    color: '#fff',
+    fontFamily: 'Asap-SemiBold',
+    fontSize: 16,
+  },
 });
 
 // import React, {

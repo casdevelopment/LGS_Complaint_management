@@ -18,6 +18,7 @@ const CustomDropdown = ({
         labelField="label"
         valueField="value"
         placeholder={placeholder}
+        placeholderStyle={{ color: '#999' }}
         value={value}
         onChange={item => onChange(item.value)}
         disable={disabled}

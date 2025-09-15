@@ -38,7 +38,7 @@ const UpdateProfile = ({ navigation }) => {
 
   const isEmployeeOrAdmin =
     user?.role?.toLowerCase() === 'employee' ||
-    user?.role?.toLowerCase() === 'admin';
+    user?.role?.toLowerCase() === 'oic';
 
   // Fetch campuses
   useEffect(() => {
