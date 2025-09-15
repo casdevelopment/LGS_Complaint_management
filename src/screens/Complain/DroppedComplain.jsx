@@ -69,7 +69,7 @@ const DroppedComplain = () => {
         <Header title="Dropped" />
 
         <FlatList
-          data={DATA}
+          data={[]}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <ClosedCard
@@ -80,18 +80,11 @@ const DroppedComplain = () => {
               text={item.text}
               rating={item.rating}
             />
-            // <View style={styles.card}>
-            //   <Text style={styles.complaintId}>
-            //     ID {item.id} | {item.date}
-            //   </Text>
-            //   <Text style={styles.complaintTitle}>{item.title}</Text>
-            //   <Text style={styles.assigned}>
-            //     Assigned To: <Text style={styles.bold}>{item.assignedTo}</Text>
-            //   </Text>
-            //   <TouchableOpacity onPress={() => openSummary(item)}>
-            //     <Text style={styles.link}>View Summary</Text>
-            //   </TouchableOpacity>
-            // </View>
+          )}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No complaints found</Text>
+            </View>
           )}
         />
       </View>
@@ -203,4 +196,13 @@ const styles = StyleSheet.create({
   },
   timelineDate: { fontSize: 12, color: '#777', marginBottom: 4 },
   row: { fontSize: 13, marginBottom: 4 },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#888',
+  },
 });

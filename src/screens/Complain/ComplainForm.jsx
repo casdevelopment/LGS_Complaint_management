@@ -23,7 +23,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { useSelector } from 'react-redux';
 import { launchComplaint } from '../../Network/apis';
 import Loader from '../../components/Loader/Loader';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 
 export default function ComplainForm({ navigation, route }) {
   const user = useSelector(state => state.auth.user);
@@ -99,7 +99,11 @@ export default function ComplainForm({ navigation, route }) {
           Alert.alert('Error', 'Unable to fetch location');
         }
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+      },
     );
   };
 

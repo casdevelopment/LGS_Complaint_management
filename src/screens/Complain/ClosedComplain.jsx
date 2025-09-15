@@ -9,33 +9,6 @@ import { useSelector } from 'react-redux';
 import AdminHistoryCard from '../../components/History/AdminHistoryCard';
 import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
 
-const DATA = [
-  {
-    id: '58964-1',
-    date: '25 Dec 2025',
-    assignedTo: 'John Doe',
-    department: 'Marketing',
-    text: 'It is a long established fact that a reader ',
-    rating: 4,
-  },
-  {
-    id: '58964-2',
-    date: '25 Dec 2025',
-    assignedTo: 'Jane Smith',
-    department: 'Sales',
-    text: 'The point of using Lorem Ipsum is that ',
-    rating: 5,
-  },
-  {
-    id: '58964-3',
-    date: '24 Dec 2025',
-    assignedTo: 'Peter Jones',
-    department: 'Finance',
-    text: 'Many desktop publishing packages and',
-    rating: 3,
-  },
-];
-
 const ClosedComplain = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
