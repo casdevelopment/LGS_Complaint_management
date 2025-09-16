@@ -10,6 +10,8 @@ const ClosedCard = ({
   department,
   text,
   rating,
+  thumb,
+  complainStage,
   onPressSummary,
 }) => {
   const renderStars = rating =>
@@ -19,6 +21,21 @@ const ClosedCard = ({
       </Text>
     ));
 
+  // complaint stage dots
+  const renderStageDots = stage => (
+    <View style={styles.stageDotsContainer}>
+      {[1, 2, 3].map(i => (
+        <View
+          key={i}
+          style={[
+            styles.stageDot,
+            { backgroundColor: i <= stage ? '#FFC107' : COLORS.primary },
+          ]}
+        />
+      ))}
+    </View>
+  );
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.header}>
@@ -27,25 +44,28 @@ const ClosedCard = ({
           <Text style={styles.dateText}>{date}</Text>
         </View>
         <TouchableOpacity style={styles.dotsButton}>
-          {/* <Text
-            style={{ color: COLORS.primary, fontSize: 30, fontWeight: '900' }}
-          >
-            ...
-          </Text> */}
-          <Image source={require('../../assets/Images/dots.png')} />
+          {renderStageDots(complainStage)}
         </TouchableOpacity>
-        {/* <Image
-          style={styles.thumbsDownIcon}
-          source={require('../../assets/Images/thumbs-up.png')}
-        /> */}
-        {/* <FontAwesome5
-          name="thumbs-down"
-          size={24}
-          color="#000"
-          style={styles.thumbsDownIcon}
-        /> */}
       </View>
-      <Text style={styles.mainText}>{text}</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={styles.mainText}>{text}</Text>
+        {rating > 0 && (
+          <Image
+            style={styles.thumbsDownIcon}
+            source={
+              thumb
+                ? require('../../assets/Images/thumbs-up.png')
+                : require('../../assets/Images/thumbs-down.png')
+            }
+          />
+        )}
+      </View>
       <View style={styles.detailsRow}>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Assigned To</Text>
@@ -120,6 +140,16 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     marginBottom: 15,
     fontFamily: 'Asap-Medium',
+  },
+  stageDotsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  stageDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 2,
   },
   detailsRow: {
     flexDirection: 'row',

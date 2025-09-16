@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  BackHandler,
 } from 'react-native';
 import {
   BottomSheetBackdrop,
@@ -28,6 +29,7 @@ import {
   getDepatmentEmployees,
   forwardComplaint,
 } from '../../Network/apis';
+import { useFocusEffect } from '@react-navigation/native';
 
 import CustomDropdown from '../Form/CustomDropdown'; // 👈 use your dropdown component
 
@@ -47,6 +49,26 @@ const ForwardModal = forwardRef((props, ref) => {
   const [selectedEmp, setSelectedEmp] = useState(null);
   const [review, setReview] = useState('');
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false); // 👈 track modal state
+
+  // --- BackHandler support ---
+  const handleBackPress = useCallback(() => {
+    if (isOpen) {
+      modalRef.current?.dismiss();
+      return true; // prevent navigation
+    }
+    return false;
+  }, [isOpen]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const sub = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handleBackPress,
+      );
+      return () => sub.remove();
+    }, [handleBackPress]),
+  );
 
   // open/close handlers
   useImperativeHandle(ref, () => ({
@@ -54,8 +76,12 @@ const ForwardModal = forwardRef((props, ref) => {
       setSelectedComplaintId(complaintId); // store in state
       setMode(newMode);
       modalRef.current?.present();
+      setIsOpen(true);
     },
-    closeModal: () => modalRef.current?.dismiss(),
+    closeModal: () => {
+      modalRef.current?.dismiss();
+      setIsOpen(false);
+    },
   }));
 
   const renderBackDrop = useCallback(
@@ -121,10 +147,9 @@ const ForwardModal = forwardRef((props, ref) => {
       userId: user?.id,
       toUserId: selectedEmp,
       complaintId: selectedComplaintId,
+      remarks: review,
     };
-    if (mode === 'forward') {
-      body.remarks = review; // only add review in forward mode
-    }
+
     console.log(body);
 
     try {
@@ -146,6 +171,7 @@ const ForwardModal = forwardRef((props, ref) => {
     setSelectedComplaintId(null);
     setEmployees([]);
     setDepartments([]);
+    setIsOpen(false);
   };
 
   return (
@@ -198,15 +224,14 @@ const ForwardModal = forwardRef((props, ref) => {
         />
 
         {/* Review */}
-        {mode === 'forward' && (
-          <TextInput
-            style={styles.input}
-            placeholder="Write your review..."
-            value={review}
-            onChangeText={setReview}
-            multiline
-          />
-        )}
+
+        <TextInput
+          style={styles.input}
+          placeholder="Write your review..."
+          value={review}
+          onChangeText={setReview}
+          multiline
+        />
 
         {/* Forward Button */}
         <TouchableOpacity

@@ -59,7 +59,9 @@ const ClosedComplain = () => {
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
-            rating={4}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
             onPressSummary={() => openComplaintSummary(item?.complaintId)}
           />
         );

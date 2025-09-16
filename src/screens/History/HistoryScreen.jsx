@@ -60,7 +60,6 @@ const HistoryScreen = () => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
   const fetchHistory = async () => {
-    console.log('=======AliAmir=====');
     try {
       const body = {
         UserId: user?.id,
@@ -89,7 +88,9 @@ const HistoryScreen = () => {
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
-            rating={4}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
             onPressSummary={() => openComplaintSummary(item?.complaintId)}
           />
         );
@@ -101,7 +102,9 @@ const HistoryScreen = () => {
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
-            rating={4}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
           />
@@ -114,7 +117,9 @@ const HistoryScreen = () => {
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
-            rating={4}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
           />

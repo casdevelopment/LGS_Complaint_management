@@ -15,6 +15,8 @@ import DroppedComplain from '../screens/Complain/DroppedComplain';
 import AttendedScreen from '../screens/Complain/AttendedScreen';
 import UnattendedScreen from '../screens/Complain/UnattendedScreen';
 import OpenedComplain from '../screens/Complain/OpenedComplain';
+import ImplementedComplain from '../screens/Complain/ImplementedComplain';
+import AcknowledgeComplain from '../screens/Complain/AcknowledgeComplain';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +40,14 @@ export default function AppStack() {
         <Stack.Screen name="AttendedScreen" component={AttendedScreen} />
         <Stack.Screen name="UnattendedScreen" component={UnattendedScreen} />
         <Stack.Screen name="OpenedComplain" component={OpenedComplain} />
+        <Stack.Screen
+          name="ImplementedComplain"
+          component={ImplementedComplain}
+        />
+        <Stack.Screen
+          name="AcknowledgeComplain"
+          component={AcknowledgeComplain}
+        />
       </Stack.Navigator>
     </BottomSheetModalProvider>
   );

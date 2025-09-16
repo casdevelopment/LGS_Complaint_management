@@ -15,6 +15,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  BackHandler,
 } from 'react-native';
 import {
   BottomSheetBackdrop,
@@ -25,6 +26,7 @@ import { COLORS } from '../../utils/colors';
 import { complainHistorySummary } from '../../Network/apis';
 import { useSelector } from 'react-redux';
 import { parentReview } from '../../Network/apis';
+import { useFocusEffect } from '@react-navigation/native';
 
 const HistoryModal = forwardRef((props, ref) => {
   const { onDismiss } = props;
@@ -37,12 +39,34 @@ const HistoryModal = forwardRef((props, ref) => {
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0); // 1–5 stars
   const [submitting, setSubmitting] = useState(false);
+  // track whether modal is open
+  const [isOpen, setIsOpen] = useState(false);
+
+  // handle back press
+  const handleBackPress = useCallback(() => {
+    if (isOpen) {
+      modalRef.current?.dismiss();
+      return true; // prevent default navigation back
+    }
+    return false;
+  }, [isOpen]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        handleBackPress,
+      );
+
+      return () => subscription.remove();
+    }, [handleBackPress]),
+  );
 
   useImperativeHandle(ref, () => ({
     // Add `id` as a parameter to the `openModal` function.
     openModal: async id => {
       modalRef.current?.present();
-
+      setIsOpen(true);
       if (id) {
         setComplaintId(id);
         setLoading(true);
@@ -64,7 +88,10 @@ const HistoryModal = forwardRef((props, ref) => {
         }
       }
     },
-    closeModal: () => modalRef.current?.dismiss(),
+    closeModal: () => {
+      modalRef.current?.dismiss();
+      setIsOpen(false);
+    },
   }));
 
   const renderBackDrop = useCallback(
@@ -220,6 +247,7 @@ const HistoryModal = forwardRef((props, ref) => {
     setRating(0);
     setLoading(false);
     setSubmitting(false);
+    setIsOpen(false);
   };
 
   return (

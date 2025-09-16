@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
+  BackHandler,
 } from 'react-native';
 import {
   BottomSheetBackdrop,
@@ -28,6 +29,7 @@ import { useSelector } from 'react-redux';
 import { Dropdown } from 'react-native-element-dropdown';
 import { closeComplaint } from '../../Network/apis';
 import Loader from '../Loader/Loader';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AdminHistoryModal = forwardRef(
   ({ onOpenForwardModal, onDismiss }, ref) => {
@@ -48,12 +50,36 @@ const AdminHistoryModal = forwardRef(
       { label: 'Acknowledged', value: 'Acknowledged' },
     ];
 
+    // track whether modal is open
+    const [isOpen, setIsOpen] = useState(false);
+
+    // handle back press
+    const handleBackPress = useCallback(() => {
+      if (isOpen) {
+        modalRef.current?.dismiss();
+        return true; // prevent default navigation back
+      }
+      return false;
+    }, [isOpen]);
+
+    useFocusEffect(
+      useCallback(() => {
+        const subscription = BackHandler.addEventListener(
+          'hardwareBackPress',
+          handleBackPress,
+        );
+
+        return () => subscription.remove();
+      }, [handleBackPress]),
+    );
+
     useImperativeHandle(ref, () => ({
       // Add `id` as a parameter to the `openModal` function.
       openModal: async id => {
         modalRef.current?.present();
 
         if (id) {
+          setIsOpen(true);
           setComplaintId(id);
           setLoading(true);
           setSummary(null); // reset before fetch
@@ -74,7 +100,10 @@ const AdminHistoryModal = forwardRef(
           }
         }
       },
-      closeModal: () => modalRef.current?.dismiss(),
+      closeModal: () => {
+        modalRef.current?.dismiss();
+        setIsOpen(false); // ✅ mark as closed
+      },
     }));
 
     const renderBackDrop = useCallback(
@@ -250,6 +279,7 @@ const AdminHistoryModal = forwardRef(
         stackBehavior="push"
         backgroundStyle={styles.bgStyle}
         onDismiss={() => {
+          setIsOpen(false);
           resetState();
           onDismiss?.();
         }}

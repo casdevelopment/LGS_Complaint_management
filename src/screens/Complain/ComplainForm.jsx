@@ -218,7 +218,7 @@ export default function ComplainForm({ navigation, route }) {
               data={complainTypes}
               labelField="label"
               valueField="value"
-              placeholder="Complain Type"
+              placeholder="Complaint Type"
               placeholderStyle={{ color: '#999' }}
               value={selectedType}
               onChange={item => setSelectedType(item.value)}
@@ -291,7 +291,7 @@ export default function ComplainForm({ navigation, route }) {
 
           {/* Launch Button */}
           <TouchableOpacity onPress={submitComplaint} style={styles.launchBtn}>
-            <Text style={styles.launchText}>Launch Complain</Text>
+            <Text style={styles.launchText}>Launch Complaint</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

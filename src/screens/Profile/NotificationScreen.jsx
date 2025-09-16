@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Header from '../../components/Header';
 import { COLORS } from '../../utils/colors';
 import { getNotifications } from '../../Network/apis';
 import { useSelector } from 'react-redux';
 import Loader from '../../components/Loader/Loader';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { deleteNotification } from '../../Network/apis';
 
 const NotificationScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState('Today');
@@ -46,8 +47,27 @@ const NotificationScreen = ({ navigation }) => {
     }
   };
 
-  const handleDelete = id => {
-    setNotifications(prev => prev.filter(item => item.notificationId !== id));
+  // const handleDelete = id => {
+  //   setNotifications(prev => prev.filter(item => item.notificationId !== id));
+  // };
+  const handleDelete = async id => {
+    try {
+      // Optimistic update: remove immediately from UI
+      setNotifications(prev => prev.filter(item => item.notificationId !== id));
+
+      // Call API
+      const res = await deleteNotification({ NotificationId: id });
+
+      if (res?.messageCode !== 200) {
+        // ❌ Rollback if API fails
+        setNotifications(prev => [...prev, { notificationId: id }]);
+        console.warn('Failed to delete notification:', res?.message);
+      }
+    } catch (err) {
+      console.error('Error deleting notification:', err.message);
+      // ❌ Rollback if error
+      fetchNotifications(tabs.find(tab => tab.label === activeTab)?.duration);
+    }
   };
 
   const renderItem = ({ item }) => (
@@ -74,7 +94,8 @@ const NotificationScreen = ({ navigation }) => {
       style={styles.deleteButton}
       onPress={() => handleDelete(item.notificationId)}
     >
-      <Text style={styles.deleteText}>Delete</Text>
+      <Image source={require('../../assets/Images/delete.png')} />
+      {/* <Text style={styles.deleteText}>Delete</Text> */}
     </TouchableOpacity>
   );
 
@@ -147,7 +168,6 @@ const styles = StyleSheet.create({
   desc: { fontSize: 13, color: '#555', marginVertical: 2 },
   date: { fontSize: 12, color: '#999' },
   deleteButton: {
-    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
     width: 80,

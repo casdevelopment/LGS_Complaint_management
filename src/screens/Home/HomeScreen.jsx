@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -18,16 +18,27 @@ import AdmissionCarousel from '../../components/Crousal/AdmissionCarousel';
 import HomeHeader from '../../components/HomeHeader';
 import { useSelector } from 'react-redux';
 import { complainDashboard, oicDashboard } from '../../Network/apis';
-
+import { getNotificationCount } from '../../Network/apis';
+import { useIsFocused } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation, route }) => {
   // const { role } = route.params || {};
   const [stats, setStat] = useState([]);
+  const [count, setCount] = useState('0');
+  console.log(count, 'mmmm');
   console.log(stats, 'yyyyy');
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => state.auth.user);
   const role = user?.role;
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('✅ HomeScreen tab is focused');
+      fetchNotificationCount();
+    }
+  }, [isFocused, user?.id, user?.role]);
 
   useEffect(() => {
     if (user?.role === 'parent') {
@@ -36,7 +47,10 @@ const HomeScreen = ({ navigation, route }) => {
       fetchOICStats();
     }
   }, []);
+
   useEffect(() => {
+    if (!isFocused) return; // only when Home is active
+
     const backAction = () => {
       Alert.alert(
         'Exit App',
@@ -47,7 +61,7 @@ const HomeScreen = ({ navigation, route }) => {
         ],
         { cancelable: true },
       );
-      return true; // prevent default back behavior
+      return true;
     };
 
     const backHandler = BackHandler.addEventListener(
@@ -55,8 +69,8 @@ const HomeScreen = ({ navigation, route }) => {
       backAction,
     );
 
-    return () => backHandler.remove();
-  }, []);
+    return () => backHandler.remove(); // cleanup when Home loses focus
+  }, [isFocused]);
 
   const fetchStats = async () => {
     try {
@@ -89,6 +103,22 @@ const HomeScreen = ({ navigation, route }) => {
       setLoading(false);
     }
   };
+  const fetchNotificationCount = async () => {
+    try {
+      const body = {
+        UserId: user?.id,
+        Role: user?.role,
+      };
+      const res = await getNotificationCount(body);
+      if (res?.messageCode === 200) {
+        setCount(res?.result || '0');
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -102,6 +132,7 @@ const HomeScreen = ({ navigation, route }) => {
         userName={user?.name}
         userClass={user?.campusclass}
         navigation={navigation}
+        count={count}
       />
 
       <View style={styles.announcementCard}>
@@ -313,7 +344,49 @@ const HomeScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View
+            <View style={styles.card}>
+              <TouchableOpacity
+                style={{ flexDirection: 'row' }}
+                onPress={() => navigation.navigate('ImplementedComplain')}
+              >
+                <Image
+                  source={require('../../assets/Images/good-feedBack.png')}
+                  style={{ marginRight: 10 }}
+                />
+                <View style={{ flexShrink: 1 }}>
+                  <Text
+                    style={styles.cardTitle}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    Implemented
+                  </Text>
+                  <Text style={styles.cardValue}>{stats?.implemented}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.card}>
+              <TouchableOpacity
+                style={{ flexDirection: 'row' }}
+                onPress={() => navigation.navigate('AcknowledgeComplain')}
+              >
+                <Image
+                  source={require('../../assets/Images/acknowledge.png')}
+                  style={{ marginRight: 10 }}
+                />
+                <View style={{ flexShrink: 1 }}>
+                  <Text
+                    style={styles.cardTitle}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    Acknowledged
+                  </Text>
+                  <Text style={styles.cardValue}>{stats?.acknowledged}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            {/* <View
               style={{
                 flexDirection: 'row',
                 marginHorizontal: 20,
@@ -357,7 +430,7 @@ const HomeScreen = ({ navigation, route }) => {
                   </View>
                 </View>
               </View>
-            </View>
+            </View> */}
 
             {/* Grid Stats */}
             {/* <View style={styles.grid}>
@@ -383,7 +456,7 @@ const HomeScreen = ({ navigation, route }) => {
                 source={require('../../assets/Images/angry-customer.png')}
                 style={{ marginRight: 10 }}
               />
-              <Text style={styles.newComplaintText}>New Complain</Text>
+              <Text style={styles.newComplaintText}>New Complaint</Text>
             </TouchableOpacity>
           </>
         )}

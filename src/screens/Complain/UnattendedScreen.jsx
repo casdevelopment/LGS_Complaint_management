@@ -1,7 +1,6 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { View, StyleSheet, FlatList, SafeAreaView, Text } from 'react-native';
 import Header from '../../components/Header';
-import ClosedCard from '../../components/Closed/CloasedCard';
 import HistoryModal from '../../components/Modals/HistoryModal';
 import ForwardModal from '../../components/Modals/ForwardModal';
 import { complainHistory } from '../../Network/apis';
@@ -60,7 +59,9 @@ const UnattendedScreen = () => {
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
-            rating={4}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
           />
@@ -73,7 +74,9 @@ const UnattendedScreen = () => {
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
-            rating={null}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
           />

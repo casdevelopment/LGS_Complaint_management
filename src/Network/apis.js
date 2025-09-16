@@ -243,6 +243,36 @@ export const getConplainCategories = async () => {
     throw error;
   }
 };
+export const getNotificationCount = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/notifications/unread-notification',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.log(
+      'Error fetching notification count :',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const deleteNotification = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/notifications/delete-notification',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error delete notification :',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
 export const getNotifications = async payload => {
   try {
     const response = await axiosInstance.post(

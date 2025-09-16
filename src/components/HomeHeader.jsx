@@ -10,6 +10,7 @@ const HomeHeader = ({
   navigation,
   userName = 'Ahmed Hassan',
   userClass = 'Class VII B',
+  count,
 }) => {
   return (
     <View style={styles.header}>
@@ -26,13 +27,16 @@ const HomeHeader = ({
       </View>
 
       {/* Notification */}
-      <TouchableOpacity style={styles.notification}>
+      <TouchableOpacity
+        style={styles.notification}
+        onPress={() => navigation.navigate('NotificationScreen')}
+      >
         <Image
           source={require('../assets/Images/mail.png')}
           style={styles.bellIcon}
         />
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>0</Text>
+          <Text style={styles.badgeText}>{count ?? 0}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -84,6 +88,7 @@ const styles = StyleSheet.create({
   bellIcon: {
     width: 20,
     height: 20,
+    marginRight: 2,
   },
   badge: {},
   badgeText: {
