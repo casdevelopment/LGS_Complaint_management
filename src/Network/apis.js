@@ -393,6 +393,21 @@ export const forwardComplaint = async payload => {
     throw error;
   }
 };
+export const dropComplaint = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/oic/drop-complaint',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Drop complain error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
 export const closeComplaint = async payload => {
   try {
     const response = await axiosInstance.post('/api/oic/agent-submit', payload);

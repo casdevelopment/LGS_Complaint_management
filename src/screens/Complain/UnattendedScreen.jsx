@@ -7,6 +7,7 @@ import { complainHistory } from '../../Network/apis';
 import { useSelector } from 'react-redux';
 import AdminHistoryCard from '../../components/History/AdminHistoryCard';
 import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
+import DropModal from '../../components/Modals/DropModal';
 
 const UnattendedScreen = () => {
   const [history, setHistory] = useState([]);
@@ -15,6 +16,7 @@ const UnattendedScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   console.log(history, 'state value');
   const filterModalRef = useRef(null);
+  const dropModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
@@ -49,6 +51,9 @@ const UnattendedScreen = () => {
       setRefreshing(false);
     }
   };
+  const openDropComplain = useCallback(id => {
+    dropModalRef.current?.openModal(id);
+  }, []);
   const renderItem = ({ item }) => {
     switch (user?.role) {
       case 'employee':
@@ -79,6 +84,7 @@ const UnattendedScreen = () => {
             complainStage={item?.complaintStageId}
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
+            onPressDropComplaint={() => openDropComplain(item?.complaintId)}
           />
         );
       default:
@@ -117,6 +123,7 @@ const UnattendedScreen = () => {
         complaintId={selectedComplaintId}
       />
       <ForwardModal ref={forwardModalRef} onDismiss={fetchHistory} />
+      <DropModal ref={dropModalRef} onDismiss={fetchHistory} />
     </SafeAreaView>
   );
 };

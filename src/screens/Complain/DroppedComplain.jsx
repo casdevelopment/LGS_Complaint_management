@@ -1,147 +1,124 @@
-import React, { useRef, useMemo, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  SafeAreaView,
-} from 'react-native';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
+import { View, StyleSheet, FlatList, SafeAreaView, Text } from 'react-native';
 import Header from '../../components/Header';
 import ClosedCard from '../../components/Closed/CloasedCard';
-
-const DATA = [
-  {
-    id: '58964-1',
-    date: '25 Dec 2025',
-    assignedTo: 'John Doe',
-    department: 'Marketing',
-    text: 'It is a long established fact that a reader ',
-    rating: 4,
-  },
-  {
-    id: '58964-2',
-    date: '25 Dec 2025',
-    assignedTo: 'Jane Smith',
-    department: 'Sales',
-    text: 'The point of using Lorem Ipsum is that ',
-    rating: 5,
-  },
-  {
-    id: '58964-3',
-    date: '24 Dec 2025',
-    assignedTo: 'Peter Jones',
-    department: 'Finance',
-    text: 'Many desktop publishing packages and',
-    rating: 3,
-  },
-];
+import HistoryModal from '../../components/Modals/HistoryModal';
+import ForwardModal from '../../components/Modals/ForwardModal';
+import { complainHistory } from '../../Network/apis';
+import { useSelector } from 'react-redux';
+import AdminHistoryCard from '../../components/History/AdminHistoryCard';
+import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
 
 const DroppedComplain = () => {
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ['60%', '90%'], []);
-  const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [selectedComplaintId, setSelectedComplaintId] = useState(null);
 
-  const openSummary = useCallback(complaint => {
-    setSelectedComplaint(complaint);
-    bottomSheetRef.current?.expand();
+  console.log(history, 'state value');
+  const filterModalRef = useRef(null);
+  const adminHistortModalRef = useRef(null);
+  const forwardModalRef = useRef(null);
+  const user = useSelector(state => state.auth.user);
+  const openComplaintSummary = useCallback(id => {
+    filterModalRef.current?.openModal(id);
+  }, []);
+  const openAdminComplaintSummary = useCallback(id => {
+    adminHistortModalRef.current?.openModal(id);
   }, []);
 
-  const handleSheetChanges = useCallback(index => {
-    console.log('handleSheetChanges', index);
+  useEffect(() => {
+    fetchHistory();
   }, []);
-
-  const renderBackdrop = useCallback(
-    props => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
-    ),
-    [],
-  );
+  const openForwardComplain = useCallback(id => {
+    forwardModalRef.current?.openModal(id);
+  }, []);
+  const fetchHistory = async () => {
+    try {
+      const body = {
+        UserId: user?.id,
+        Role: user?.role,
+        Status: 'dropped',
+      };
+      const res = await complainHistory(body, user?.role);
+      console.log(res, 'history');
+      if (res?.result === 'success') {
+        setHistory(res?.data || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const renderItem = ({ item }) => {
+    switch (user?.role) {
+      case 'parent':
+        return (
+          <ClosedCard
+            id={item?.complaintId}
+            date={item?.createdAt}
+            assignedTo={item.assignedTo}
+            department={item.department}
+            text={item.complaintSubject}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
+            onPressSummary={() => openComplaintSummary(item?.complaintId)}
+          />
+        );
+      case 'employee':
+        return (
+          <AdminHistoryCard
+            id={item?.complaintId}
+            date={item?.createdAt}
+            assignedTo={item.assignedTo}
+            department={item.department}
+            text={item.complaintSubject}
+            rating={4}
+            onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
+            onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
+          />
+        );
+      case 'oic':
+        return (
+          <AdminHistoryCard
+            id={item?.complaintId}
+            date={item?.createdAt}
+            assignedTo={item.assignedTo}
+            department={item.department}
+            text={item.complaintSubject}
+            rating={4}
+            onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
+            onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
+          />
+        );
+      default:
+        return <Text>Unknown role</Text>;
+    }
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Header title="Dropped" />
+    <SafeAreaView style={styles.container}>
+      <Header title="Dropped" />
 
-        <FlatList
-          data={[]}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <ClosedCard
-              id={item.id.split('-')[0]} // Assuming the ID is part of a larger unique key
-              date={item.date}
-              assignedTo={item.assignedTo}
-              department={item.department}
-              text={item.text}
-              rating={item.rating}
-            />
-          )}
-          ListEmptyComponent={() => (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>No complaints found</Text>
-            </View>
-          )}
-        />
-      </View>
+      <FlatList
+        data={history}
+        keyExtractor={item => item?.complaintId.toString()}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        renderItem={renderItem}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>No complaints found</Text>
+          </View>
+        )}
+      />
 
-      {/* Bottom Sheet */}
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1} // Start with sheet closed
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        backdropComponent={renderBackdrop}
-        enablePanDownToClose={true}
-      >
-        <View style={styles.sheetContent}>
-          {/* {selectedComplaint ? (
-            <>
-              <Text style={styles.sheetHeader}>Complaint Summary</Text>
-              <Text style={styles.sectionTitle}>Complaint</Text>
-              <Text style={styles.boldText}>{selectedComplaint.title}</Text>
-              <Text style={styles.paragraph}>
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking at its layout.
-              </Text>
-              <Text style={styles.sectionTitle}>Track Record</Text>
-              <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
-              <Text style={styles.boldText}>
-                It is a long established fact that a reader will be
-              </Text>
-              <View style={styles.trackItem}>
-                <Text style={styles.boldText}>OIC/Admin → Fazil Khan</Text>
-                <Text style={styles.timelineDate}>25 Dec 2025 09:10 AM</Text>
-                <Text style={styles.paragraph}>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking.
-                </Text>
-              </View>
-              <Text style={styles.sectionTitle}>Closing Remarks</Text>
-              <Text style={styles.row}>
-                <Text style={styles.boldText}>Closed By: </Text> Fazil Khan
-              </Text>
-              <Text style={styles.row}>
-                <Text style={styles.boldText}>Closed Date: </Text> 25 Dec 2025
-                09:10 AM
-              </Text>
-              <Text style={styles.boldText}>Remarks</Text>
-              <Text style={styles.paragraph}>
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking.
-              </Text>
-            </>
-          ) : (
-            <Text style={styles.paragraph}>
-              Select a complaint to view summary
-            </Text>
-          )} */}
-        </View>
-      </BottomSheet>
+      <HistoryModal ref={filterModalRef} complaintId={selectedComplaintId} />
+      <AdminHistoryModal
+        ref={adminHistortModalRef}
+        onOpenForwardModal={id => forwardModalRef.current?.openModal(id)}
+        complaintId={selectedComplaintId}
+      />
+      <ForwardModal ref={forwardModalRef} />
     </SafeAreaView>
   );
 };
@@ -150,52 +127,6 @@ export default DroppedComplain;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  header: {
-    fontSize: 22,
-    fontWeight: '700',
-    textAlign: 'center',
-    marginVertical: 20,
-    color: '#0A2342',
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 15,
-    elevation: 2,
-    marginHorizontal: 20,
-  },
-  complaintId: { fontSize: 12, color: '#888', marginBottom: 5 },
-  complaintTitle: { fontSize: 15, fontWeight: '600', marginBottom: 8 },
-  assigned: { fontSize: 13, marginBottom: 8 },
-  bold: { fontWeight: '600' },
-  link: { fontSize: 14, fontWeight: '600', color: '#0A2342' },
-  sheetContent: { flex: 1, padding: 16 },
-  sheetHeader: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 12,
-    textAlign: 'center',
-    color: '#0A2342',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginTop: 20,
-    marginBottom: 8,
-  },
-  boldText: { fontSize: 14, fontWeight: '600', marginBottom: 6 },
-  paragraph: { fontSize: 13, color: '#444', marginBottom: 10, lineHeight: 20 },
-  trackItem: {
-    marginVertical: 10,
-    padding: 10,
-    borderLeftWidth: 3,
-    borderColor: '#0A2342',
-    backgroundColor: '#f8f8f8',
-    borderRadius: 6,
-  },
-  timelineDate: { fontSize: 12, color: '#777', marginBottom: 4 },
-  row: { fontSize: 13, marginBottom: 4 },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',

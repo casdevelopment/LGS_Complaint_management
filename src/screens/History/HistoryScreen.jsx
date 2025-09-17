@@ -1,5 +1,13 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, SafeAreaView, Text } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import Header from '../../components/Header';
 import ClosedCard from '../../components/Closed/CloasedCard';
 import HistoryModal from '../../components/Modals/HistoryModal';
@@ -8,43 +16,27 @@ import { complainHistory } from '../../Network/apis';
 import { useSelector } from 'react-redux';
 import AdminHistoryCard from '../../components/History/AdminHistoryCard';
 import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
+import { COLORS } from '../../utils/colors';
+import DropModal from '../../components/Modals/DropModal';
 
-const DATA = [
-  {
-    id: '58964-1',
-    date: '25 Dec 2025',
-    assignedTo: 'John Doe',
-    department: 'Marketing',
-    text: 'It is a long established fact that a reader ',
-    rating: 4,
-  },
-  {
-    id: '58964-2',
-    date: '25 Dec 2025',
-    assignedTo: 'Jane Smith',
-    department: 'Sales',
-    text: 'The point of using Lorem Ipsum is that ',
-    rating: 5,
-  },
-  {
-    id: '58964-3',
-    date: '24 Dec 2025',
-    assignedTo: 'Peter Jones',
-    department: 'Finance',
-    text: 'Many desktop publishing packages and',
-    rating: 3,
-  },
+const FILTERS = [
+  { label: 'All', value: '' },
+  { label: 'Closed', value: 'closed' },
+  { label: 'Processing', value: 'attended' },
+  { label: 'Un Attended', value: 'un attended' },
 ];
 
 const HistoryScreen = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
-  const [loading, setLoading] = useState(false); // 👈 add loading state for refresh
+  const [loading, setLoading] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   console.log(history, 'state value');
   const filterModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
+  const dropModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
   const openComplaintSummary = useCallback(id => {
     filterModalRef.current?.openModal(id);
@@ -55,21 +47,26 @@ const HistoryScreen = () => {
 
   useEffect(() => {
     fetchHistory();
-  }, []);
+  }, [activeFilter, user?.role]);
   const openForwardComplain = useCallback(id => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
+  const openDropComplain = useCallback(id => {
+    dropModalRef.current?.openModal(id);
+  }, []);
   const fetchHistory = async () => {
     try {
+      setLoading(true);
       const body = {
         UserId: user?.id,
         Role: user?.role,
-        Status: '',
+        Status: user?.role === 'parent' ? '' : activeFilter, // 👈 parent always empty
       };
       const res = await complainHistory(body, user?.role);
-      console.log(res, 'history');
       if (res?.result === 'success') {
         setHistory(res?.data || []);
+      } else {
+        setHistory([]);
       }
     } catch (err) {
       console.error(err);
@@ -122,6 +119,7 @@ const HistoryScreen = () => {
             complainStage={item?.complaintStageId}
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
+            onPressDropComplaint={() => openDropComplain(item?.complaintId)}
           />
         );
       default:
@@ -131,11 +129,39 @@ const HistoryScreen = () => {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchHistory();
-  }, []);
+  }, [activeFilter, user?.role]);
 
   return (
     <SafeAreaView style={styles.container}>
       <Header title="History" />
+      {/* 👇 Filters only for non-parent roles */}
+      {user?.role !== 'parent' && (
+        <View style={styles.filterContainer}>
+          <Image
+            source={require('../../assets/Images/sort.png')}
+            style={{ marginRight: 5 }}
+          />
+          {FILTERS.map(f => (
+            <TouchableOpacity
+              key={f.value}
+              style={[
+                styles.filterButton,
+                activeFilter === f.value && styles.activeFilter,
+              ]}
+              onPress={() => setActiveFilter(f.value)}
+            >
+              <Text
+                style={[
+                  styles.filterText,
+                  activeFilter === f.value && styles.activeFilterText,
+                ]}
+              >
+                {f.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
 
       <FlatList
         data={history}
@@ -163,6 +189,7 @@ const HistoryScreen = () => {
         onDismiss={fetchHistory}
       />
       <ForwardModal ref={forwardModalRef} onDismiss={fetchHistory} />
+      <DropModal ref={dropModalRef} onDismiss={fetchHistory} />
     </SafeAreaView>
   );
 };
@@ -171,10 +198,35 @@ export default HistoryScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
+  filterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
+    paddingHorizontal: 20,
+  },
+  filterButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginHorizontal: 1,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+  },
+  filterText: {
+    color: COLORS.primary,
+    fontSize: 14,
+    fontFamily: 'Asap-Medium',
+  },
+  activeFilter: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  activeFilterText: { color: '#fff', fontFamily: 'Asap-Medium' },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 20,
   },
   emptyText: {
     fontSize: 16,

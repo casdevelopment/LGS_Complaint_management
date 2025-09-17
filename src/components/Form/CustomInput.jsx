@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: hp('2.2%'),
     fontSize: 14,
+    color: 'black',
   },
   eyeButton: { padding: 5 },
   eyeIcon: { width: 20, height: 20, tintColor: '#CED1D7' },

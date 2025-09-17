@@ -1,19 +1,31 @@
 import React, { useEffect } from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
 const Splash = ({ navigation }) => {
   useEffect(() => {
-    // Set a timer to navigate after 3 seconds
-    const timer = setTimeout(() => {
-      // Replace 'Onboarding' with your actual onboarding screen name
-      navigation.navigate('Onboarding');
-    }, 2000);
+    const checkOnboarding = async () => {
+      try {
+        const hasSeenOnboarding = await AsyncStorage.getItem(
+          'hasSeenOnboarding',
+        );
+        setTimeout(() => {
+          if (hasSeenOnboarding === null) {
+            navigation.replace('Onboarding'); // first time → show onboarding
+          } else {
+            navigation.replace('Login'); // already seen → go to login
+          }
+        }, 2000); // keep your splash delay
+      } catch (e) {
+        console.log('Error checking onboarding:', e);
+        navigation.replace('Login');
+      }
+    };
 
-    // Clean up the timer if the component unmounts
-    return () => clearTimeout(timer);
+    checkOnboarding();
   }, [navigation]);
   return (
     <View style={styles.container}>

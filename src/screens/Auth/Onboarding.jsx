@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import ImagesSection from '../../components/Onboarding/ImagesSection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -43,15 +44,17 @@ const Onboarding = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef(null);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentIndex < slides.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      navigation.replace('Login'); // move to login after last screen
+      await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+      navigation.replace('Login'); // after last screen
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
+    await AsyncStorage.setItem('hasSeenOnboarding', 'true');
     navigation.replace('Login');
   };
 

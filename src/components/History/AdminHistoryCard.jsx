@@ -14,6 +14,7 @@ const AdminHistoryCard = ({
   complainStage,
   onPressSummary,
   onPressAssignAgent,
+  onPressDropComplaint,
 }) => {
   const renderStars = rating =>
     Array.from({ length: 5 }, (_, i) => (
@@ -87,6 +88,26 @@ const AdminHistoryCard = ({
       </View>
       <View style={styles.footer}>
         {assignedTo && assignedTo.trim() !== '' ? (
+          <>
+            <TouchableOpacity onPress={onPressSummary}>
+              <Text style={styles.viewSummaryText}>View Summary</Text>
+            </TouchableOpacity>
+            <View style={styles.starsContainer}>{renderStars(rating)}</View>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity onPress={onPressAssignAgent}>
+              <Text style={styles.assignAgentText}>Assign Agent</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onPressDropComplaint}>
+              <Text style={styles.dropComplaintText}>Drop Complaint</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+
+      {/* <View style={styles.footer}>
+        {assignedTo && assignedTo.trim() !== '' ? (
           <TouchableOpacity onPress={onPressSummary}>
             <Text style={styles.viewSummaryText}>View Summary</Text>
           </TouchableOpacity>
@@ -98,7 +119,7 @@ const AdminHistoryCard = ({
         {assignedTo && assignedTo.trim() !== '' && (
           <View style={styles.starsContainer}>{renderStars(rating)}</View>
         )}
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -202,6 +223,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textDecorationLine: 'underline',
     textDecorationColor: '#5175B2',
+  },
+  dropComplaintText: {
+    color: 'red',
+    fontFamily: 'Asap-Medium',
+    fontSize: 12,
+    textDecorationLine: 'underline',
+    textDecorationColor: 'red',
   },
 });
 

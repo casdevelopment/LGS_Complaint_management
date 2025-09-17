@@ -17,9 +17,16 @@ import { forgotPassword } from '../../Network/apis';
 import CustomInput from '../../components/Form/CustomInput';
 import Loader from '../../components/Loader/Loader';
 
-const ForgotPassword = ({ navigation }) => {
+const ForgotPassword = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
+  const from = route?.params?.from || 'forgotPassword';
 
+  const title =
+    from === 'unverified' ? 'Verify Your Account' : 'Forgot Password';
+  const subtitle =
+    from === 'unverified'
+      ? 'Your account is registered but not verified. Please verify your email to activate your account.'
+      : 'Oops. It happens to the best of us. Enter your email address to reset your password';
   // ✅ Validation schema
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
@@ -43,11 +50,19 @@ const ForgotPassword = ({ navigation }) => {
           [
             {
               text: 'OK',
-              onPress: () =>
-                navigation.navigate('OTPVerification', {
-                  from: 'forgotPassword',
-                  email: values.email,
-                }),
+              onPress: () => {
+                if (from === 'forgotPassword') {
+                  navigation.navigate('OTPVerification', {
+                    from: 'forgotPassword',
+                    email: values.email,
+                  });
+                } else {
+                  navigation.navigate('OTPVerification', {
+                    from: 'signup',
+                    email: values.email,
+                  });
+                }
+              },
             },
           ],
           { cancelable: false },
@@ -85,11 +100,8 @@ const ForgotPassword = ({ navigation }) => {
           />
 
           {/* Title */}
-          <Text style={styles.title}>Forgot Password</Text>
-          <Text style={styles.subtitle}>
-            Oops. It happens to the best of us. Enter your email address to
-            reset your password
-          </Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
 
           {/* Formik */}
           <Formik
