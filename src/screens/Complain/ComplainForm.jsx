@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
   },
   topLeft: {
     position: 'absolute',
-    top: 30,
+    top: 45,
     left: 25,
   },
   title: {

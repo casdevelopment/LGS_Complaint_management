@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   Image,
   FlatList,
   ActivityIndicator,
@@ -14,6 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { getConplainCategories } from '../../Network/apis';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CategoryScreen({ navigation }) {
   const [categories, setCategories] = useState([]);
@@ -48,51 +48,53 @@ export default function CategoryScreen({ navigation }) {
     </TouchableOpacity>
   );
   return (
-    <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity
-        style={styles.topLeft}
-        onPress={() => navigation.goBack()}
-      >
+    <SafeAreaView style={{ flex: 1 }} edges={['left', 'right', 'bottom']}>
+      <View style={styles.container}>
+        {/* Back Button */}
+        <TouchableOpacity
+          style={styles.topLeft}
+          onPress={() => navigation.goBack()}
+        >
+          <Image
+            source={require('../../assets/Images/turn-back.png')}
+            resizeMode="stretch"
+          />
+        </TouchableOpacity>
+
         <Image
-          source={require('../../assets/Images/turn-back.png')}
+          source={require('../../assets/Images/topRightDarkCurve.png')}
+          style={styles.topRight}
           resizeMode="stretch"
         />
-      </TouchableOpacity>
 
-      <Image
-        source={require('../../assets/Images/topRightDarkCurve.png')}
-        style={styles.topRight}
-        resizeMode="stretch"
-      />
+        {/* Title */}
+        <Text style={styles.title}>Complaint Form</Text>
+        <Text style={styles.subtitle}>Select Category</Text>
 
-      {/* Title */}
-      <Text style={styles.title}>Complaint Form</Text>
-      <Text style={styles.subtitle}>Select Category</Text>
-
-      {/* Loader */}
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color="#07294D"
-          style={{ marginTop: hp('10%') }}
-        />
-      ) : (
-        <FlatList
-          data={categories}
-          renderItem={renderItem}
-          keyExtractor={item => item.complainCategoryId.toString()}
-          numColumns={2}
-          columnWrapperStyle={{ justifyContent: 'space-between' }}
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
-      )}
-    </View>
+        {/* Loader */}
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color="#07294D"
+            style={{ marginTop: hp('10%') }}
+          />
+        ) : (
+          <FlatList
+            data={categories}
+            renderItem={renderItem}
+            keyExtractor={item => item.complainCategoryId.toString()}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: 'space-between' }}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //  flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingTop: hp('13%'),
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
   },
   topLeft: {
     position: 'absolute',
-    top: 30,
+    top: 45,
     left: 25,
   },
   title: {
