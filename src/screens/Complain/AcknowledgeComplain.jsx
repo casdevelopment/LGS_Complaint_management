@@ -3,18 +3,16 @@ import { View, StyleSheet, FlatList, SafeAreaView, Text } from 'react-native';
 import Header from '../../components/Header';
 import ClosedCard from '../../components/Closed/CloasedCard';
 import HistoryModal from '../../components/Modals/HistoryModal';
-import ForwardModal from '../../components/Modals/ForwardModal';
 import { complainHistory } from '../../Network/apis';
 import { useSelector } from 'react-redux';
+import Loader from '../../components/Loader/Loader';
 
 const AcknowledgeComplain = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
-
-  console.log(history, 'state value');
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const filterModalRef = useRef(null);
-  const adminHistortModalRef = useRef(null);
-  const forwardModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
   const openComplaintSummary = useCallback(id => {
     filterModalRef.current?.openModal(id);
@@ -25,13 +23,13 @@ const AcknowledgeComplain = () => {
   }, []);
 
   const fetchHistory = async () => {
+    setLoading(true);
     try {
       const body = {
         UserId: user?.id,
         Status: 'acknowledged',
       };
       const res = await complainHistory(body, user?.role);
-      console.log(res, 'history');
       if (res?.result === 'success') {
         setHistory(res?.data || []);
       }
@@ -39,6 +37,7 @@ const AcknowledgeComplain = () => {
       console.error(err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
   const renderItem = ({ item }) => {
@@ -61,6 +60,10 @@ const AcknowledgeComplain = () => {
         return <Text>Unknown role</Text>;
     }
   };
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchHistory();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,6 +74,8 @@ const AcknowledgeComplain = () => {
         keyExtractor={item => item?.complaintId.toString()}
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={renderItem}
+        refreshing={refreshing} // 👈 enable pull-to-refresh
+        onRefresh={onRefresh}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>
@@ -81,6 +86,7 @@ const AcknowledgeComplain = () => {
       />
 
       <HistoryModal ref={filterModalRef} complaintId={selectedComplaintId} />
+      {loading && <Loader />}
     </SafeAreaView>
   );
 };

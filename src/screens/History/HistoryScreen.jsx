@@ -18,7 +18,7 @@ import AdminHistoryCard from '../../components/History/AdminHistoryCard';
 import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
 import { COLORS } from '../../utils/colors';
 import DropModal from '../../components/Modals/DropModal';
-
+import Loader from '../../components/Loader/Loader';
 const FILTERS = [
   { label: 'All', value: '' },
   { label: 'Closed', value: 'closed' },
@@ -190,6 +190,7 @@ const HistoryScreen = () => {
       />
       <ForwardModal ref={forwardModalRef} onDismiss={fetchHistory} />
       <DropModal ref={dropModalRef} onDismiss={fetchHistory} />
+      {loading && <Loader />}
     </SafeAreaView>
   );
 };

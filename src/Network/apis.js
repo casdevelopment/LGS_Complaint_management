@@ -139,6 +139,24 @@ export const verifySignupOTP = async payload => {
     throw error;
   }
 };
+export const resendOTP = async payload => {
+  try {
+    const response = await axios.post(
+      `${Server}/api/auth/resend-otp`, // 👈 use correct endpoint
+      payload,
+      {
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response?.data;
+  } catch (error) {
+    console.error('Resend OTP error:', error.response?.data || error.message);
+    throw error;
+  }
+};
 export const verifyForgotOtp = async payload => {
   try {
     const response = await axios.post(

@@ -7,13 +7,13 @@ import { complainHistory } from '../../Network/apis';
 import { useSelector } from 'react-redux';
 import AdminHistoryCard from '../../components/History/AdminHistoryCard';
 import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
+import Loader from '../../components/Loader/Loader';
 
 const AttendedScreen = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false); // 👈 add loading state for refresh
   const [refreshing, setRefreshing] = useState(false);
-  console.log(history, 'state value');
   const filterModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
@@ -30,7 +30,7 @@ const AttendedScreen = () => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
   const fetchHistory = async () => {
-    console.log('======Amir=======');
+    setLoading(true);
     try {
       const body = {
         UserId: user?.id,
@@ -38,7 +38,7 @@ const AttendedScreen = () => {
         Status: 'attended',
       };
       const res = await complainHistory(body, user?.role);
-      console.log(res, 'history');
+
       if (res?.result === 'success') {
         setHistory(res?.data || []);
       }
@@ -116,6 +116,7 @@ const AttendedScreen = () => {
         onDismiss={fetchHistory}
       />
       <ForwardModal ref={forwardModalRef} onDismiss={fetchHistory} />
+      {loading && <Loader />}
     </SafeAreaView>
   );
 };

@@ -21,6 +21,7 @@ import Timer from '../../components/Timer/TimerSection';
 import DigitInput from '../../components/Form/DigitInput';
 import Loader from '../../components/Loader/Loader';
 import { verifySignupOTP, verifyForgotOtp } from '../../Network/apis';
+import { resendOTP } from '../../Network/apis';
 
 const { width, height } = Dimensions.get('window');
 
@@ -101,6 +102,34 @@ const OTPVerification = ({ navigation, route }) => {
       setLoading(false);
     }
   };
+  const handleResendOtp = async () => {
+    try {
+      setLoading(true);
+
+      let res;
+      if (from === 'signup') {
+        res = await resendOTP({ email, IsForgetPassword: false });
+      } else if (from === 'forgotPassword') {
+        res = await resendOTP({ email, IsForgetPassword: true });
+      }
+
+      if (res?.messageCode === 200) {
+        Alert.alert('Success', res?.message || 'OTP resent successfully!');
+        setReset(prev => !prev); // 🔹 Reset DigitInput if needed
+      } else {
+        Alert.alert('Error', res?.message || 'Failed to resend OTP.');
+      }
+    } catch (error) {
+      console.error('Resend OTP failed:', error?.response?.data || error);
+      Alert.alert(
+        'Error',
+        error?.response?.data?.message ||
+          'Something went wrong. Please try again.',
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -131,7 +160,7 @@ const OTPVerification = ({ navigation, route }) => {
           <Timer
             initialSeconds={60}
             onTimerEnd={() => console.log('LEGS')}
-            onResend={() => console.log('LEGS')}
+            onResend={handleResendOtp}
           />
 
           {/* Login button */}

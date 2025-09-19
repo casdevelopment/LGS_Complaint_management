@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import AdminHistoryCard from '../../components/History/AdminHistoryCard';
 import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
 import DropModal from '../../components/Modals/DropModal';
+import Loader from '../../components/Loader/Loader';
 
 const UnattendedScreen = () => {
   const [history, setHistory] = useState([]);
@@ -32,7 +33,8 @@ const UnattendedScreen = () => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
   const fetchHistory = async () => {
-    console.log('====Ali=====');
+    setLoading(true);
+
     try {
       const body = {
         UserId: user?.id,
@@ -40,7 +42,6 @@ const UnattendedScreen = () => {
         Status: 'un attended',
       };
       const res = await complainHistory(body, user?.role);
-      console.log(res, 'history');
       if (res?.result === 'success') {
         setHistory(res?.data || []);
       }
@@ -124,6 +125,7 @@ const UnattendedScreen = () => {
       />
       <ForwardModal ref={forwardModalRef} onDismiss={fetchHistory} />
       <DropModal ref={dropModalRef} onDismiss={fetchHistory} />
+      {loading && <Loader />}
     </SafeAreaView>
   );
 };
