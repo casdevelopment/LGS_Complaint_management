@@ -12,6 +12,7 @@ import {
   Alert,
   Platform,
   PermissionsAndroid,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -24,6 +25,10 @@ import { useSelector } from 'react-redux';
 import { launchComplaint } from '../../Network/apis';
 import Loader from '../../components/Loader/Loader';
 import Geolocation from '@react-native-community/geolocation';
+import { pick, keepLocalCopy } from '@react-native-documents/picker';
+import RNFS from 'react-native-fs';
+import { launchCamera } from 'react-native-image-picker';
+import AudioRecord from 'react-native-audio-record';
 
 export default function ComplainForm({ navigation, route }) {
   const user = useSelector(state => state.auth.user);
@@ -37,7 +42,123 @@ export default function ComplainForm({ navigation, route }) {
   const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
+  const [files, setFiles] = useState([]);
+  const [isRecording, setIsRecording] = useState(false);
   console.log(coords, 'coords');
+  const requestPermissions = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const grants = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        ]);
+
+        return Object.values(grants).every(
+          status => status === PermissionsAndroid.RESULTS.GRANTED,
+        );
+      } catch (err) {
+        console.warn('Permission request error:', err);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // ✅ File size check (max 500KB)
+  const checkFileSize = async uri => {
+    try {
+      const stat = await RNFS.stat(uri.replace('file://', ''));
+      return stat.size <= 500 * 1024;
+    } catch {
+      return false;
+    }
+  };
+
+  // 📂 Pick any document
+  const handleDocumentPick = async () => {
+    if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
+    const hasPerm = await requestPermissions();
+    if (!hasPerm) return;
+
+    try {
+      const [file] = await pick({ types: ['*/*'] });
+      if (file) {
+        // const valid = await checkFileSize(file.uri);
+        // if (!valid) return Alert.alert('File too large', 'Max 500KB');
+
+        setFiles(prev => [...prev, file]);
+
+        await keepLocalCopy({
+          files: [{ uri: file.uri, fileName: file.name }],
+          destination: 'documentDirectory',
+        });
+      }
+    } catch (err) {
+      console.log('Doc pick error:', err);
+    }
+  };
+
+  // 📸 Capture photo
+  const captureImage = async () => {
+    if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
+    const res = await launchCamera({ mediaType: 'photo' });
+    if (!res.didCancel && res.assets?.length) {
+      const file = res.assets[0];
+      // const valid = await checkFileSize(file.uri);
+      // if (!valid) return Alert.alert('File too large', 'Max 500KB');
+      setFiles(prev => [...prev, file]);
+    }
+  };
+
+  // 🎥 Capture video
+  const captureVideo = async () => {
+    if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
+    const res = await launchCamera({ mediaType: 'video' });
+    if (!res.didCancel && res.assets?.length) {
+      const file = res.assets[0];
+      // const valid = await checkFileSize(file.uri);
+      // if (!valid) return Alert.alert('File too large', 'Max 500KB');
+      setFiles(prev => [...prev, file]);
+    }
+  };
+
+  // 🎤 Audio recording
+  const startRecording = async () => {
+    if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
+    const hasPerm = await requestPermissions();
+    if (!hasPerm) return;
+
+    AudioRecord.init({
+      sampleRate: 16000,
+      channels: 1,
+      bitsPerSample: 16,
+      wavFile: `audio_${Date.now()}.wav`,
+    });
+
+    AudioRecord.start();
+    setIsRecording(true);
+  };
+
+  const stopRecording = async () => {
+    const audioFilePath = await AudioRecord.stop();
+    setIsRecording(false);
+
+    const valid = await checkFileSize(`file://${audioFilePath}`);
+    if (!valid) {
+      RNFS.unlink(audioFilePath);
+      return Alert.alert('File too large', 'Max 500KB');
+    }
+
+    setFiles(prev => [
+      ...prev,
+      {
+        uri: `file://${audioFilePath}`,
+        type: 'audio/wav',
+        name: `audio_${Date.now()}.wav`,
+      },
+    ]);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -146,11 +267,18 @@ export default function ComplainForm({ navigation, route }) {
     formData.append('Description', description);
     formData.append('UserId', user.id);
     // 🔹 Add images as file1, file2, ...
-    images.forEach((img, index) => {
+    // images.forEach((img, index) => {
+    //   formData.append(`file${index + 1}`, {
+    //     uri: img.uri,
+    //     type: img.type || 'image/jpeg',
+    //     name: img.fileName || `complain_${index + 1}.jpg`,
+    //   });
+    // });
+    files.forEach((file, index) => {
       formData.append(`file${index + 1}`, {
-        uri: img.uri,
-        type: img.type || 'image/jpeg',
-        name: img.fileName || `complain_${index + 1}.jpg`,
+        uri: file.uri,
+        type: file.type || 'application/octet-stream',
+        name: file.name || `file_${index + 1}`,
       });
     });
 
@@ -244,9 +372,71 @@ export default function ComplainForm({ navigation, route }) {
             value={description}
             onChangeText={text => setDescription(text)}
           />
+          {/* Upload Options */}
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              marginVertical: 10,
+            }}
+          >
+            <TouchableOpacity onPress={handleDocumentPick} style={styles.btn}>
+              <Text>📂 File</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={captureImage} style={styles.btn}>
+              <Text>📸 Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={captureVideo} style={styles.btn}>
+              <Text>🎥 Video</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPressIn={startRecording}
+              onPressOut={stopRecording}
+              style={styles.btn}
+            >
+              <Text>{isRecording ? '🔴 Recording...' : '🎤 Record'}</Text>
+            </TouchableOpacity>
+          </View>
 
-          {/* Image Upload Row */}
-          <View style={styles.imageRow}>
+          {/* Files Preview */}
+          {/* Files Preview */}
+          <FlatList
+            horizontal
+            data={files}
+            keyExtractor={(item, i) => i.toString()}
+            contentContainerStyle={{ paddingVertical: 10 }}
+            renderItem={({ item, index }) => (
+              <View style={styles.fileWrapper}>
+                {/* Preview depending on file type */}
+                {item.type?.startsWith('image/') ? (
+                  <Image source={{ uri: item.uri }} style={styles.fileImage} />
+                ) : item.type?.startsWith('video/') ? (
+                  <Text style={styles.fileEmoji}>🎥</Text>
+                ) : item.type?.startsWith('audio/') ? (
+                  <Text style={styles.fileEmoji}>🎧</Text>
+                ) : (
+                  <Text style={styles.fileEmoji}>📄</Text>
+                )}
+
+                {/* File name */}
+                <Text numberOfLines={1} style={styles.fileName}>
+                  {item.name || 'file'}
+                </Text>
+
+                {/* ❌ Remove button */}
+                <TouchableOpacity
+                  style={styles.removeFileBtn}
+                  onPress={() =>
+                    setFiles(prev => prev.filter((_, i) => i !== index))
+                  }
+                >
+                  <Text style={styles.removeFileText}>×</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+
+          {/* <View style={styles.imageRow}>
             {images.map((img, i) => (
               <View key={i} style={styles.imageWrapper}>
                 <Image source={{ uri: img.uri }} style={styles.previewImage} />
@@ -267,7 +457,7 @@ export default function ComplainForm({ navigation, route }) {
                 <Text style={styles.addLabel}>Add</Text>
               </TouchableOpacity>
             )}
-          </View>
+          </View> */}
           {/* <View style={styles.imageRow}>
             {[1, 2, 3, 4, 5].map(i => (
               <TouchableOpacity key={i} style={styles.imageBox}>
@@ -490,5 +680,64 @@ const styles = StyleSheet.create({
   addLabel: {
     fontSize: 12,
     color: '#666',
+  },
+  btn: {
+    margin: 5,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+  },
+  fileWrapper: {
+    width: 70,
+    height: 90,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f9f9f9',
+    position: 'relative',
+    padding: 5,
+  },
+
+  fileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 6,
+    marginBottom: 5,
+  },
+
+  fileEmoji: {
+    fontSize: 28,
+    marginBottom: 5,
+  },
+
+  fileName: {
+    fontSize: 10,
+    color: '#333',
+    textAlign: 'center',
+    width: '100%',
+  },
+
+  removeFileBtn: {
+    position: 'absolute',
+    top: -6,
+    right: -6,
+    backgroundColor: '#ff4444',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,
+  },
+
+  removeFileText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    lineHeight: 14,
   },
 });

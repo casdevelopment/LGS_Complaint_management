@@ -26,8 +26,6 @@ const HomeScreen = ({ navigation, route }) => {
   // const { role } = route.params || {};
   const [stats, setStat] = useState([]);
   const [count, setCount] = useState('0');
-  console.log(count, 'mmmm');
-  console.log(stats, 'yyyyy');
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => state.auth.user);
   const role = user?.role;
@@ -386,68 +384,7 @@ const HomeScreen = ({ navigation, route }) => {
                 </View>
               </TouchableOpacity>
             </View>
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                marginHorizontal: 20,
-                justifyContent: 'space-between',
-              }}
-            >
-              <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Image
-                    source={require('../../assets/Images/good-feedBack.png')}
-                    style={{ marginRight: 10 }}
-                  />
-                  <View style={{ flexShrink: 1 }}>
-                    <Text
-                      style={styles.cardTitle}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      Implemented
-                    </Text>
-                    <Text style={styles.cardValue}>{stats?.implemented}</Text>
-                  </View>
-                </View>
-              </View>
 
-              <View style={[styles.card2, { flex: 1, marginLeft: 10 }]}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Image
-                    source={require('../../assets/Images/acknowledge.png')}
-                    style={{ marginRight: 10 }}
-                  />
-                  <View style={{ flexShrink: 1 }}>
-                    <Text
-                      style={styles.cardTitle}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      Acknowledged
-                    </Text>
-                    <Text style={styles.cardValue}>{stats?.acknowledged}</Text>
-                  </View>
-                </View>
-              </View>
-            </View> */}
-
-            {/* Grid Stats */}
-            {/* <View style={styles.grid}>
-          {[
-            { title: 'Closed', value: 15 },
-            { title: 'Dropped', value: 2 },
-            { title: 'Implemented', value: 15 },
-            { title: 'Acknowledged', value: 2 },
-          ].map((item, index) => (
-            <View key={index} style={styles.gridItem}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardValue}>{item.value}</Text>
-            </View>
-          ))}
-        </View> */}
-
-            {/* New Complaint Button */}
             <TouchableOpacity
               onPress={() => navigation.navigate('CategoryScreen')}
               style={styles.newComplaintBtn}
