@@ -41,43 +41,43 @@ const Signup = ({ navigation, route }) => {
   const [classLoading, setClassLoading] = useState(false);
   const [signupLoading, setSignupLoading] = useState(false);
   // Fetch campus list on mount
-  useEffect(() => {
-    const fetchCampuses = async () => {
-      setCampusLoading(true); // 👈 show loader
-      try {
-        const res = await getAllCampus();
-        const formatted = res?.data?.map(item => ({
-          label: item.school, // 👈 depends on API response key
-          value: item.schoolId,
-        }));
-        setCampusData(formatted || []);
-      } catch (err) {
-        console.error('Error loading campuses:', err);
-      } finally {
-        setCampusLoading(false); // 👈 hide loader
-      }
-    };
-    fetchCampuses();
-  }, []);
-  const handleCampusChange = async (campusId, setFieldValue) => {
-    setFieldValue('campus', campusId);
-    setFieldValue('classValue', ''); // reset class
-    setClassData([]); // reset old class list
+  // useEffect(() => {
+  //   const fetchCampuses = async () => {
+  //     setCampusLoading(true); // 👈 show loader
+  //     try {
+  //       const res = await getAllCampus();
+  //       const formatted = res?.data?.map(item => ({
+  //         label: item.school, // 👈 depends on API response key
+  //         value: item.schoolId,
+  //       }));
+  //       setCampusData(formatted || []);
+  //     } catch (err) {
+  //       console.error('Error loading campuses:', err);
+  //     } finally {
+  //       setCampusLoading(false); // 👈 hide loader
+  //     }
+  //   };
+  //   fetchCampuses();
+  // }, []);
+  // const handleCampusChange = async (campusId, setFieldValue) => {
+  //   setFieldValue('campus', campusId);
+  //   setFieldValue('classValue', ''); // reset class
+  //   setClassData([]); // reset old class list
 
-    try {
-      setClassLoading(true); // 👈 specific state for dropdown
-      const res = await getAllClasses(campusId);
-      const formatted = res?.data?.map(item => ({
-        label: item.class, // 👈 depends on API response key
-        value: item.classId,
-      }));
-      setClassData(formatted || []);
-    } catch (err) {
-      console.error('Error loading classes:', err);
-    } finally {
-      setClassLoading(false);
-    }
-  };
+  //   try {
+  //     setClassLoading(true); // 👈 specific state for dropdown
+  //     const res = await getAllClasses(campusId);
+  //     const formatted = res?.data?.map(item => ({
+  //       label: item.class, // 👈 depends on API response key
+  //       value: item.classId,
+  //     }));
+  //     setClassData(formatted || []);
+  //   } catch (err) {
+  //     console.error('Error loading classes:', err);
+  //   } finally {
+  //     setClassLoading(false);
+  //   }
+  // };
 
   // Pick image with base64
   const selectImage = setFieldValue => {
@@ -266,7 +266,7 @@ const Signup = ({ navigation, route }) => {
                   showToggle
                 />
 
-                {role?.toLowerCase() === 'parent' && (
+                {/* {role?.toLowerCase() === 'parent' && (
                   <>
                     <CustomDropdown
                       data={campusData}
@@ -289,7 +289,7 @@ const Signup = ({ navigation, route }) => {
                       disabled={classLoading || !values.campus}
                     />
                   </>
-                )}
+                )} */}
 
                 <TouchableOpacity
                   onPress={handleSubmit}
@@ -300,103 +300,6 @@ const Signup = ({ navigation, route }) => {
               </>
             )}
           </Formik>
-
-          {/* <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Your full name"
-              placeholderTextColor="#999"
-              style={styles.input}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Your mail"
-              placeholderTextColor="#999"
-              style={styles.input}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Enter your register number"
-              placeholderTextColor="#999"
-              style={styles.input}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#999"
-              secureTextEntry={!passwordVisible}
-              style={styles.input}
-            />
-
-            <TouchableOpacity
-              onPress={() => setPasswordVisible(!passwordVisible)}
-              style={styles.eyeButton}
-            >
-              <Image
-                source={
-                  passwordVisible
-                    ? require('../../assets/Images/visible.png')
-                    : require('../../assets/Images/hide.png')
-                }
-                style={styles.eyeIcon}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Confirm Password"
-              placeholderTextColor="#999"
-              secureTextEntry={!passwordVisible}
-              style={styles.input}
-            />
-
-            <TouchableOpacity
-              onPress={() => setPasswordVisible(!passwordVisible)}
-              style={styles.eyeButton}
-            >
-              <Image
-                source={
-                  passwordVisible
-                    ? require('../../assets/Images/visible.png')
-                    : require('../../assets/Images/hide.png')
-                }
-                style={styles.eyeIcon}
-              />
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Dropdown
-              style={styles.dropdown}
-              data={campusData}
-              labelField="label"
-              valueField="value"
-              placeholder="Select your Campus"
-              placeholderStyle={{ color: '#999' }}
-              value={campus}
-              onChange={item => setCampus(item.value)}
-            />
-
-            <Dropdown
-              style={styles.dropdown}
-              data={classData}
-              labelField="label"
-              valueField="value"
-              placeholder="Select your class"
-              placeholderStyle={{ color: '#999' }}
-              value={classValue}
-              onChange={item => setClassValue(item.value)}
-            />
-          </View>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('RoleSelectionScreen')}
-            style={styles.loginButton}
-          >
-            <Text style={styles.loginText}>Next</Text>
-          </TouchableOpacity> */}
 
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Already have account? </Text>

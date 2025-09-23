@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   Alert,
   BackHandler,
+  Modal,
 } from 'react-native';
 import {
   BottomSheetBackdrop,
@@ -27,6 +28,14 @@ import { complainHistorySummary } from '../../Network/apis';
 import { useSelector } from 'react-redux';
 import { parentReview } from '../../Network/apis';
 import { useFocusEffect } from '@react-navigation/native';
+import { WebView } from 'react-native-webview';
+import { viewDocument } from '@react-native-documents/viewer';
+import RNFS from 'react-native-fs';
+import DocIcon from '../../assets/Images/doc.png';
+import VideoIcon from '../../assets/Images/video.png';
+import AudioIcon from '../../assets/Images/audio.png';
+import ImageIcon from '../../assets/Images/image.png';
+import Loader from '../Loader/Loader';
 
 const HistoryModal = forwardRef((props, ref) => {
   const { onDismiss } = props;
@@ -41,6 +50,10 @@ const HistoryModal = forwardRef((props, ref) => {
   const [submitting, setSubmitting] = useState(false);
   // track whether modal is open
   const [isOpen, setIsOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isImage, setIsImage] = useState(false);
+  const [webViewLoading, setWebViewLoading] = useState(false);
+  const [docLoading, setDocLoading] = useState(false);
 
   // handle back press
   const handleBackPress = useCallback(() => {
@@ -138,7 +151,6 @@ const HistoryModal = forwardRef((props, ref) => {
       setSubmitting(false);
     }
   };
-
   const renderFiles = () => {
     const fileUrls = [
       summary?.urlOne,
@@ -146,24 +158,131 @@ const HistoryModal = forwardRef((props, ref) => {
       summary?.urlThree,
       summary?.urlFour,
       summary?.urlFive,
-    ].filter(Boolean); // remove nulls
+    ].filter(Boolean);
 
     if (fileUrls.length === 0) return null;
+
+    const getFileType = url => {
+      const ext = url.split('.').pop()?.toLowerCase();
+      if (!ext) return 'other';
+      if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) return 'image';
+      if (['mp4', 'mov', 'avi', 'mkv'].includes(ext)) return 'video';
+      if (['mp3', 'wav', 'aac', 'ogg'].includes(ext)) return 'audio';
+      if (['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext))
+        return 'document';
+      return 'other';
+    };
 
     return (
       <View
         style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: 10 }}
       >
-        {fileUrls.map((url, index) => (
-          <Image
-            key={index}
-            source={{ uri: url }}
-            style={{ width: 60, height: 60, marginRight: 10, borderRadius: 4 }}
-          />
-        ))}
+        {fileUrls.map((url, index) => {
+          const type = getFileType(url);
+
+          if (type === 'image') {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.fileBox}
+                onPress={() => {
+                  setPreviewUrl(url);
+                  setIsImage(true);
+                }}
+              >
+                <Image source={ImageIcon} style={styles.iconImage} />
+                {/* <Image
+                  source={{ uri: url }}
+                  style={{ width: 70, height: 70, margin: 6, borderRadius: 6 }}
+                /> */}
+              </TouchableOpacity>
+            );
+          }
+
+          if (type === 'document') {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.fileBox}
+                onPress={() => openRemoteDocument(url)}
+              >
+                <Image source={DocIcon} style={styles.iconImage} />
+              </TouchableOpacity>
+            );
+          }
+          if (type === 'video') {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.fileBox}
+                onPress={() => {
+                  setPreviewUrl(url);
+                  setIsImage(false);
+                }}
+              >
+                <Image source={VideoIcon} style={styles.iconImage} />
+              </TouchableOpacity>
+            );
+          }
+
+          if (type === 'audio') {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.fileBox}
+                onPress={() => {
+                  setPreviewUrl(url);
+                  setIsImage(false);
+                }}
+              >
+                <Image source={AudioIcon} style={styles.iconImage} />
+              </TouchableOpacity>
+            );
+          }
+
+          // fallback → video/audio/other in WebView
+          return (
+            <TouchableOpacity
+              key={index}
+              style={styles.fileBox}
+              onPress={() => {
+                setPreviewUrl(url);
+                setIsImage(false);
+              }}
+            >
+              <Text style={{ fontSize: 12, color: '#444' }}>{type}</Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     );
   };
+
+  // const renderFiles = () => {
+  //   const fileUrls = [
+  //     summary?.urlOne,
+  //     summary?.urlTwo,
+  //     summary?.urlThree,
+  //     summary?.urlFour,
+  //     summary?.urlFive,
+  //   ].filter(Boolean); // remove nulls
+
+  //   if (fileUrls.length === 0) return null;
+
+  //   return (
+  //     <View
+  //       style={{ flexDirection: 'row', flexWrap: 'wrap', marginVertical: 10 }}
+  //     >
+  //       {fileUrls.map((url, index) => (
+  //         <Image
+  //           key={index}
+  //           source={{ uri: url }}
+  //           style={{ width: 60, height: 60, marginRight: 10, borderRadius: 4 }}
+  //         />
+  //       ))}
+  //     </View>
+  //   );
+  // };
 
   const renderTrackRecords = () => {
     if (!summary?.trackRecord?.length) return null;
@@ -240,6 +359,10 @@ const HistoryModal = forwardRef((props, ref) => {
       </>
     );
   };
+  const closePreview = () => {
+    setPreviewUrl(null);
+    setIsImage(false);
+  };
   const resetState = () => {
     setComplaintId(null);
     setSummary(null);
@@ -248,6 +371,42 @@ const HistoryModal = forwardRef((props, ref) => {
     setLoading(false);
     setSubmitting(false);
     setIsOpen(false);
+  };
+  const openRemoteDocument = async url => {
+    setDocLoading(true); // start loader
+    try {
+      const fileExt = url.split('.').pop();
+      const fileName = `temp_document_${new Date().getTime()}.${fileExt}`;
+      const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+      // Check if the file already exists to avoid re-downloading
+      const fileExists = await RNFS.exists(filePath);
+      if (fileExists) {
+        console.log('File already exists, viewing it directly.');
+        await viewDocument({ uri: filePath });
+        return;
+      }
+
+      // Download the file
+      const options = {
+        fromUrl: url,
+        toFile: filePath,
+      };
+
+      const response = RNFS.downloadFile(options);
+
+      // Await the download completion
+      await response.promise;
+
+      // Open the local file with the viewer
+      // On Android, file paths need to be prefixed with 'file://'
+      const uriToView = `file://${filePath}`;
+      await viewDocument({ uri: uriToView });
+    } catch (err) {
+      console.log('Error opening remote document:', err);
+    } finally {
+      setDocLoading(false); // stop loader
+    }
   };
 
   return (
@@ -305,6 +464,54 @@ const HistoryModal = forwardRef((props, ref) => {
           </Text>
         )}
       </BottomSheetScrollView>
+      {docLoading && <Loader />}
+      <Modal visible={!!previewUrl} animationType="slide" transparent>
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.95)' }}>
+          {/* Close Button */}
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              top: 40,
+              right: 20,
+              zIndex: 10,
+              backgroundColor: '#fff',
+              padding: 8,
+              borderRadius: 20,
+            }}
+            onPress={closePreview}
+          >
+            <Text style={{ fontSize: 16 }}>✕</Text>
+          </TouchableOpacity>
+          {isImage ? (
+            <Image
+              source={{ uri: previewUrl || '' }}
+              style={{ flex: 1, resizeMode: 'contain' }}
+            />
+          ) : (
+            <>
+              <WebView
+                source={{ uri: previewUrl || '' }}
+                style={{ flex: 1, backgroundColor: 'transparent' }}
+                onLoadStart={() => setWebViewLoading(true)}
+                onLoadEnd={() => setWebViewLoading(false)}
+              />
+              {webViewLoading && (
+                <ActivityIndicator
+                  size="large"
+                  color="#fff"
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginLeft: -15,
+                    marginTop: -15,
+                  }}
+                />
+              )}
+            </>
+          )}
+        </View>
+      </Modal>
     </BottomSheetModal>
   );
 });
@@ -397,6 +604,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Asap-SemiBold',
     fontSize: 16,
+  },
+  fileBox: {
+    height: 70,
+    margin: 6,
+    borderRadius: 6,
+    backgroundColor: '#eee',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconImage: {
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
   },
 });
 

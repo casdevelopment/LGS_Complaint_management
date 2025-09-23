@@ -17,6 +17,7 @@ import UnattendedScreen from '../screens/Complain/UnattendedScreen';
 import OpenedComplain from '../screens/Complain/OpenedComplain';
 import ImplementedComplain from '../screens/Complain/ImplementedComplain';
 import AcknowledgeComplain from '../screens/Complain/AcknowledgeComplain';
+import SubCategoryScreen from '../screens/Complain/SubCategoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ export default function AppStack() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomeScreen" component={BottomTabNav} />
         <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
+        <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
         <Stack.Screen name="AccountScreen" component={AccountScreen} />
         <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
         <Stack.Screen

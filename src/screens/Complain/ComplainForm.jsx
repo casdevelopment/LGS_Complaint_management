@@ -33,8 +33,8 @@ import AudioRecord from 'react-native-audio-record';
 export default function ComplainForm({ navigation, route }) {
   const user = useSelector(state => state.auth.user);
   const [loading, setLoading] = useState(false);
-  const { campus, category } = route.params; // 👈 now you have both!
-  console.log(campus, category, 'oooooppp');
+  const { campus, category, subcategory } = route.params; // 👈 now you have both!
+  console.log(campus, category, subcategory, 'oooooppp');
   const [complainTypes, setComplainTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const [location, setLocation] = useState('');
@@ -44,7 +44,14 @@ export default function ComplainForm({ navigation, route }) {
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
   const [files, setFiles] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
-  console.log(coords, 'coords');
+  console.log(coords, 'coordsss');
+
+  useEffect(() => {
+    (async () => {
+      await requestPermissions(); // ask once when screen loads
+    })();
+  }, []);
+
   const requestPermissions = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -102,6 +109,8 @@ export default function ComplainForm({ navigation, route }) {
   // 📸 Capture photo
   const captureImage = async () => {
     if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
+    const hasPerm = await requestPermissions();
+    if (!hasPerm) return;
     const res = await launchCamera({ mediaType: 'photo' });
     if (!res.didCancel && res.assets?.length) {
       const file = res.assets[0];
@@ -114,6 +123,8 @@ export default function ComplainForm({ navigation, route }) {
   // 🎥 Capture video
   const captureVideo = async () => {
     if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
+    const hasPerm = await requestPermissions();
+    if (!hasPerm) return;
     const res = await launchCamera({ mediaType: 'video' });
     if (!res.didCancel && res.assets?.length) {
       const file = res.assets[0];
@@ -144,6 +155,11 @@ export default function ComplainForm({ navigation, route }) {
     const audioFilePath = await AudioRecord.stop();
     setIsRecording(false);
 
+    if (!audioFilePath) {
+      console.warn('No audio file returned');
+      return;
+    }
+
     const valid = await checkFileSize(`file://${audioFilePath}`);
     if (!valid) {
       RNFS.unlink(audioFilePath);
@@ -158,6 +174,48 @@ export default function ComplainForm({ navigation, route }) {
         name: `audio_${Date.now()}.wav`,
       },
     ]);
+  };
+  // 🎤 Toggle Audio Recording
+  const toggleRecording = async () => {
+    const hasPerm = await requestPermissions();
+    if (!hasPerm) return;
+
+    if (!isRecording) {
+      // Start recording
+      AudioRecord.init({
+        sampleRate: 16000,
+        channels: 1,
+        bitsPerSample: 16,
+        wavFile: `audio_${Date.now()}.wav`,
+      });
+
+      AudioRecord.start();
+      setIsRecording(true);
+    } else {
+      // Stop recording
+      const audioFilePath = await AudioRecord.stop();
+      setIsRecording(false);
+
+      if (!audioFilePath) {
+        console.warn('No audio file returned');
+        return;
+      }
+
+      const valid = await checkFileSize(`file://${audioFilePath}`);
+      if (!valid) {
+        RNFS.unlink(audioFilePath);
+        return Alert.alert('File too large', 'Max 500KB');
+      }
+
+      setFiles(prev => [
+        ...prev,
+        {
+          uri: `file://${audioFilePath}`,
+          type: 'audio/wav',
+          name: `audio_${Date.now()}.wav`,
+        },
+      ]);
+    }
   };
 
   useEffect(() => {
@@ -250,6 +308,18 @@ export default function ComplainForm({ navigation, route }) {
       setImages([...images, result.assets[0]]);
     }
   };
+  const getExtensionFromType = type => {
+    if (!type) return 'bin';
+    const map = {
+      'image/jpeg': 'jpg',
+      'image/png': 'png',
+      'video/mp4': 'mp4',
+      'audio/mpeg': 'mp3',
+      'audio/wav': 'wav',
+      'application/pdf': 'pdf',
+    };
+    return map[type] || 'bin';
+  };
   const submitComplaint = async () => {
     if (!location || !subject || !description || !selectedType) {
       Alert.alert('Error', 'Please fill all required fields');
@@ -275,12 +345,18 @@ export default function ComplainForm({ navigation, route }) {
     //   });
     // });
     files.forEach((file, index) => {
+      const extension = getExtensionFromType(file.type);
+      const fileName = file.name
+        ? file.name // if picker already gives correct name (like PDF, IMG-xxx.jpg)
+        : `file_${index + 1}.${extension}`; // fallback
+
       formData.append(`file${index + 1}`, {
         uri: file.uri,
-        type: file.type || 'application/octet-stream',
-        name: file.name || `file_${index + 1}`,
+        type: file.type,
+        name: fileName,
       });
     });
+    console.log(formData, 'formdata');
 
     try {
       setLoading(true);
@@ -389,12 +465,10 @@ export default function ComplainForm({ navigation, route }) {
             <TouchableOpacity onPress={captureVideo} style={styles.btn}>
               <Text>🎥 Video</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPressIn={startRecording}
-              onPressOut={stopRecording}
-              style={styles.btn}
-            >
-              <Text>{isRecording ? '🔴 Recording...' : '🎤 Record'}</Text>
+            <TouchableOpacity onPress={toggleRecording} style={styles.btn}>
+              <Text>
+                {isRecording ? '⏹ Stop Recording' : '🎤 Start Recording'}
+              </Text>
             </TouchableOpacity>
           </View>
 

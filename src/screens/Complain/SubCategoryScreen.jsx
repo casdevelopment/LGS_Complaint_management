@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   Image,
   FlatList,
   ActivityIndicator,
@@ -13,12 +12,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { getConplainCategories } from '../../Network/apis';
-import { getAllCampus } from '../../Network/apis';
+import { getConplainSubCategories } from '../../Network/apis';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Loader from '../../components/Loader/Loader';
 
-export default function CampusScreen({ navigation, route }) {
-  const { category, subcategory } = route.params;
-  console.log(category, subcategory, 'cccccccc');
+export default function SubCategoryScreen({ navigation, route }) {
+  const { category } = route.params;
+  console.log(category, 'uuuuuuuuun');
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -28,7 +28,9 @@ export default function CampusScreen({ navigation, route }) {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const res = await getAllCampus();
+      const res = await getConplainSubCategories({
+        ComplainCategoryId: category?.complainCategoryId,
+      });
       if (res?.result === 'success') {
         setCategories(res.data || []);
       }
@@ -38,78 +40,69 @@ export default function CampusScreen({ navigation, route }) {
       setLoading(false);
     }
   };
-  const handleCategorySelect = campus => {
-    // Combine campus + category and pass to ComplaintFormScreen
-    navigation.navigate('ComplainForm', { campus, category, subcategory });
-  };
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => handleCategorySelect(item)}
+      onPress={() =>
+        navigation.navigate('CampusScreen', { subcategory: item, category })
+      }
     >
       <Image
-        source={{ uri: item.schoolIcon }} // assuming API gives image URL
+        source={{ uri: item?.categoryIcon }} // assuming API gives image URL
         style={styles.cardImage}
         resizeMode="contain"
       />
-      <Text style={styles.cardText}>{item.school}</Text>
+      <Text style={styles.cardText}>{item?.complainSubCategory}</Text>
     </TouchableOpacity>
   );
   return (
-    <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity
-        style={styles.topLeft}
-        onPress={() => navigation.goBack()}
-      >
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: '#fff' }}
+      edges={['left', 'right', 'bottom']}
+    >
+      <View style={styles.container}>
+        {/* Back Button */}
+        <TouchableOpacity
+          style={styles.topLeft}
+          onPress={() => navigation.goBack()}
+        >
+          <Image
+            source={require('../../assets/Images/turn-back.png')}
+            resizeMode="stretch"
+          />
+        </TouchableOpacity>
+
         <Image
-          source={require('../../assets/Images/turn-back.png')}
+          source={require('../../assets/Images/topRightDarkCurve.png')}
+          style={styles.topRight}
           resizeMode="stretch"
         />
-      </TouchableOpacity>
 
-      <Image
-        source={require('../../assets/Images/topRightDarkCurve.png')}
-        style={styles.topRight}
-        resizeMode="stretch"
-      />
+        {/* Title */}
+        <Text style={styles.title}>Complaint Form</Text>
+        <Text style={styles.subtitle}>Select a Subcategory</Text>
 
-      {/* Title */}
-      <Text style={styles.title}>Complaint Form</Text>
-      <Text style={styles.subtitle}>Select Campus</Text>
-
-      {/* Loader */}
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color="#07294D"
-          style={{ marginTop: hp('10%') }}
-        />
-      ) : (
         <FlatList
           data={categories}
           renderItem={renderItem}
-          keyExtractor={item => item.schoolId.toString()}
+          keyExtractor={item => item?.complainSubCategoryId.toString()}
           numColumns={2}
           columnWrapperStyle={{ justifyContent: 'space-between' }}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No subcategory found</Text>
+            </View>
+          )}
           contentContainerStyle={{ paddingBottom: 20 }}
-          initialNumToRender={6} // render 6 items first
-          windowSize={5} // render more items around the viewport
-          maxToRenderPerBatch={10} // batch rendering
-          removeClippedSubviews={true} // unmount offscreen items
-          getItemLayout={(data, index) => ({
-            length: 200,
-            offset: 200 * index,
-            index,
-          })}
         />
-      )}
-    </View>
+        {loading && <Loader />}
+      </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //  flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingTop: hp('13%'),
@@ -163,10 +156,20 @@ const styles = StyleSheet.create({
   },
   cardText: {
     marginTop: hp('4%'),
-    width: wp('30%'),
     fontSize: 16,
     fontFamily: 'Asap-SemiBold',
     color: '#07294D',
     textAlign: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: hp('5%'),
+  },
+
+  emptyText: {
+    fontSize: 16,
+    color: '#888',
   },
 });

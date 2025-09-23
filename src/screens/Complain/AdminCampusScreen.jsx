@@ -15,7 +15,7 @@ import {
 import { getConplainCategories } from '../../Network/apis';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function CategoryScreen({ navigation }) {
+export default function AdminCampusScreen({ navigation }) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {

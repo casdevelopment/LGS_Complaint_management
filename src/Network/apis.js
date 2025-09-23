@@ -15,7 +15,6 @@ const complainSummaryEndpoints = {
 };
 
 export const getAllCampus = async () => {
-  console.log();
   try {
     const response = await axios.post(
       `${Server}/api/configuration/get-campus-list`,
@@ -256,6 +255,36 @@ export const getConplainCategories = async () => {
   } catch (error) {
     console.error(
       'Error fetching campus lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getConplaintCampus = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/oic/campus-complaint-count',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching campus lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getConplainSubCategories = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/configuration/get-complaint-sub-category',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching sub categories lists:',
       error.response?.data || error.message,
     );
     throw error;

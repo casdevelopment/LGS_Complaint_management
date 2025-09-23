@@ -12,15 +12,15 @@ export const signupSchema = role =>
       .oneOf([Yup.ref('password')], 'Passwords must match')
       .required('Confirm password is required'),
 
-    campus: Yup.string().when([], {
-      is: () => role?.toLowerCase() === 'parent',
-      then: schema => schema.required('Campus is required'),
-      otherwise: schema => schema.notRequired(),
-    }),
+    // campus: Yup.string().when([], {
+    //   is: () => role?.toLowerCase() === 'parent',
+    //   then: schema => schema.required('Campus is required'),
+    //   otherwise: schema => schema.notRequired(),
+    // }),
 
-    classValue: Yup.string().when([], {
-      is: () => role?.toLowerCase() === 'parent',
-      then: schema => schema.required('Class is required'),
-      otherwise: schema => schema.notRequired(),
-    }),
+    // classValue: Yup.string().when([], {
+    //   is: () => role?.toLowerCase() === 'parent',
+    //   then: schema => schema.required('Class is required'),
+    //   otherwise: schema => schema.notRequired(),
+    // }),
   });

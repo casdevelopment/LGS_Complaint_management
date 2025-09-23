@@ -56,7 +56,10 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                 <Text style={styles.tabLabel}>{route.name}</Text>
               </View>
             ) : (
-              <Image source={iconSource} style={styles.icon} />
+              <View style={styles.tabBackground}>
+                <Image source={iconSource} style={styles.icon} />
+                <Text style={styles.label}>{route.name}</Text>
+              </View>
             )}
           </TouchableOpacity>
         );
@@ -99,6 +102,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tabBackground: {
+    flexDirection: 'row',
+
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   icon: {
     width: 24,
     height: 24,
@@ -109,6 +120,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Asap-Medium',
     color: COLORS.primary, // Text color for the focused tab
+  },
+  label: {
+    marginLeft: 8,
+    fontSize: 12,
+    fontFamily: 'Asap-Medium',
+    color: '#fff', // Text color for the focused tab
   },
 });
 
