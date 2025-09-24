@@ -29,6 +29,7 @@ export default function CampusScreen({ navigation, route }) {
     setLoading(true);
     try {
       const res = await getAllCampus();
+      console.log(res, '==============9999999============');
       if (res?.result === 'success') {
         setCategories(res.data || []);
       }

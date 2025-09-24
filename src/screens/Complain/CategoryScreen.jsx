@@ -90,7 +90,7 @@ export default function CategoryScreen({ navigation }) {
             keyExtractor={item => item.complainCategoryId.toString()}
             numColumns={2}
             columnWrapperStyle={{ justifyContent: 'space-between' }}
-            contentContainerStyle={{ paddingBottom: 20 }}
+            contentContainerStyle={{ paddingBottom: 120 }}
           />
         )}
       </View>
@@ -99,7 +99,7 @@ export default function CategoryScreen({ navigation }) {
 }
 const styles = StyleSheet.create({
   container: {
-    //  flex: 1,
+    //flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingTop: hp('13%'),

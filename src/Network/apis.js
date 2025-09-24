@@ -275,6 +275,51 @@ export const getConplaintCampus = async payload => {
     throw error;
   }
 };
+export const getStudentList = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/complaint/get-student-list',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error Student list lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getConplaintClass = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/oic/class-complaint-count',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching class lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getConplaintClassStatus = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/oic/class-status-complaint-count',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching class status lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
 export const getConplainSubCategories = async payload => {
   try {
     const response = await axiosInstance.post(

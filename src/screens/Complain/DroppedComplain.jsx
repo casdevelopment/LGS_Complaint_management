@@ -14,6 +14,7 @@ const DroppedComplain = () => {
   const filterModalRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
   const user = useSelector(state => state.auth.user);
+  const student = useSelector(state => state.auth.student);
   const openComplaintSummary = useCallback(id => {
     filterModalRef.current?.openModal(id);
   }, []);
@@ -29,6 +30,7 @@ const DroppedComplain = () => {
         UserId: user?.id,
         Role: user?.role,
         Status: 'dropped',
+        StudentId: student?.studentId,
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {

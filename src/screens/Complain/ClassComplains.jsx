@@ -12,11 +12,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { getConplaintCampus } from '../../Network/apis';
+import { getConplaintClassStatus } from '../../Network/apis';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
-export default function AdminCampusScreen({ navigation }) {
+export default function ClassComplains({ navigation, route }) {
+  const { campus, classes } = route.params;
+  console.log(campus, 'campus admin');
   const user = useSelector(state => state.auth.user);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,9 +28,11 @@ export default function AdminCampusScreen({ navigation }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await getConplaintCampus({
+      const res = await getConplaintClassStatus({
         UserId: user?.id,
         Role: user?.role,
+        CampusId: campus?.schoolId,
+        ClassId: classes?.classId,
       });
       if (res?.result === 'success') {
         setCategories(res.data || []);
@@ -39,20 +43,76 @@ export default function AdminCampusScreen({ navigation }) {
       setLoading(false);
     }
   };
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => navigation.navigate('AdminClassScreen', { campus: item })}
-    >
-      <Image
-        source={require('../../assets/Images/campus.png')}
-        style={styles.cardImage}
-        resizeMode="contain"
-      />
-      <Text style={styles.cardText}>{item.school}</Text>
-      <Text style={styles.count}>{item.complaintCount}</Text>
-    </TouchableOpacity>
-  );
+  const statusIcons = {
+    Acknowledged: require('../../assets/Images/acknowledge.png'),
+    Closed: require('../../assets/Images/attended.png'),
+    Dropped: require('../../assets/Images/bad-feedback.png'),
+    Implemented: require('../../assets/Images/good-feedBack.png'),
+    Open: require('../../assets/Images/bad-review.png'),
+  };
+  const renderItem = ({ item }) => {
+    const icon =
+      statusIcons[item.status] || require('../../assets/Images/teachings.png'); // fallback
+    const handlePress = () => {
+      switch (item.status) {
+        case 'Open':
+          navigation.navigate('AdminOpenComplaints', {
+            complainStatus: item,
+            campus,
+            classes,
+          });
+          break;
+
+        case 'Acknowledged':
+          navigation.navigate('AdminAcknowledgeComplaints', {
+            complainStatus: item,
+            campus,
+            classes,
+          });
+          break;
+
+        case 'Closed':
+          navigation.navigate('AdminClosedComplaint', {
+            complainStatus: item,
+            campus,
+            classes,
+          });
+          break;
+
+        case 'Dropped':
+          navigation.navigate('AdminDropComplaints', {
+            complainStatus: item,
+            campus,
+            classes,
+          });
+          break;
+
+        case 'Implemented':
+          navigation.navigate('AdminImplementedComplaints', {
+            complainStatus: item,
+            campus,
+            classes,
+          });
+          break;
+
+        default:
+          navigation.navigate('AdminOpenComplaints', {
+            complainStatus: item,
+            campus,
+            classes,
+          });
+          break;
+      }
+    };
+
+    return (
+      <TouchableOpacity style={styles.card} onPress={handlePress}>
+        <Image source={icon} style={styles.cardImage} resizeMode="contain" />
+        <Text style={styles.cardText}>{item.status}</Text>
+        <Text style={styles.count}>{item.complaintCount}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: '#fff' }}
@@ -78,7 +138,7 @@ export default function AdminCampusScreen({ navigation }) {
 
         {/* Title */}
         <Text style={styles.title}>History</Text>
-        <Text style={styles.subtitle}>Select Campus</Text>
+        <Text style={styles.subtitle}>Class Complaints</Text>
 
         {/* Loader */}
         {loading ? (
@@ -91,7 +151,7 @@ export default function AdminCampusScreen({ navigation }) {
           <FlatList
             data={categories}
             renderItem={renderItem}
-            keyExtractor={item => item.schoolId.toString()}
+            keyExtractor={item => item.status.toString()}
             numColumns={2}
             columnWrapperStyle={{ justifyContent: 'space-between' }}
             contentContainerStyle={{ paddingBottom: 100 }}

@@ -10,6 +10,7 @@ const authSlice = createSlice({
     fcmToken: null, // ✅ added this line
     isAuthenticated: false,
     userStats: null,
+    student: null,
   },
   reducers: {
     setCredentials: (state, action) => {
@@ -17,6 +18,9 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.user = action.payload.user;
       // state.isAuthenticated = true;
+    },
+    setStudent: (state, action) => {
+      state.student = action.payload.student;
     },
     setAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload.isAuthenticated;
@@ -42,6 +46,7 @@ const authSlice = createSlice({
       state.fcmToken = null;
       state.isAuthenticated = false;
       state.userStats = null;
+      state.student = null;
     },
   },
 });
@@ -51,6 +56,7 @@ export const {
   setAuthenticated,
   setFcmToken,
   setUserStats,
+  setStudent,
   logout,
   resetAuth,
 } = authSlice.actions;

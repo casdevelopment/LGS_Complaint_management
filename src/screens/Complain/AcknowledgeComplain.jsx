@@ -14,6 +14,7 @@ const AcknowledgeComplain = () => {
   const [refreshing, setRefreshing] = useState(false);
   const filterModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
+  const student = useSelector(state => state.auth.student);
   const openComplaintSummary = useCallback(id => {
     filterModalRef.current?.openModal(id);
   }, []);
@@ -28,6 +29,8 @@ const AcknowledgeComplain = () => {
       const body = {
         UserId: user?.id,
         Status: 'acknowledged',
+        Role: user?.role,
+        StudentId: student?.studentId,
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {

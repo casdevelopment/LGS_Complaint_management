@@ -12,11 +12,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { getConplaintCampus } from '../../Network/apis';
+import { getConplaintClass } from '../../Network/apis';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
-export default function AdminCampusScreen({ navigation }) {
+export default function ClassComplains({ navigation, route }) {
+  const { campus, classes } = route.params;
+  console.log(campus, 'campus admin');
   const user = useSelector(state => state.auth.user);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,9 +28,10 @@ export default function AdminCampusScreen({ navigation }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await getConplaintCampus({
+      const res = await getConplaintClass({
         UserId: user?.id,
         Role: user?.role,
+        CampusId: campus?.schoolId,
       });
       if (res?.result === 'success') {
         setCategories(res.data || []);
@@ -42,14 +45,16 @@ export default function AdminCampusScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('AdminClassScreen', { campus: item })}
+      onPress={() =>
+        navigation.navigate('SubCategoryScreen', { class: item, campus })
+      }
     >
       <Image
-        source={require('../../assets/Images/campus.png')}
+        source={require('../../assets/Images/teachings.png')}
         style={styles.cardImage}
         resizeMode="contain"
       />
-      <Text style={styles.cardText}>{item.school}</Text>
+      <Text style={styles.cardText}>{item.class}</Text>
       <Text style={styles.count}>{item.complaintCount}</Text>
     </TouchableOpacity>
   );
@@ -78,7 +83,7 @@ export default function AdminCampusScreen({ navigation }) {
 
         {/* Title */}
         <Text style={styles.title}>History</Text>
-        <Text style={styles.subtitle}>Select Campus</Text>
+        <Text style={styles.subtitle}>Select Class</Text>
 
         {/* Loader */}
         {loading ? (
@@ -91,7 +96,7 @@ export default function AdminCampusScreen({ navigation }) {
           <FlatList
             data={categories}
             renderItem={renderItem}
-            keyExtractor={item => item.schoolId.toString()}
+            keyExtractor={item => item.classId.toString()}
             numColumns={2}
             columnWrapperStyle={{ justifyContent: 'space-between' }}
             contentContainerStyle={{ paddingBottom: 100 }}

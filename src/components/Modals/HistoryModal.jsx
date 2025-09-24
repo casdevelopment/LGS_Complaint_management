@@ -315,7 +315,8 @@ const HistoryModal = forwardRef((props, ref) => {
         <Text style={styles.paragraph}>{remarks}</Text>
 
         {/* ⭐ Review UI Section */}
-        {(!summary?.rating || summary?.rating.length === 0) && (
+        {(!summary?.rating ||
+          (summary?.rating.length === 0 && user?.role === 'parent')) && (
           <View style={styles.reviewBox}>
             <TextInput
               placeholder="Write Your Reviews"

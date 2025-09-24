@@ -12,6 +12,7 @@ const Tab = createBottomTabNavigator();
 
 function BottomTabNav() {
   const user = useSelector(state => state.auth.user);
+  console.log(user?.role, 'roleeeeeee');
   return (
     <Tab.Navigator
       screenOptions={{
@@ -23,7 +24,7 @@ function BottomTabNav() {
       tabBar={props => <CustomTabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      {user?.role === 'oic' ? (
+      {user?.role === 'oic' || user?.role === 'employee' ? (
         <Tab.Screen name="History" component={AdminCampusScreen} />
       ) : (
         <Tab.Screen name="History" component={HistoryScreen} />

@@ -28,6 +28,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [count, setCount] = useState('0');
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => state.auth.user);
+  const student = useSelector(state => state.auth.student);
   const role = user?.role;
   const isFocused = useIsFocused();
 
@@ -74,6 +75,8 @@ const HomeScreen = ({ navigation, route }) => {
     try {
       const body = {
         UserId: user?.id,
+        Role: user?.role,
+        StudentId: student.studentId,
       };
       const res = await complainDashboard(body, role);
       if (res?.result === 'success') {

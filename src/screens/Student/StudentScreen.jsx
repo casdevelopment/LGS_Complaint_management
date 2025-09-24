@@ -12,11 +12,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { getConplaintCampus } from '../../Network/apis';
+import { getStudentList } from '../../Network/apis';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setStudent } from '../../Redux/slices/AuthSlice';
 
-export default function AdminCampusScreen({ navigation }) {
+export default function StudentScreen({ navigation }) {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,10 +28,7 @@ export default function AdminCampusScreen({ navigation }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await getConplaintCampus({
-        UserId: user?.id,
-        Role: user?.role,
-      });
+      const res = await getStudentList({ Role: user?.role, UserId: user?.id });
       if (res?.result === 'success') {
         setCategories(res.data || []);
       }
@@ -42,17 +41,26 @@ export default function AdminCampusScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('AdminClassScreen', { campus: item })}
+      onPress={() => {
+        // store student in redux
+        dispatch(setStudent({ student: item }));
+
+        // navigate
+        navigation.replace('HomeScreen');
+      }}
     >
-      <Image
-        source={require('../../assets/Images/campus.png')}
-        style={styles.cardImage}
-        resizeMode="contain"
-      />
-      <Text style={styles.cardText}>{item.school}</Text>
-      <Text style={styles.count}>{item.complaintCount}</Text>
+      <View style={styles.avatar}>
+        <Text style={styles.avatarText}>{item.studentName?.charAt(0)}</Text>
+      </View>
+
+      <Text style={styles.studentName}>{item.studentName}</Text>
+      <Text style={styles.fatherName}>Father: {item.fatherName}</Text>
+      <Text style={styles.classCampus}>
+        {item.class} | {item.campus}
+      </Text>
     </TouchableOpacity>
   );
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: '#fff' }}
@@ -77,8 +85,8 @@ export default function AdminCampusScreen({ navigation }) {
         />
 
         {/* Title */}
-        <Text style={styles.title}>History</Text>
-        <Text style={styles.subtitle}>Select Campus</Text>
+        <Text style={styles.title}>Select Student</Text>
+        <Text style={styles.subtitle}>Choose a student to continue</Text>
 
         {/* Loader */}
         {loading ? (
@@ -91,10 +99,10 @@ export default function AdminCampusScreen({ navigation }) {
           <FlatList
             data={categories}
             renderItem={renderItem}
-            keyExtractor={item => item.schoolId.toString()}
-            numColumns={2}
-            columnWrapperStyle={{ justifyContent: 'space-between' }}
-            contentContainerStyle={{ paddingBottom: 100 }}
+            keyExtractor={item => item.studentId.toString()}
+            // numColumns={1}
+            // columnWrapperStyle={{ justifyContent: 'space-between' }}
+            contentContainerStyle={{ paddingBottom: 150 }}
           />
         )}
       </View>
@@ -138,37 +146,55 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   card: {
-    width: '47%',
+    width: '100%',
     backgroundColor: '#fff',
     borderRadius: 12,
-    paddingVertical: 25,
+    padding: 20,
     marginBottom: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 6,
+    elevation: 5,
   },
-  cardImage: {
+
+  avatar: {
     width: 60,
     height: 60,
+    borderRadius: 30,
+    backgroundColor: '#07294D',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: 10,
   },
-  cardText: {
-    marginTop: hp('4%'),
-    width: wp('30%'),
-    fontSize: 16,
+
+  avatarText: {
+    color: '#fff',
+    fontSize: 22,
+    fontFamily: 'Asap-SemiBold',
+  },
+
+  studentName: {
+    fontSize: 18,
     fontFamily: 'Asap-SemiBold',
     color: '#07294D',
     textAlign: 'center',
   },
-  count: {
-    marginTop: hp('2%'),
 
-    fontSize: 16,
-    fontFamily: 'Asap-SemiBold',
-    color: '#07294D',
+  fatherName: {
+    fontSize: 14,
+    fontFamily: 'Asap-Regular',
+    color: '#555',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+
+  classCampus: {
+    fontSize: 13,
+    fontFamily: 'Asap-Regular',
+    color: '#888',
+    marginTop: 4,
     textAlign: 'center',
   },
 });

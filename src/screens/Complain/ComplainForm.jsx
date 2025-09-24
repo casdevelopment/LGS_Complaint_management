@@ -32,6 +32,7 @@ import AudioRecord from 'react-native-audio-record';
 
 export default function ComplainForm({ navigation, route }) {
   const user = useSelector(state => state.auth.user);
+  const student = useSelector(state => state.auth.student);
   const [loading, setLoading] = useState(false);
   const { campus, category, subcategory } = route.params; // 👈 now you have both!
   console.log(campus, category, subcategory, 'oooooppp');
@@ -43,6 +44,7 @@ export default function ComplainForm({ navigation, route }) {
   const [images, setImages] = useState([]);
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
   const [files, setFiles] = useState([]);
+  const [otherRemarks, setOtherRemarks] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   console.log(coords, 'coordsss');
 
@@ -329,6 +331,10 @@ export default function ComplainForm({ navigation, route }) {
     const formData = new FormData();
     formData.append('CampusId', campus.schoolId);
     formData.append('ComplaintCategoryId', category.complainCategoryId);
+    formData.append(
+      'ComplaintSubCategoryId',
+      subcategory.complainSubCategoryId,
+    );
     formData.append('ComplaintTypeId', selectedType);
     formData.append('LocationAddress', location);
     formData.append('ComplaintSubject', subject);
@@ -336,6 +342,13 @@ export default function ComplainForm({ navigation, route }) {
     formData.append('Longitude', coords.longitude || '');
     formData.append('Description', description);
     formData.append('UserId', user.id);
+    formData.append('StudentId', student.studentId);
+    if (
+      category?.complainCategory === 'Others' ||
+      subcategory?.complainSubCategory === 'Others'
+    ) {
+      formData.append('OtherRemarks', otherRemarks);
+    }
     // 🔹 Add images as file1, file2, ...
     // images.forEach((img, index) => {
     //   formData.append(`file${index + 1}`, {
@@ -448,6 +461,18 @@ export default function ComplainForm({ navigation, route }) {
             value={description}
             onChangeText={text => setDescription(text)}
           />
+          {(category?.complainCategory === 'Others' ||
+            subcategory?.complainSubCategory === 'Others') && (
+            <TextInput
+              style={styles.description}
+              placeholder="Other Remarks"
+              placeholderTextColor="#999"
+              multiline={true}
+              textAlignVertical="top"
+              value={otherRemarks}
+              onChangeText={text => setOtherRemarks(text)}
+            />
+          )}
           {/* Upload Options */}
           <View
             style={{
