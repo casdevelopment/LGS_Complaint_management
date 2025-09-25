@@ -124,6 +124,7 @@ const AdminOpenComplaints = ({ route }) => {
         ref={adminHistortModalRef}
         onOpenForwardModal={id => forwardModalRef.current?.openModal(id)}
         complaintId={selectedComplaintId}
+        onDismiss={fetchHistory}
       />
       <ForwardModal ref={forwardModalRef} onDismiss={fetchHistory} />
       <DropModal ref={dropModalRef} onDismiss={fetchHistory} />

@@ -30,7 +30,7 @@ const OpenedComplain = () => {
         UserId: user?.id,
         Role: user?.role,
         Status: 'open',
-        StudentId: student?.studentId,
+        StudentId: user?.role === 'other' ? 0 : student.studentId,
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {
@@ -46,6 +46,20 @@ const OpenedComplain = () => {
   const renderItem = ({ item }) => {
     switch (user?.role) {
       case 'parent':
+        return (
+          <ClosedCard
+            id={item?.complaintId}
+            date={item?.createdAt}
+            assignedTo={item.assignedTo}
+            department={item.department}
+            text={item.complaintSubject}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
+            onPressSummary={() => openComplaintSummary(item?.complaintId)}
+          />
+        );
+      case 'other':
         return (
           <ClosedCard
             id={item?.complaintId}

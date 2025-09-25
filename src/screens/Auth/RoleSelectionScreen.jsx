@@ -91,6 +91,31 @@ const RoleSelectionScreen = ({ navigation }) => {
             Employee
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.roleBox,
+            selectedRole === 'other' && styles.selectedRole,
+          ]}
+          onPress={() => setSelectedRole('other')}
+        >
+          <Image
+            source={
+              selectedRole === 'other'
+                ? require('../../assets/Images/otherWhite.png') // 👈 white version (create this asset)
+                : require('../../assets/Images/otherBlack.png') // 👈 black version (create this asset)
+            }
+            style={{ width: 50, height: 50, marginBottom: 10 }}
+            resizeMode="contain"
+          />
+          <Text
+            style={[
+              styles.roleText,
+              selectedRole === 'other' && { color: '#fff' },
+            ]}
+          >
+            General
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* Login button */}

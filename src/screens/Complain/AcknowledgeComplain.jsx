@@ -30,7 +30,7 @@ const AcknowledgeComplain = () => {
         UserId: user?.id,
         Status: 'acknowledged',
         Role: user?.role,
-        StudentId: student?.studentId,
+        StudentId: user?.role === 'other' ? 0 : student.studentId,
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {
@@ -46,6 +46,20 @@ const AcknowledgeComplain = () => {
   const renderItem = ({ item }) => {
     switch (user?.role) {
       case 'parent':
+        return (
+          <ClosedCard
+            id={item?.complaintId}
+            date={item?.createdAt}
+            assignedTo={item.assignedTo}
+            department={item.department}
+            text={item.complaintSubject}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
+            onPressSummary={() => openComplaintSummary(item?.complaintId)}
+          />
+        );
+      case 'other':
         return (
           <ClosedCard
             id={item?.complaintId}

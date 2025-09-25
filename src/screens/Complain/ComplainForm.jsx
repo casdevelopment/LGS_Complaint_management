@@ -323,6 +323,7 @@ export default function ComplainForm({ navigation, route }) {
     return map[type] || 'bin';
   };
   const submitComplaint = async () => {
+    console.log('mmmmmmmmmmmmrtrr');
     if (!location || !subject || !description || !selectedType) {
       Alert.alert('Error', 'Please fill all required fields');
       return;
@@ -342,7 +343,11 @@ export default function ComplainForm({ navigation, route }) {
     formData.append('Longitude', coords.longitude || '');
     formData.append('Description', description);
     formData.append('UserId', user.id);
-    formData.append('StudentId', student.studentId);
+    formData.append(
+      'StudentId',
+      user?.role === 'other' ? 0 : student.studentId,
+    );
+
     if (
       category?.complainCategory === 'Others' ||
       subcategory?.complainSubCategory === 'Others'

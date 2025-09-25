@@ -94,6 +94,20 @@ const HistoryScreen = () => {
             onPressSummary={() => openComplaintSummary(item?.complaintId)}
           />
         );
+      case 'other':
+        return (
+          <ClosedCard
+            id={item?.complaintId}
+            date={item?.createdAt}
+            assignedTo={item.assignedTo}
+            department={item.department}
+            text={item.complaintSubject}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
+            onPressSummary={() => openComplaintSummary(item?.complaintId)}
+          />
+        );
       case 'employee':
         return (
           <AdminHistoryCard
@@ -138,33 +152,34 @@ const HistoryScreen = () => {
     <SafeAreaView style={styles.container}>
       <Header title="History" />
       {/* 👇 Filters only for non-parent roles */}
-      {user?.role !== 'parent' && (
-        <View style={styles.filterContainer}>
-          <Image
-            source={require('../../assets/Images/sort.png')}
-            style={{ marginRight: 5 }}
-          />
-          {FILTERS.map(f => (
-            <TouchableOpacity
-              key={f.value}
-              style={[
-                styles.filterButton,
-                activeFilter === f.value && styles.activeFilter,
-              ]}
-              onPress={() => setActiveFilter(f.value)}
-            >
-              <Text
+      {user?.role !== 'parent' ||
+        (user?.role !== 'potherrent' && (
+          <View style={styles.filterContainer}>
+            <Image
+              source={require('../../assets/Images/sort.png')}
+              style={{ marginRight: 5 }}
+            />
+            {FILTERS.map(f => (
+              <TouchableOpacity
+                key={f.value}
                 style={[
-                  styles.filterText,
-                  activeFilter === f.value && styles.activeFilterText,
+                  styles.filterButton,
+                  activeFilter === f.value && styles.activeFilter,
                 ]}
+                onPress={() => setActiveFilter(f.value)}
               >
-                {f.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+                <Text
+                  style={[
+                    styles.filterText,
+                    activeFilter === f.value && styles.activeFilterText,
+                  ]}
+                >
+                  {f.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
 
       <FlatList
         data={history}

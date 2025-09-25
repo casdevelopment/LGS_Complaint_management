@@ -5,6 +5,7 @@ import axiosInstance from '../utils/axiosInstance';
 
 const historyEndpoints = {
   parent: '/api/complaint/complaint-list',
+  other: '/api/complaint/complaint-list',
   employee: '/api/oic/complaint-list',
   oic: '/api/oic/complaint-list',
 };
@@ -12,6 +13,7 @@ const complainSummaryEndpoints = {
   parent: '/api/complaint/complaint-summary',
   employee: '/api/oic/complaint-summary',
   oic: '/api/oic/complaint-summary',
+  other: '/api/complaint/complaint-summary',
 };
 
 export const getAllCampus = async () => {

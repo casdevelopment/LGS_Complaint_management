@@ -40,7 +40,7 @@ const HomeScreen = ({ navigation, route }) => {
   }, [isFocused, user?.id, user?.role]);
 
   useEffect(() => {
-    if (user?.role === 'parent') {
+    if (user?.role === 'parent' || user?.role === 'other') {
       fetchStats();
     } else {
       fetchOICStats();
@@ -76,9 +76,9 @@ const HomeScreen = ({ navigation, route }) => {
       const body = {
         UserId: user?.id,
         Role: user?.role,
-        StudentId: student.studentId,
+        StudentId: role === 'other' ? 0 : student.studentId,
       };
-      const res = await complainDashboard(body, role);
+      const res = await complainDashboard(body);
       if (res?.result === 'success') {
         setStat(res?.data[0] || []);
       }
@@ -175,10 +175,7 @@ const HomeScreen = ({ navigation, route }) => {
               }}
             >
               <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AttendedScreen')}
-                  style={{ flexDirection: 'row' }}
-                >
+                <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={require('../../assets/Images/attended.png')}
                     style={{ marginRight: 10 }}
@@ -187,13 +184,10 @@ const HomeScreen = ({ navigation, route }) => {
                     <Text style={styles.cardTitle}>Attended</Text>
                     <Text style={styles.cardValue}>{stats?.attended}</Text>
                   </View>
-                </TouchableOpacity>
+                </View>
               </View>
               <View style={styles.card2}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('UnattendedScreen')}
-                  style={{ flexDirection: 'row' }}
-                >
+                <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={require('../../assets/Images/bad-feedback.png')}
                     style={{ marginRight: 10 }}
@@ -202,7 +196,7 @@ const HomeScreen = ({ navigation, route }) => {
                     <Text style={styles.cardTitle}>Un Attended</Text>
                     <Text style={styles.cardValue}>{stats?.unAttended}</Text>
                   </View>
-                </TouchableOpacity>
+                </View>
               </View>
             </View>
           </>
@@ -237,10 +231,7 @@ const HomeScreen = ({ navigation, route }) => {
               }}
             >
               <View style={[styles.card2, { flex: 1, marginRight: 10 }]}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AttendedScreen')}
-                  style={{ flexDirection: 'row' }}
-                >
+                <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={require('../../assets/Images/attended.png')}
                     style={{ marginRight: 10 }}
@@ -249,13 +240,10 @@ const HomeScreen = ({ navigation, route }) => {
                     <Text style={styles.cardTitle}>Attended</Text>
                     <Text style={styles.cardValue}>{stats?.attended}</Text>
                   </View>
-                </TouchableOpacity>
+                </View>
               </View>
               <View style={styles.card2}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('UnattendedScreen')}
-                  style={{ flexDirection: 'row' }}
-                >
+                <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={require('../../assets/Images/bad-feedback.png')}
                     style={{ marginRight: 10 }}
@@ -264,12 +252,12 @@ const HomeScreen = ({ navigation, route }) => {
                     <Text style={styles.cardTitle}>Un Attended</Text>
                     <Text style={styles.cardValue}>{stats?.unAttended}</Text>
                   </View>
-                </TouchableOpacity>
+                </View>
               </View>
             </View>
           </>
         )}
-        {(!role || role === 'parent') && (
+        {(!role || role === 'parent' || role === 'other') && (
           <>
             {/* Complaint Cards */}
             <View style={styles.card}>

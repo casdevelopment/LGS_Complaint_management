@@ -45,6 +45,7 @@ const HistoryModal = forwardRef((props, ref) => {
   const [complaintId, setComplaintId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState(null);
+  console.log(summary, '======');
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0); // 1–5 stars
   const [submitting, setSubmitting] = useState(false);
@@ -159,6 +160,8 @@ const HistoryModal = forwardRef((props, ref) => {
       summary?.urlFour,
       summary?.urlFive,
     ].filter(Boolean);
+
+    console.log(fileUrls, 'mmmm');
 
     if (fileUrls.length === 0) return null;
 
@@ -316,7 +319,8 @@ const HistoryModal = forwardRef((props, ref) => {
 
         {/* ⭐ Review UI Section */}
         {(!summary?.rating ||
-          (summary?.rating.length === 0 && user?.role === 'parent')) && (
+          (summary?.rating.length === 0 &&
+            (user?.role === 'parent' || user?.role === 'other'))) && (
           <View style={styles.reviewBox}>
             <TextInput
               placeholder="Write Your Reviews"

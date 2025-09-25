@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -16,6 +17,8 @@ import { getStudentList } from '../../Network/apis';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector, useDispatch } from 'react-redux';
 import { setStudent } from '../../Redux/slices/AuthSlice';
+import { logout, resetAuth } from '../../Redux/slices/AuthSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function StudentScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -60,6 +63,32 @@ export default function StudentScreen({ navigation }) {
       </Text>
     </TouchableOpacity>
   );
+  const handleLogout = async () => {
+    try {
+      Alert.alert(
+        'Logout',
+        'Are you sure you want to log out?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Logout',
+            onPress: async () => {
+              // 2. Remove token from AsyncStorage
+              await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+
+              // 3. Dispatch Redux logout action
+              dispatch(logout());
+              dispatch(resetAuth());
+            },
+          },
+        ],
+        { cancelable: true },
+      );
+    } catch (error) {
+      console.error('Logout Error:', error);
+      Alert.alert('Logout Failed', 'Something went wrong. Please try again.');
+    }
+  };
 
   return (
     <SafeAreaView
@@ -69,13 +98,21 @@ export default function StudentScreen({ navigation }) {
       <View style={styles.container}>
         {/* Back Button */}
         <TouchableOpacity
-          style={styles.topLeft}
-          onPress={() => navigation.goBack()}
+          style={styles.signOutButton}
+          onPress={async () => {
+            try {
+              // remove tokens
+              await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+
+              // clear redux state
+              dispatch(logout());
+              dispatch(resetAuth());
+            } catch (error) {
+              console.error('Logout Error:', error);
+            }
+          }}
         >
-          <Image
-            source={require('../../assets/Images/turn-back.png')}
-            resizeMode="stretch"
-          />
+          <Text style={styles.signOutText}>Sign out</Text>
         </TouchableOpacity>
 
         <Image
@@ -103,6 +140,11 @@ export default function StudentScreen({ navigation }) {
             // numColumns={1}
             // columnWrapperStyle={{ justifyContent: 'space-between' }}
             contentContainerStyle={{ paddingBottom: 150 }}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No students found</Text>
+              </View>
+            }
           />
         )}
       </View>
@@ -196,5 +238,35 @@ const styles = StyleSheet.create({
     color: '#888',
     marginTop: 4,
     textAlign: 'center',
+  },
+  signOutButton: {
+    position: 'absolute',
+    top: 45,
+    left: 25,
+    backgroundColor: '#07294D',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  signOutText: {
+    color: '#fff',
+    fontSize: 14,
+    fontFamily: 'Asap-SemiBold',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: hp('10%'),
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: 'Asap-Regular',
+    color: '#888',
   },
 });

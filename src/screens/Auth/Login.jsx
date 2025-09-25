@@ -24,7 +24,7 @@ import messaging from '@react-native-firebase/messaging';
 import { useFocusEffect } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {
-  const [role, setRole] = useState('General');
+  const [role, setRole] = useState('Parent');
   const [loading, setLoading] = useState(false);
   const [fcmToken, setFcmToken] = useState(null); // store token in state
   const dispatch = useDispatch();
@@ -74,7 +74,24 @@ const Login = ({ navigation }) => {
   const handleLogin = async values => {
     try {
       setLoading(true);
-      const apiRole = role === 'General' ? 'parent' : role.toLowerCase();
+      // Map UI role to API role
+      let apiRole;
+      switch (role) {
+        case 'Parent':
+          apiRole = 'parent';
+          break;
+        case 'Employee':
+          apiRole = 'employee';
+          break;
+        case 'OIC':
+          apiRole = 'oic';
+          break;
+        case 'General': // 👈 send "other" for General
+          apiRole = 'other';
+          break;
+        default:
+          apiRole = 'other';
+      }
       const body = {
         Role: apiRole,
         EmailOrPhone: values.emailOrPhone,
@@ -134,7 +151,7 @@ const Login = ({ navigation }) => {
       setLoading(false);
     }
   };
-
+  const roles = ['Parent', 'Employee', 'OIC', 'General'];
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -161,7 +178,7 @@ const Login = ({ navigation }) => {
 
           {/* Role selection */}
           <View style={styles.roleContainer}>
-            {['General', 'Employee', 'OIC'].map(item => (
+            {roles.map(item => (
               <TouchableOpacity
                 key={item}
                 style={styles.roleOption}
