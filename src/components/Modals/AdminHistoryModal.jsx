@@ -23,6 +23,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetScrollView,
+  BottomSheetTextInput,
 } from '@gorhom/bottom-sheet';
 import { COLORS } from '../../utils/colors';
 import { complainHistorySummary } from '../../Network/apis';
@@ -335,7 +336,8 @@ const AdminHistoryModal = forwardRef(
               value={status}
               onChange={item => setStatus(item.value)}
             />
-            <TextInput
+
+            <BottomSheetTextInput
               style={styles.textArea}
               placeholder="Write Your Reviews"
               placeholderTextColor="#aaa"
@@ -435,6 +437,8 @@ const AdminHistoryModal = forwardRef(
         backdropComponent={renderBackDrop}
         enablePanDownToClose
         enableOverDrag={false}
+        android_keyboardInputMode={'adjustResize'}
+        keyboardBehavior={'fillParent'}
         stackBehavior="push"
         backgroundStyle={styles.bgStyle}
         onDismiss={() => {
@@ -558,7 +562,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainerStyle: {
-    paddingBottom: 150,
+    paddingBottom: 50,
     paddingHorizontal: 20,
   },
   sheetContent: { flex: 1, padding: 5 },

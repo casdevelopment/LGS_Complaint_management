@@ -81,13 +81,13 @@ const UpdateProfile = ({ navigation }) => {
 
   const handleUpdate = async values => {
     try {
-      if (!isEmployeeOrAdmin) {
-        // if campus changed but no class selected
-        if (values.campus !== String(user?.campusid) && !values.classValue) {
-          Alert.alert('Error', 'Please select a class after changing campus');
-          return;
-        }
-      }
+      // if (!isEmployeeOrAdmin) {
+      //   // if campus changed but no class selected
+      //   if (values.campus !== String(user?.campusid) && !values.classValue) {
+      //     Alert.alert('Error', 'Please select a class after changing campus');
+      //     return;
+      //   }
+      // }
 
       setLoading(true);
 
@@ -100,15 +100,15 @@ const UpdateProfile = ({ navigation }) => {
         phone: values.phone,
       };
 
-      if (!isEmployeeOrAdmin) {
-        body.campus = values.campus
-          ? String(values.campus)
-          : String(user?.campusid);
+      // if (!isEmployeeOrAdmin) {
+      //   body.campus = values.campus
+      //     ? String(values.campus)
+      //     : String(user?.campusid);
 
-        body.class = values.classValue
-          ? String(values.classValue)
-          : String(user?.campusclassid);
-      }
+      //   body.class = values.classValue
+      //     ? String(values.classValue)
+      //     : String(user?.campusclassid);
+      // }
 
       console.log('Update body:', body);
 
@@ -202,7 +202,7 @@ const UpdateProfile = ({ navigation }) => {
                 />
 
                 {/* Show dropdowns only if not employee/admin */}
-                {!isEmployeeOrAdmin && (
+                {/* {!isEmployeeOrAdmin && (
                   <>
                     <CustomDropdown
                       data={campusData}
@@ -219,12 +219,12 @@ const UpdateProfile = ({ navigation }) => {
                       disabled={!values.campus}
                     />
                   </>
-                )}
+                )} */}
 
                 <TouchableOpacity
                   onPress={handleSubmit}
                   style={{
-                    marginTop: 20,
+                    marginTop: 30,
                     backgroundColor: '#07294D',
                     padding: 15,
                     borderRadius: 10,
