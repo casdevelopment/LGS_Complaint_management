@@ -155,8 +155,14 @@ const ForwardModal = forwardRef((props, ref) => {
     try {
       setLoading(true);
       await forwardComplaint(body);
-      Alert.alert('Success', 'Complaint forwarded successfully.');
-      modalRef.current?.dismiss();
+      Alert.alert('Success', 'Complaint forwarded successfully.', [
+        {
+          text: 'OK',
+          onPress: () => {
+            modalRef.current?.dismiss();
+          },
+        },
+      ]);
     } catch (err) {
       console.log('Error forwarding complaint:', err);
       Alert.alert('Error', 'Failed to forward complaint.');

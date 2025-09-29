@@ -152,7 +152,7 @@ const HistoryScreen = () => {
     <SafeAreaView style={styles.container}>
       <Header title="History" />
       {/* 👇 Filters only for non-parent roles */}
-      {user?.role !== 'parent' ||
+      {/* {user?.role !== 'parent' ||
         (user?.role !== 'potherrent' && (
           <View style={styles.filterContainer}>
             <Image
@@ -179,7 +179,7 @@ const HistoryScreen = () => {
               </TouchableOpacity>
             ))}
           </View>
-        ))}
+        ))} */}
 
       <FlatList
         data={history}

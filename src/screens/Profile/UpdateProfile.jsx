@@ -124,8 +124,14 @@ const UpdateProfile = ({ navigation }) => {
             user: res?.data?.user,
           }),
         );
-        Alert.alert('Success', 'Profile updated successfully');
-        navigation.goBack();
+        Alert.alert('Success', 'Profile updated successfully', [
+          {
+            text: 'OK',
+            onPress: () => {
+              navigation.goBack(); // 👈 only go back after pressing OK
+            },
+          },
+        ]);
       } else {
         Alert.alert('Error', res?.message || 'Update failed');
       }

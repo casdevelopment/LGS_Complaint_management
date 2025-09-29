@@ -63,12 +63,20 @@ const UpdatePassword = ({ navigation }) => {
                 };
 
                 const response = await updatePassword(payload);
+
                 Alert.alert(
                   'Success',
                   response?.message || 'Password updated successfully',
+                  [
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        resetForm();
+                        navigation.goBack(); // 👈 only after OK press
+                      },
+                    },
+                  ],
                 );
-                resetForm();
-                navigation.goBack();
               } catch (error) {
                 Alert.alert(
                   'Error',
@@ -96,6 +104,7 @@ const UpdatePassword = ({ navigation }) => {
                   value={values.oldPassword}
                   onChangeText={handleChange('oldPassword')}
                   onBlur={handleBlur('oldPassword')}
+                  showToggle
                   error={touched.oldPassword && errors.oldPassword}
                 />
 
@@ -106,6 +115,7 @@ const UpdatePassword = ({ navigation }) => {
                   value={values.newPassword}
                   onChangeText={handleChange('newPassword')}
                   onBlur={handleBlur('newPassword')}
+                  showToggle
                   error={touched.newPassword && errors.newPassword}
                 />
 
@@ -116,6 +126,7 @@ const UpdatePassword = ({ navigation }) => {
                   value={values.confirmPassword}
                   onChangeText={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
+                  showToggle
                   error={touched.confirmPassword && errors.confirmPassword}
                 />
 

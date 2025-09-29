@@ -101,9 +101,18 @@ const DropModal = forwardRef((props, ref) => {
 
     try {
       setLoading(true);
-      await dropComplaint(body);
-      Alert.alert('Success', 'Complaint dropped successfully.');
-      modalRef.current?.dismiss();
+      const res = await dropComplaint(body);
+      if (res?.result === 'success') {
+        Alert.alert('Success', 'Complaint dropped successfully.', [
+          {
+            text: 'OK',
+            onPress: () => {
+              setReview('');
+              modalRef.current?.dismiss();
+            },
+          },
+        ]);
+      }
     } catch (err) {
       console.log('Error drop complaint:', err);
       Alert.alert('Error', 'Failed to drop complaint.');

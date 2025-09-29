@@ -41,9 +41,9 @@ const AdminOpenComplaints = ({ route }) => {
       const body = {
         UserId: user?.id,
         Role: user?.role,
-        CampusId: campus.schoolId,
-        ClassId: classes.classId,
-        Status: complainStatus.status,
+        CampusId: campus?.schoolId,
+        ClassId: classes?.classId,
+        Status: complainStatus?.status,
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {

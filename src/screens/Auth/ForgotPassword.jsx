@@ -201,10 +201,11 @@ const styles = StyleSheet.create({
   },
   signupContainer: {
     alignSelf: 'center',
-    position: 'absolute',
+    //position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
-    bottom: hp('4'),
+    marginTop: hp('19%'), // ✅ no more absolute
+    marginBottom: hp('2%'),
   },
   signupText: {
     fontSize: 14,

@@ -140,10 +140,16 @@ const HistoryModal = forwardRef((props, ref) => {
     try {
       setSubmitting(true);
       await parentReview(body); // <-- your API call
-      Alert.alert('Success', 'Review submitted successfully!');
-      setReviewText('');
-      setRating(0);
-      ref?.current?.closeModal(); // close bottomsheet
+      Alert.alert('Success', 'Review submitted successfully!', [
+        {
+          text: 'OK',
+          onPress: () => {
+            setReviewText('');
+            setRating(0);
+            ref?.current?.closeModal(); // 👈 close after pressing OK
+          },
+        },
+      ]);
     } catch (error) {
       console.log('Error submitting review:', error);
       Alert.alert(
@@ -492,10 +498,27 @@ const HistoryModal = forwardRef((props, ref) => {
             <Text style={{ fontSize: 16 }}>✕</Text>
           </TouchableOpacity>
           {isImage ? (
-            <Image
-              source={{ uri: previewUrl || '' }}
-              style={{ flex: 1, resizeMode: 'contain' }}
-            />
+            <>
+              <Image
+                source={{ uri: previewUrl || '' }}
+                style={{ flex: 1, resizeMode: 'contain' }}
+                onLoadStart={() => setWebViewLoading(true)} // Reuse webViewLoading for image
+                onLoadEnd={() => setWebViewLoading(false)}
+              />
+              {webViewLoading && (
+                <ActivityIndicator
+                  size="large"
+                  color="#fff"
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginLeft: -15,
+                    marginTop: -15,
+                  }}
+                />
+              )}
+            </>
           ) : (
             <>
               <WebView

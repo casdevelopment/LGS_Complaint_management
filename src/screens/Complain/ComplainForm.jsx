@@ -379,8 +379,16 @@ export default function ComplainForm({ navigation, route }) {
     try {
       setLoading(true);
       const res = await launchComplaint(formData);
-      Alert.alert('Success', 'Complaint submitted successfully!');
-      navigation.navigate('HomeScreen');
+      if (res?.result === 'success') {
+        Alert.alert('Success', 'Complaint submitted successfully!', [
+          {
+            text: 'OK',
+            onPress: () => {
+              navigation.navigate('HomeScreen');
+            },
+          },
+        ]);
+      }
     } catch (err) {
       console.error('Error submitting complaint:', err.response?.data || err);
       Alert.alert('Error', 'Failed to submit complaint');

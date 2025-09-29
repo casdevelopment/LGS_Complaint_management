@@ -153,9 +153,15 @@ const AdminHistoryModal = forwardRef(
         const data = await closeComplaint(body);
 
         if (data?.result === 'success') {
-          Alert.alert('Success', 'Complaint closed successfully');
-          setReview('');
-          ref.current?.closeModal();
+          Alert.alert('Success', 'Complaint closed successfully', [
+            {
+              text: 'OK',
+              onPress: () => {
+                setReview('');
+                ref.current?.closeModal();
+              },
+            },
+          ]);
         }
       } catch (err) {
         console.log('Close complaint error:', err);
@@ -509,10 +515,27 @@ const AdminHistoryModal = forwardRef(
               <Text style={{ fontSize: 16 }}>✕</Text>
             </TouchableOpacity>
             {isImage ? (
-              <Image
-                source={{ uri: previewUrl || '' }}
-                style={{ flex: 1, resizeMode: 'contain' }}
-              />
+              <>
+                <Image
+                  source={{ uri: previewUrl || '' }}
+                  style={{ flex: 1, resizeMode: 'contain' }}
+                  onLoadStart={() => setWebViewLoading(true)} // Reuse webViewLoading for image
+                  onLoadEnd={() => setWebViewLoading(false)}
+                />
+                {webViewLoading && (
+                  <ActivityIndicator
+                    size="large"
+                    color="#fff"
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      marginLeft: -15,
+                      marginTop: -15,
+                    }}
+                  />
+                )}
+              </>
             ) : (
               <>
                 <WebView
