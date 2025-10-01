@@ -73,6 +73,24 @@ export default function ComplainForm({ navigation, route }) {
     }
     return true;
   };
+  const requestPermissionsOnButton = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const grants = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+        ]);
+
+        return Object.values(grants).every(
+          status => status === PermissionsAndroid.RESULTS.GRANTED,
+        );
+      } catch (err) {
+        console.warn('Permission request error:', err);
+        return false;
+      }
+    }
+    return true;
+  };
 
   // ✅ File size check (max 500KB)
   const checkFileSize = async uri => {
@@ -87,7 +105,7 @@ export default function ComplainForm({ navigation, route }) {
   // 📂 Pick any document
   const handleDocumentPick = async () => {
     if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
-    const hasPerm = await requestPermissions();
+    const hasPerm = await requestPermissionsOnButton();
     if (!hasPerm) return;
 
     try {
@@ -111,7 +129,7 @@ export default function ComplainForm({ navigation, route }) {
   // 📸 Capture photo
   const captureImage = async () => {
     if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
-    const hasPerm = await requestPermissions();
+    const hasPerm = await requestPermissionsOnButton();
     if (!hasPerm) return;
     const res = await launchCamera({ mediaType: 'photo' });
     if (!res.didCancel && res.assets?.length) {
@@ -125,7 +143,7 @@ export default function ComplainForm({ navigation, route }) {
   // 🎥 Capture video
   const captureVideo = async () => {
     if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
-    const hasPerm = await requestPermissions();
+    const hasPerm = await requestPermissionsOnButton();
     if (!hasPerm) return;
     const res = await launchCamera({ mediaType: 'video' });
     if (!res.didCancel && res.assets?.length) {
@@ -139,7 +157,7 @@ export default function ComplainForm({ navigation, route }) {
   // 🎤 Audio recording
   const startRecording = async () => {
     if (files.length >= 5) return Alert.alert('Limit Reached', 'Max 5 files');
-    const hasPerm = await requestPermissions();
+    const hasPerm = await requestPermissionsOnButton();
     if (!hasPerm) return;
 
     AudioRecord.init({
@@ -179,7 +197,7 @@ export default function ComplainForm({ navigation, route }) {
   };
   // 🎤 Toggle Audio Recording
   const toggleRecording = async () => {
-    const hasPerm = await requestPermissions();
+    const hasPerm = await requestPermissionsOnButton();
     if (!hasPerm) return;
 
     if (!isRecording) {
@@ -277,11 +295,11 @@ export default function ComplainForm({ navigation, route }) {
       error => {
         console.error('Location error:', error);
         if (isMounted) {
-          Alert.alert('Error', 'Unable to fetch location');
+          Alert.alert('Error', error.message || 'Unable to fetch location');
         }
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         timeout: 15000,
         maximumAge: 10000,
       },

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { COLORS } from '../../utils/colors';
-// import { FontAwesome5 } from '@expo/vector-icons';
 
 const AdminHistoryCard = ({
   id,
@@ -15,6 +14,7 @@ const AdminHistoryCard = ({
   onPressSummary,
   onPressAssignAgent,
   onPressDropComplaint,
+  onPressCard, // 👈 new prop for card press
 }) => {
   const renderStars = rating =>
     Array.from({ length: 5 }, (_, i) => (
@@ -22,7 +22,7 @@ const AdminHistoryCard = ({
         {i < rating ? '★' : '☆'}
       </Text>
     ));
-  // complaint stage dots
+
   const renderStageDots = stage => (
     <View style={styles.stageDotsContainer}>
       {[1, 2, 3].map(i => (
@@ -37,8 +37,9 @@ const AdminHistoryCard = ({
     </View>
   );
 
-  return (
+  const CardContent = () => (
     <View style={styles.cardContainer}>
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Text style={styles.idText}>ID #{id}</Text>
@@ -48,13 +49,9 @@ const AdminHistoryCard = ({
           {renderStageDots(complainStage)}
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+
+      {/* Main text + thumbs */}
+      <View style={styles.rowBetween}>
         <Text style={styles.mainText}>{text}</Text>
         {rating > 0 && (
           <Image
@@ -67,6 +64,8 @@ const AdminHistoryCard = ({
           />
         )}
       </View>
+
+      {/* Details */}
       <View style={styles.detailsRow}>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Assigned To</Text>
@@ -86,6 +85,8 @@ const AdminHistoryCard = ({
           </Text>
         </View>
       </View>
+
+      {/* Footer */}
       <View style={styles.footer}>
         {assignedTo && assignedTo.trim() !== '' ? (
           <>
@@ -105,23 +106,19 @@ const AdminHistoryCard = ({
           </>
         )}
       </View>
-
-      {/* <View style={styles.footer}>
-        {assignedTo && assignedTo.trim() !== '' ? (
-          <TouchableOpacity onPress={onPressSummary}>
-            <Text style={styles.viewSummaryText}>View Summary</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={onPressAssignAgent}>
-            <Text style={styles.assignAgentText}>Assign Agent</Text>
-          </TouchableOpacity>
-        )}
-        {assignedTo && assignedTo.trim() !== '' && (
-          <View style={styles.starsContainer}>{renderStars(rating)}</View>
-        )}
-      </View> */}
     </View>
   );
+
+  // 👇 Wrap the card in TouchableOpacity if not assigned
+  if (!assignedTo || assignedTo.trim() === '') {
+    return (
+      <TouchableOpacity activeOpacity={0.8} onPress={onPressCard}>
+        <CardContent />
+      </TouchableOpacity>
+    );
+  }
+
+  return <CardContent />;
 };
 
 const styles = StyleSheet.create({
@@ -143,50 +140,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', flex: 1 },
   idText: {
     fontSize: 10,
     fontFamily: 'Asap-Regular',
     marginRight: 10,
     color: COLORS.primary,
   },
-  stageDotsContainer: {
+  stageDotsContainer: { flexDirection: 'row', alignItems: 'center' },
+  stageDot: { width: 8, height: 8, borderRadius: 4, marginHorizontal: 2 },
+  dateText: { fontSize: 8, color: COLORS.primary, fontFamily: 'Asap-Regular' },
+  dotsButton: { marginRight: 8 },
+  rowBetween: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  stageDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 2,
-  },
-  dateText: {
-    fontSize: 8,
-    color: COLORS.primary,
-    fontFamily: 'Asap-Regular',
-  },
-  dotsButton: {
-    // marginLeft: 'auto',
-    marginRight: 8,
-  },
-  thumbsDownIcon: {},
   mainText: {
     fontSize: 14,
     color: COLORS.black,
     marginBottom: 15,
     fontFamily: 'Asap-Medium',
   },
-  detailsRow: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-  detailItem: {
-    // flex: 1,
-  },
+  detailsRow: { flexDirection: 'row', marginBottom: 8 },
   detailLabel: {
     fontSize: 12,
     color: COLORS.black,
@@ -210,13 +186,8 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     textDecorationColor: '#5175B2',
   },
-  starsContainer: {
-    flexDirection: 'row',
-  },
-  star: {
-    color: '#FFC107',
-    marginHorizontal: 1,
-  },
+  starsContainer: { flexDirection: 'row' },
+  star: { color: '#FFC107', marginHorizontal: 1 },
   assignAgentText: {
     color: '#5175B2',
     fontFamily: 'Asap-Medium',

@@ -27,8 +27,8 @@ const AdminOpenComplaints = ({ route }) => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
 
-  const openAdminComplaintSummary = useCallback(id => {
-    adminHistortModalRef.current?.openModal(id);
+  const openAdminComplaintSummary = useCallback((id, canAssign) => {
+    adminHistortModalRef.current?.openModal(id, canAssign);
   }, []);
 
   useEffect(() => {
@@ -69,6 +69,9 @@ const AdminOpenComplaints = ({ route }) => {
             rating={item?.parentRating}
             thumb={item?.isThumbUp}
             complainStage={item?.complaintStageId}
+            onPressCard={() =>
+              openAdminComplaintSummary(item?.complaintId, false)
+            }
             onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
             onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
             onPressDropComplaint={() => openDropComplain(item?.complaintId)}

@@ -57,6 +57,7 @@ const AdminHistoryModal = forwardRef(
     const [isImage, setIsImage] = useState(false);
     const [webViewLoading, setWebViewLoading] = useState(false);
     const [docLoading, setDocLoading] = useState(false);
+    const [showAttachments, setShowAttachments] = useState(true);
 
     const statusOptions = [
       { label: 'Closed', value: 'Closed' },
@@ -89,7 +90,7 @@ const AdminHistoryModal = forwardRef(
 
     useImperativeHandle(ref, () => ({
       // Add `id` as a parameter to the `openModal` function.
-      openModal: async id => {
+      openModal: async (id, canAssign = true) => {
         modalRef.current?.present();
 
         if (id) {
@@ -97,7 +98,7 @@ const AdminHistoryModal = forwardRef(
           setComplaintId(id);
           setLoading(true);
           setSummary(null); // reset before fetch
-
+          setShowAttachments(canAssign);
           const body = {
             UserId: user?.id,
             ComplaintId: id, // Use the ID passed as a parameter.
@@ -480,7 +481,7 @@ const AdminHistoryModal = forwardRef(
                 </>
               )}
 
-              {renderClosedRemarks()}
+              {showAttachments && renderClosedRemarks()}
             </View>
           ) : (
             <Text

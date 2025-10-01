@@ -15,6 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import { getConplainCategories } from '../../Network/apis';
 import { getAllCampus } from '../../Network/apis';
+import Loader from '../../components/Loader/Loader';
 
 export default function CampusScreen({ navigation, route }) {
   const { category, subcategory } = route.params;
@@ -29,7 +30,6 @@ export default function CampusScreen({ navigation, route }) {
     setLoading(true);
     try {
       const res = await getAllCampus();
-      console.log(res, '==============9999999============');
       if (res?.result === 'success') {
         setCategories(res.data || []);
       }
@@ -80,31 +80,32 @@ export default function CampusScreen({ navigation, route }) {
       <Text style={styles.subtitle}>Select Campus</Text>
 
       {/* Loader */}
-      {loading ? (
+      {/* {loading ? (
         <ActivityIndicator
           size="large"
           color="#07294D"
           style={{ marginTop: hp('10%') }}
         />
-      ) : (
-        <FlatList
-          data={categories}
-          renderItem={renderItem}
-          keyExtractor={item => item.schoolId.toString()}
-          numColumns={2}
-          columnWrapperStyle={{ justifyContent: 'space-between' }}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          initialNumToRender={6} // render 6 items first
-          windowSize={5} // render more items around the viewport
-          maxToRenderPerBatch={10} // batch rendering
-          removeClippedSubviews={true} // unmount offscreen items
-          getItemLayout={(data, index) => ({
-            length: 200,
-            offset: 200 * index,
-            index,
-          })}
-        />
-      )}
+      ) : ( */}
+      <FlatList
+        data={categories}
+        renderItem={renderItem}
+        keyExtractor={item => item.schoolId.toString()}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        // initialNumToRender={6} // render 6 items first
+        // windowSize={5} // render more items around the viewport
+        // maxToRenderPerBatch={10} // batch rendering
+        removeClippedSubviews={true} // unmount offscreen items
+        // getItemLayout={(data, index) => ({
+        //   length: 200,
+        //   offset: 200 * index,
+        //   index,
+        // })}
+      />
+      {/* )} */}
+      {loading && <Loader />}
     </View>
   );
 }
