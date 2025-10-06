@@ -198,10 +198,10 @@ const styles = StyleSheet.create({
   },
   signupContainer: {
     alignSelf: 'center',
-    position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
-    bottom: hp('4'),
+    marginTop: hp('22%'),
+    marginBottom: hp('4%'),
   },
   signupText: {
     fontSize: 14,

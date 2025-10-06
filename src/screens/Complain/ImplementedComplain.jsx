@@ -51,6 +51,7 @@ const ImplementedComplain = () => {
           <ClosedCard
             id={item?.complaintId}
             date={item?.createdAt}
+            data={item}
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}

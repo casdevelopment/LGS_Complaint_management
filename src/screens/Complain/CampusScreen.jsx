@@ -49,7 +49,7 @@ export default function CampusScreen({ navigation, route }) {
       onPress={() => handleCategorySelect(item)}
     >
       <Image
-        source={{ uri: item.schoolIcon }} // assuming API gives image URL
+        source={require('../../assets/Images/lges-logo.png')}
         style={styles.cardImage}
         resizeMode="contain"
       />

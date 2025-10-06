@@ -341,7 +341,6 @@ export default function ComplainForm({ navigation, route }) {
     return map[type] || 'bin';
   };
   const submitComplaint = async () => {
-    console.log('mmmmmmmmmmmmrtrr');
     if (!location || !subject || !description || !selectedType) {
       Alert.alert('Error', 'Please fill all required fields');
       return;
@@ -367,8 +366,10 @@ export default function ComplainForm({ navigation, route }) {
     );
 
     if (
-      category?.complainCategory === 'Others' ||
-      subcategory?.complainSubCategory === 'Others'
+      category?.complainCategory?.toLowerCase() === 'other' ||
+      category?.complainCategory?.toLowerCase() === 'others' ||
+      subcategory?.complainSubCategory?.toLowerCase() === 'other' ||
+      subcategory?.complainSubCategory?.toLowerCase() === 'others'
     ) {
       formData.append('OtherRemarks', otherRemarks);
     }
@@ -461,6 +462,15 @@ export default function ComplainForm({ navigation, route }) {
           </View>
 
           <View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Enter Subject"
+                placeholderTextColor="#999"
+                style={styles.input}
+                value={subject}
+                onChangeText={text => setSubject(text)}
+              />
+            </View>
             <Dropdown
               style={styles.dropdown}
               data={complainTypes}
@@ -471,16 +481,6 @@ export default function ComplainForm({ navigation, route }) {
               value={selectedType}
               onChange={item => setSelectedType(item.value)}
             />
-
-            <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="Enter Subject"
-                placeholderTextColor="#999"
-                style={styles.input}
-                value={subject}
-                onChangeText={text => setSubject(text)}
-              />
-            </View>
           </View>
           {/* Description Field */}
           <TextInput
@@ -492,8 +492,10 @@ export default function ComplainForm({ navigation, route }) {
             value={description}
             onChangeText={text => setDescription(text)}
           />
-          {(category?.complainCategory === 'Others' ||
-            subcategory?.complainSubCategory === 'Others') && (
+          {(category?.complainCategory?.toLowerCase() === 'other' ||
+            category?.complainCategory?.toLowerCase() === 'others' ||
+            subcategory?.complainSubCategory?.toLowerCase() === 'other' ||
+            subcategory?.complainSubCategory?.toLowerCase() === 'others') && (
             <TextInput
               style={styles.description}
               placeholder="Other Remarks"
