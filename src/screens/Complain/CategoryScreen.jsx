@@ -37,9 +37,22 @@ export default function CategoryScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() =>
-        navigation.navigate('SubCategoryScreen', { category: item })
-      }
+      onPress={() => {
+        if (item?.complainCategory?.toLowerCase() === 'other') {
+          navigation.navigate('CampusScreen', {
+            category: item,
+            subcategory: {
+              complainSubCategory: 'Others',
+              complainSubCategoryId: 0,
+            },
+          });
+        } else {
+          navigation.navigate('SubCategoryScreen', { category: item });
+        }
+      }}
+      // onPress={() =>
+      //   navigation.navigate('SubCategoryScreen', { category: item })
+      // }
     >
       <Image
         source={{ uri: item.categoryIcon }} // assuming API gives image URL

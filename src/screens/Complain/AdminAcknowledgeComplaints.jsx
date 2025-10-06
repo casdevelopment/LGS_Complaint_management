@@ -45,6 +45,7 @@ const AdminAcknowledgeComplaints = ({ route }) => {
         ClassId: classes.classId,
         Status: complainStatus.status,
       };
+      console.log(body, 'ccccv');
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {
         setHistory(res?.data || []);
@@ -63,6 +64,7 @@ const AdminAcknowledgeComplaints = ({ route }) => {
           <AdminHistoryCard
             id={item?.complaintId}
             date={item?.createdAt}
+            data={item}
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}
@@ -79,6 +81,7 @@ const AdminAcknowledgeComplaints = ({ route }) => {
           <AdminHistoryCard
             id={item?.complaintId}
             date={item?.createdAt}
+            data={item}
             assignedTo={item.assignedTo}
             department={item.department}
             text={item.complaintSubject}

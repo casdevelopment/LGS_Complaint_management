@@ -29,6 +29,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
   const user = useSelector(state => state.auth.user);
   const student = useSelector(state => state.auth.student);
+  console.log(student, 'mmmmmmuuuui');
   const role = user?.role;
   const isFocused = useIsFocused();
 
