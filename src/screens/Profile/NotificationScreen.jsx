@@ -102,7 +102,7 @@ const NotificationScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <Header title="Notifications" />
+      <Header title="Activity Log" />
 
       {/* Tabs */}
       <View style={styles.tabs}>

@@ -382,8 +382,13 @@ const HomeScreen = ({ navigation, route }) => {
               style={styles.newComplaintBtn}
             >
               <Image
-                source={require('../../assets/Images/angry-customer.png')}
-                style={{ marginRight: 10 }}
+                source={require('../../assets/Images/plus.jpg')}
+                style={{
+                  marginRight: 10,
+                  height: 20,
+                  width: 20,
+                  resizeMode: 'contain',
+                }}
               />
               <Text style={styles.newComplaintText}>New Complaint</Text>
             </TouchableOpacity>

@@ -37,7 +37,7 @@ const AdmissionCarousel = () => {
       ref={carouselRef}
       width={width - 40}
       height={180}
-      //   autoPlay
+      autoPlay
       loop
       data={data}
       scrollAnimationDuration={1000}

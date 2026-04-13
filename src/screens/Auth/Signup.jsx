@@ -40,46 +40,7 @@ const Signup = ({ navigation, route }) => {
   const [campusLoading, setCampusLoading] = useState(false);
   const [classLoading, setClassLoading] = useState(false);
   const [signupLoading, setSignupLoading] = useState(false);
-  // Fetch campus list on mount
-  // useEffect(() => {
-  //   const fetchCampuses = async () => {
-  //     setCampusLoading(true); // 👈 show loader
-  //     try {
-  //       const res = await getAllCampus();
-  //       const formatted = res?.data?.map(item => ({
-  //         label: item.school, // 👈 depends on API response key
-  //         value: item.schoolId,
-  //       }));
-  //       setCampusData(formatted || []);
-  //     } catch (err) {
-  //       console.error('Error loading campuses:', err);
-  //     } finally {
-  //       setCampusLoading(false); // 👈 hide loader
-  //     }
-  //   };
-  //   fetchCampuses();
-  // }, []);
-  // const handleCampusChange = async (campusId, setFieldValue) => {
-  //   setFieldValue('campus', campusId);
-  //   setFieldValue('classValue', ''); // reset class
-  //   setClassData([]); // reset old class list
 
-  //   try {
-  //     setClassLoading(true); // 👈 specific state for dropdown
-  //     const res = await getAllClasses(campusId);
-  //     const formatted = res?.data?.map(item => ({
-  //       label: item.class, // 👈 depends on API response key
-  //       value: item.classId,
-  //     }));
-  //     setClassData(formatted || []);
-  //   } catch (err) {
-  //     console.error('Error loading classes:', err);
-  //   } finally {
-  //     setClassLoading(false);
-  //   }
-  // };
-
-  // Pick image with base64
   const selectImage = setFieldValue => {
     launchImageLibrary(
       { mediaType: 'photo', includeBase64: true },
@@ -161,7 +122,7 @@ const Signup = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
@@ -179,19 +140,6 @@ const Signup = ({ navigation, route }) => {
           <Text style={styles.subtitle}>
             Enter your credentials to get login
           </Text>
-          {/* <TouchableOpacity
-            onPress={selectImage}
-            style={{ alignSelf: 'center' }}
-          >
-            <Image
-              source={
-                profileImage
-                  ? { uri: profileImage.uri }
-                  : require('../../assets/Images/profile-picture.png')
-              }
-              style={styles.profilePic}
-            />
-          </TouchableOpacity> */}
 
           <Formik
             initialValues={{
@@ -265,31 +213,6 @@ const Signup = ({ navigation, route }) => {
                   error={touched.confirmPassword && errors.confirmPassword}
                   showToggle
                 />
-
-                {/* {role?.toLowerCase() === 'parent' && (
-                  <>
-                    <CustomDropdown
-                      data={campusData}
-                      placeholder="Select your Campus"
-                      value={values.campus}
-                      onChange={val => handleCampusChange(val, setFieldValue)}
-                      error={touched.campus && errors.campus}
-                    />
-
-                    <CustomDropdown
-                      data={classData}
-                      placeholder={
-                        classLoading
-                          ? 'Loading classes...'
-                          : 'Select your class'
-                      }
-                      value={values.classValue}
-                      onChange={val => setFieldValue('classValue', val)}
-                      error={touched.classValue && errors.classValue}
-                      disabled={classLoading || !values.campus}
-                    />
-                  </>
-                )} */}
 
                 <TouchableOpacity
                   onPress={handleSubmit}

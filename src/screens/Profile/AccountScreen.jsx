@@ -180,7 +180,7 @@ export default function AccountScreen({ navigation }) {
       <View style={styles.menuSection}>
         <ProfileMenuItem
           iconName="bell"
-          title="Notification & Offer"
+          title="Activity Log"
           onPress={() => navigation.navigate('NotificationScreen')}
         />
         <ProfileMenuItem

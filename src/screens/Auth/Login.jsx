@@ -33,7 +33,6 @@ const Login = ({ navigation }) => {
       if (Platform.OS == 'android') {
         requestPermissionAndroid();
       } else {
-        requestIosPermission();
       }
     }, []),
   );
@@ -112,10 +111,6 @@ const Login = ({ navigation }) => {
           }),
         );
         dispatch(setAuthenticated({ isAuthenticated: true }));
-        // navigation.navigate('HomeScreen', {
-        //   screen: 'Home',
-        //   params: { role },
-        // });
       } else {
         Alert.alert('Error', res?.message || 'Invalid credentials.');
       }
@@ -155,7 +150,7 @@ const Login = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
