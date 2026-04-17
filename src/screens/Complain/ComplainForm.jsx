@@ -34,7 +34,8 @@ export default function ComplainForm({ navigation, route }) {
   const user = useSelector(state => state.auth.user);
   const student = useSelector(state => state.auth.student);
   const [loading, setLoading] = useState(false);
-  const { campus, category, subcategory } = route.params; // 👈 now you have both!
+  const { campus, category, subcategory, complaintKind = 'complaint' } =
+    route.params;
   console.log(campus, category, subcategory, 'oooooppp');
   const [complainTypes, setComplainTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
@@ -308,7 +309,9 @@ export default function ComplainForm({ navigation, route }) {
 
   const fetchComplainTypes = async () => {
     try {
-      const res = await getConplainTypes();
+      const res = await getConplainTypes({
+        IsSuggestion: complaintKind === 'suggestion',
+      });
       const formatted = res.data?.map(item => ({
         label: item.complainType,
         value: item.complainTypeId,
@@ -443,8 +446,14 @@ export default function ComplainForm({ navigation, route }) {
           />
 
           {/* Title */}
-          <Text style={styles.title}>Complaint Form</Text>
-          <Text style={styles.subtitle}>Enter your complain</Text>
+          <Text style={styles.title}>
+            {complaintKind === 'suggestion' ? 'Suggestion Form' : 'Complaint Form'}
+          </Text>
+          <Text style={styles.subtitle}>
+            {complaintKind === 'suggestion'
+              ? 'Enter your suggestion'
+              : 'Enter your complain'}
+          </Text>
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Enter Location"
@@ -613,7 +622,11 @@ export default function ComplainForm({ navigation, route }) {
 
           {/* Launch Button */}
           <TouchableOpacity onPress={submitComplaint} style={styles.launchBtn}>
-            <Text style={styles.launchText}>Launch Complaint</Text>
+            <Text style={styles.launchText}>
+              {complaintKind === 'suggestion'
+                ? 'Launch Suggestion'
+                : 'Launch Complaint'}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

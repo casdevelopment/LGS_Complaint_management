@@ -15,6 +15,8 @@ import DroppedComplain from '../screens/Complain/DroppedComplain';
 import AttendedScreen from '../screens/Complain/AttendedScreen';
 import UnattendedScreen from '../screens/Complain/UnattendedScreen';
 import OpenedComplain from '../screens/Complain/OpenedComplain';
+import AllComplaints from '../screens/Complain/AllComplaints';
+import AllSuggestions from '../screens/Complain/AllSuggestions';
 import ImplementedComplain from '../screens/Complain/ImplementedComplain';
 import AcknowledgeComplain from '../screens/Complain/AcknowledgeComplain';
 import SubCategoryScreen from '../screens/Complain/SubCategoryScreen';
@@ -57,6 +59,8 @@ export default function AppStack() {
         <Stack.Screen name="AttendedScreen" component={AttendedScreen} />
         <Stack.Screen name="UnattendedScreen" component={UnattendedScreen} />
         <Stack.Screen name="OpenedComplain" component={OpenedComplain} />
+        <Stack.Screen name="AllComplaints" component={AllComplaints} />
+        <Stack.Screen name="AllSuggestions" component={AllSuggestions} />
         <Stack.Screen
           name="AdminOpenComplaints"
           component={AdminOpenComplaints}

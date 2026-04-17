@@ -248,15 +248,16 @@ export const updatePassword = async payload => {
     throw error;
   }
 };
-export const getConplainCategories = async () => {
+export const getConplainCategories = async payload => {
   try {
     const response = await axiosInstance.post(
       '/api/configuration/get-complaint-category',
+      payload,
     );
     return response?.data;
   } catch (error) {
     console.error(
-      'Error fetching campus lists:',
+      'Error fetching complaint categories:',
       error.response?.data || error.message,
     );
     throw error;
@@ -383,15 +384,16 @@ export const getNotifications = async payload => {
     throw error;
   }
 };
-export const getConplainTypes = async () => {
+export const getConplainTypes = async payload => {
   try {
     const response = await axiosInstance.post(
       '/api/configuration/get-complaint-type',
+      payload,
     );
     return response?.data;
   } catch (error) {
     console.error(
-      'Error fetching campus lists:',
+      'Error fetching complaint types:',
       error.response?.data || error.message,
     );
     throw error;
@@ -440,6 +442,21 @@ export const oicDashboard = async payload => {
   } catch (error) {
     console.error(
       'Complain Dashboard error:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
+export const getAllComplaintsList = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/oic/allcomplaint-list',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Get all complaints list error:',
       error.response?.data || error.message,
     );
     throw error;

@@ -18,7 +18,7 @@ import { getAllCampus } from '../../Network/apis';
 import Loader from '../../components/Loader/Loader';
 
 export default function CampusScreen({ navigation, route }) {
-  const { category, subcategory } = route.params;
+  const { category, subcategory, complaintKind = 'complaint' } = route.params;
   console.log(category, subcategory, 'cccccccc');
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,12 @@ export default function CampusScreen({ navigation, route }) {
   };
   const handleCategorySelect = campus => {
     // Combine campus + category and pass to ComplaintFormScreen
-    navigation.navigate('ComplainForm', { campus, category, subcategory });
+    navigation.navigate('ComplainForm', {
+      campus,
+      category,
+      subcategory,
+      complaintKind,
+    });
   };
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -76,7 +81,9 @@ export default function CampusScreen({ navigation, route }) {
       />
 
       {/* Title */}
-      <Text style={styles.title}>Complaint Form</Text>
+      <Text style={styles.title}>
+        {complaintKind === 'suggestion' ? 'Suggestion Form' : 'Complaint Form'}
+      </Text>
       <Text style={styles.subtitle}>Select Campus</Text>
 
       {/* Loader */}

@@ -9,6 +9,8 @@ import {
   ScrollView,
   BackHandler,
   Alert,
+  Modal,
+  Pressable,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -27,6 +29,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [stats, setStat] = useState([]);
   const [count, setCount] = useState('0');
   const [loading, setLoading] = useState(true);
+  const [showComplaintTypeModal, setShowComplaintTypeModal] = useState(false);
   const user = useSelector(state => state.auth.user);
   const student = useSelector(state => state.auth.student);
   console.log(student, 'mmmmmmuuuui');
@@ -122,6 +125,11 @@ const HomeScreen = ({ navigation, route }) => {
     }
   };
 
+  const handleComplaintTypeSelect = complaintKind => {
+    setShowComplaintTypeModal(false);
+    navigation.navigate('CategoryScreen', { complaintKind });
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -148,7 +156,15 @@ const HomeScreen = ({ navigation, route }) => {
       >
         {(!role || role === 'employee') && (
           <>
-            <View style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate('AllComplaints', {
+                  isSuggestion: false,
+                  campusId: user?.campusid ?? user?.campusId,
+                })
+              }
+            >
               <View style={{ flexDirection: 'row' }}>
                 <Image
                   source={require('../../assets/Images/bad-review.png')}
@@ -164,7 +180,32 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.cardId}>ID #25844</Text> */}
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate('AllSuggestions', {
+                  isSuggestion: true,
+                  campusId: user?.campusid ?? user?.campusId,
+                })
+              }
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={require('../../assets/Images/good-feedBack.png')}
+                  style={{ marginRight: 10 }}
+                />
+
+                <View style={styles.rowBetween}>
+                  <Text style={styles.cardTitle}>Assigned Suggestions</Text>
+                  <Text style={styles.cardValue}>{stats?.totalSuggestions}</Text>
+                </View>
+                <View style={{}}>
+                  {/* <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text> */}
+                </View>
+              </View>
+            </TouchableOpacity>
             <View
               style={{
                 flexDirection: 'row',
@@ -204,7 +245,15 @@ const HomeScreen = ({ navigation, route }) => {
         )}
         {(!role || role === 'oic') && (
           <>
-            <View style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate('AllComplaints', {
+                  isSuggestion: false,
+                  campusId: user?.campusid ?? user?.campusId,
+                })
+              }
+            >
               <View style={{ flexDirection: 'row' }}>
                 <Image
                   source={require('../../assets/Images/bad-review.png')}
@@ -220,7 +269,34 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.cardId}>ID #25844</Text> */}
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate('AllSuggestions', {
+                  isSuggestion: true,
+                  campusId: user?.campusid ?? user?.campusId,
+                })
+              }
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={require('../../assets/Images/bad-review.png')}
+                  style={{ marginRight: 10 }}
+                />
+
+                <View style={styles.rowBetween}>
+                  <Text style={styles.cardTitle}>Total Suggestions</Text>
+                  <Text style={styles.cardValue}>
+                    {stats?.totalSuggestions}
+                  </Text>
+                </View>
+                <View style={{}}>
+                  {/* <Text style={styles.cardDate}>12/20/2025</Text>
+                  <Text style={styles.cardId}>ID #25844</Text> */}
+                </View>
+              </View>
+            </TouchableOpacity>
             <View
               style={{
                 flexDirection: 'row',
@@ -261,7 +337,14 @@ const HomeScreen = ({ navigation, route }) => {
         {(!role || role === 'parent' || role === 'other') && (
           <>
             {/* Complaint Cards */}
-            <View style={styles.card}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('AllComplaints', {
+                  isSuggestion: false,
+                })
+              }
+              style={styles.card}
+            >
               <View style={{ flexDirection: 'row' }}>
                 <Image
                   source={require('../../assets/Images/bad-review.png')}
@@ -272,7 +355,27 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.cardValue}>{stats?.totalComplaints}</Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('AllSuggestions', {
+                  isSuggestion: true,
+                  // campusId: user?.campusid ?? user?.campusId,
+                })
+              }
+              style={styles.card}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <Image
+                  source={require('../../assets/Images/good-feedBack.png')}
+                  style={{ marginRight: 10 }}
+                />
+                <View style={{}}>
+                  <Text style={styles.cardTitle}>Total Suggestions</Text>
+                  <Text style={styles.cardValue}>{stats?.totalSuggestions}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('OpenedComplain')}
               style={styles.card}
@@ -378,7 +481,7 @@ const HomeScreen = ({ navigation, route }) => {
             </View>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('CategoryScreen')}
+              onPress={() => setShowComplaintTypeModal(true)}
               style={styles.newComplaintBtn}
             >
               <Image
@@ -390,8 +493,44 @@ const HomeScreen = ({ navigation, route }) => {
                   resizeMode: 'contain',
                 }}
               />
-              <Text style={styles.newComplaintText}>New Complaint</Text>
+              <Text style={styles.newComplaintText}>
+                New Complaint / Suggestion
+              </Text>
             </TouchableOpacity>
+
+            <Modal
+              visible={showComplaintTypeModal}
+              transparent
+              animationType="fade"
+              onRequestClose={() => setShowComplaintTypeModal(false)}
+            >
+              <Pressable
+                style={styles.modalOverlay}
+                onPress={() => setShowComplaintTypeModal(false)}
+              >
+                <Pressable style={styles.modalCard} onPress={() => {}}>
+                  <Text style={styles.modalTitle}>Select Type</Text>
+                  <TouchableOpacity
+                    style={styles.modalOptionButton}
+                    onPress={() => handleComplaintTypeSelect('complaint')}
+                  >
+                    <Text style={styles.modalOptionText}>Complaint</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.modalOptionButton}
+                    onPress={() => handleComplaintTypeSelect('suggestion')}
+                  >
+                    <Text style={styles.modalOptionText}>Suggestion</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.modalCancelButton}
+                    onPress={() => setShowComplaintTypeModal(false)}
+                  >
+                    <Text style={styles.modalCancelText}>Cancel</Text>
+                  </TouchableOpacity>
+                </Pressable>
+              </Pressable>
+            </Modal>
           </>
         )}
       </ScrollView>
@@ -580,6 +719,49 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#ffffff',
     fontFamily: 'Asap-SemiBold',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  modalCard: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontFamily: 'Asap-SemiBold',
+    color: '#07294D',
+    marginBottom: 14,
+    textAlign: 'center',
+  },
+  modalOptionButton: {
+    backgroundColor: '#07294D',
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  modalOptionText: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Asap-SemiBold',
+  },
+  modalCancelButton: {
+    marginTop: 4,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  modalCancelText: {
+    color: '#07294D',
+    fontSize: 15,
+    fontFamily: 'Asap-Medium',
   },
 
   // Bottom Nav

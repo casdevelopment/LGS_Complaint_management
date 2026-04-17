@@ -15,7 +15,8 @@ import {
 import { getConplainCategories } from '../../Network/apis';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function CategoryScreen({ navigation }) {
+export default function CategoryScreen({ navigation, route }) {
+  const complaintKind = route?.params?.complaintKind || 'complaint';
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -24,7 +25,9 @@ export default function CategoryScreen({ navigation }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await getConplainCategories();
+      const res = await getConplainCategories({
+        IsSuggestion: complaintKind === 'suggestion',
+      });
       if (res?.result === 'success') {
         setCategories(res.data || []);
       }
@@ -45,9 +48,13 @@ export default function CategoryScreen({ navigation }) {
               complainSubCategory: 'Others',
               complainSubCategoryId: 0,
             },
+            complaintKind,
           });
         } else {
-          navigation.navigate('SubCategoryScreen', { category: item });
+          navigation.navigate('SubCategoryScreen', {
+            category: item,
+            complaintKind,
+          });
         }
       }}
       // onPress={() =>
@@ -86,7 +93,9 @@ export default function CategoryScreen({ navigation }) {
         />
 
         {/* Title */}
-        <Text style={styles.title}>Complaint Form</Text>
+        <Text style={styles.title}>
+          {complaintKind === 'suggestion' ? 'Suggestion Form' : 'Complaint Form'}
+        </Text>
         <Text style={styles.subtitle}>Select Category</Text>
 
         {/* Loader */}

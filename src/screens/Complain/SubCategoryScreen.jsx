@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Loader from '../../components/Loader/Loader';
 
 export default function SubCategoryScreen({ navigation, route }) {
-  const { category } = route.params;
+  const { category, complaintKind = 'complaint' } = route.params;
   console.log(category, 'uuuuuuuuun');
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -30,6 +30,7 @@ export default function SubCategoryScreen({ navigation, route }) {
     try {
       const res = await getConplainSubCategories({
         ComplainCategoryId: category?.complainCategoryId,
+        IsSuggestion: complaintKind === 'suggestion',
       });
       if (res?.result === 'success') {
         setCategories(res.data || []);
@@ -44,7 +45,11 @@ export default function SubCategoryScreen({ navigation, route }) {
     <TouchableOpacity
       style={styles.card}
       onPress={() =>
-        navigation.navigate('CampusScreen', { subcategory: item, category })
+        navigation.navigate('CampusScreen', {
+          subcategory: item,
+          category,
+          complaintKind,
+        })
       }
     >
       <Image
@@ -79,7 +84,11 @@ export default function SubCategoryScreen({ navigation, route }) {
         />
 
         {/* Title */}
-        <Text style={styles.title}>Complaint Form</Text>
+        <Text style={styles.title}>
+          {complaintKind === 'suggestion'
+            ? 'Suggestion Form'
+            : 'Complaint Form'}
+        </Text>
         <Text style={styles.subtitle}>Select a Subcategory</Text>
 
         <FlatList
