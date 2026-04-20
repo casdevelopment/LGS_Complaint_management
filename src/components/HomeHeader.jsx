@@ -26,19 +26,17 @@ const HomeHeader = ({
         </TouchableOpacity>
       </View>
 
-      {/* Notification */}
-      <TouchableOpacity
-        style={styles.notification}
-        onPress={() => navigation.navigate('NotificationScreen')}
-      >
-        <Image
-          source={require('../assets/Images/mail.png')}
-          style={styles.bellIcon}
-        />
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{count ?? 0}</Text>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.actions}>
+        <TouchableOpacity
+          style={styles.notification}
+          onPress={() => navigation.navigate('WebNotificationScreen')}
+        >
+          <Image
+            source={require('../assets/Images/mail.png')}
+            style={styles.bellIcon}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -57,11 +55,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    marginRight: 10,
   },
   userName: {
     fontSize: 16,
@@ -76,14 +77,18 @@ const styles = StyleSheet.create({
   notification: {
     flexDirection: 'row',
     backgroundColor: '#07294D',
-    width: wp('15%'),
-    paddingHorizontal: wp('2%'),
+    minWidth: wp('15%'),
+    paddingLeft: wp('4%'),
+    paddingRight: wp('2%'),
     borderRadius: 5,
     borderWidth: 2,
     borderColor: '#ffffff',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: hp('1.4%'),
+  },
+  webNotification: {
+    marginRight: 8,
   },
   bellIcon: {
     width: 20,

@@ -7,6 +7,8 @@ import UpdateProfile from '../screens/Profile/UpdateProfile';
 import AccountScreen from '../screens/Profile/AccountScreen';
 import UpdatePassword from '../screens/Profile/UpdatePassword';
 import NotificationScreen from '../screens/Profile/NotificationScreen';
+import WebNotificationScreen from '../screens/Profile/WebNotificationScreen';
+import WebNotificationDetailScreen from '../screens/Profile/WebNotificationDetailScreen';
 import CategoryScreen from '../screens/Complain/CategoryScreen';
 import CampusScreen from '../screens/Complain/CampusScreen';
 import ComplainForm from '../screens/Complain/ComplainForm';
@@ -50,6 +52,14 @@ export default function AppStack() {
         <Stack.Screen
           name="NotificationScreen"
           component={NotificationScreen}
+        />
+        <Stack.Screen
+          name="WebNotificationScreen"
+          component={WebNotificationScreen}
+        />
+        <Stack.Screen
+          name="WebNotificationDetailScreen"
+          component={WebNotificationDetailScreen}
         />
         <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
         <Stack.Screen name="CampusScreen" component={CampusScreen} />

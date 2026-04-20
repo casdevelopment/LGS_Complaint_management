@@ -384,6 +384,21 @@ export const getNotifications = async payload => {
     throw error;
   }
 };
+export const getWebNotifications = async payload => {
+  try {
+    const response = await axiosInstance.post(
+      '/api/notifications/web-notification-list',
+      payload,
+    );
+    return response?.data;
+  } catch (error) {
+    console.error(
+      'Error fetching web notifications lists:',
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
+};
 export const getConplainTypes = async payload => {
   try {
     const response = await axiosInstance.post(
