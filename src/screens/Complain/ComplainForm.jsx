@@ -34,8 +34,12 @@ export default function ComplainForm({ navigation, route }) {
   const user = useSelector(state => state.auth.user);
   const student = useSelector(state => state.auth.student);
   const [loading, setLoading] = useState(false);
-  const { campus, category, subcategory, complaintKind = 'complaint' } =
-    route.params;
+  const {
+    campus,
+    category,
+    subcategory,
+    complaintKind = 'complaint',
+  } = route.params;
   console.log(campus, category, subcategory, 'oooooppp');
   const [complainTypes, setComplainTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
@@ -447,12 +451,14 @@ export default function ComplainForm({ navigation, route }) {
 
           {/* Title */}
           <Text style={styles.title}>
-            {complaintKind === 'suggestion' ? 'Suggestion Form' : 'Complaint Form'}
+            {complaintKind === 'suggestion'
+              ? 'Suggestion Form'
+              : 'Complaint Form'}
           </Text>
           <Text style={styles.subtitle}>
             {complaintKind === 'suggestion'
-              ? 'Enter your suggestion'
-              : 'Enter your complain'}
+              ? 'Let us know about your query'
+              : 'Let us know about your query'}
           </Text>
           <View style={styles.inputContainer}>
             <TextInput

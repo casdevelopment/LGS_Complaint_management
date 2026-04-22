@@ -74,3 +74,7 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 config.bat
+.DS_Store
+/release
+*.lock
+*.lock
