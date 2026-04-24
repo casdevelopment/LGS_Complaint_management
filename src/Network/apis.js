@@ -341,7 +341,7 @@ export const getConplainSubCategories = async payload => {
 export const getNotificationCount = async payload => {
   try {
     const response = await axiosInstance.post(
-      '/api/notifications/unread-notification',
+      '/api/notifications/unread-web-notification',
       payload,
     );
     return response?.data;

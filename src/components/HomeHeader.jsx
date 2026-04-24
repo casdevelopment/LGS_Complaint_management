@@ -35,6 +35,13 @@ const HomeHeader = ({
             source={require('../assets/Images/mail.png')}
             style={styles.bellIcon}
           />
+          {/* {count = 9} */}
+          {console.log('Notification Count:', count)}
+          {count > 0 && (
+           <View style={styles.badge}>
+              <Text style={styles.badgeText}>{count > 99 ? '99+' : count}</Text>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -75,17 +82,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Asap-Light',
   },
   notification: {
-    flexDirection: 'row',
     backgroundColor: '#07294D',
-    minWidth: wp('15%'),
-    paddingLeft: wp('4%'),
-    paddingRight: wp('2%'),
-    borderRadius: 5,
+    width: wp('12%'),
+    height: wp('12%'),
+    borderRadius: wp('6%'),
     borderWidth: 2,
     borderColor: '#ffffff',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     marginTop: hp('1.4%'),
+    position: 'relative',
   },
   webNotification: {
     marginRight: 8,
@@ -93,12 +99,24 @@ const styles = StyleSheet.create({
   bellIcon: {
     width: 20,
     height: 20,
-    marginRight: 2,
   },
-  badge: {},
+  badge: {
+    position: 'absolute',
+    top: -6,
+    right: -6,
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    paddingHorizontal: 4,
+    backgroundColor: '#E53935',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
   badgeText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 10,
     fontFamily: 'Asap-Medium',
   },
 });

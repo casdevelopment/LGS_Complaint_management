@@ -25,6 +25,7 @@ const WebNotificationScreen = ({ navigation }) => {
       setLoading(true);
       const payload = {
         UserId: user?.id,
+        Role: user?.role,
       };
 
       const res = await getWebNotifications(payload);

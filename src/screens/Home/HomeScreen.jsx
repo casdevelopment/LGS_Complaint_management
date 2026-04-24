@@ -27,7 +27,7 @@ const { width } = Dimensions.get('window');
 const HomeScreen = ({ navigation, route }) => {
   // const { role } = route.params || {};
   const [stats, setStat] = useState([]);
-  const [count, setCount] = useState('0');
+  const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showComplaintTypeModal, setShowComplaintTypeModal] = useState(false);
   const user = useSelector(state => state.auth.user);
@@ -116,7 +116,9 @@ const HomeScreen = ({ navigation, route }) => {
       };
       const res = await getNotificationCount(body);
       if (res?.messageCode === 200) {
-        setCount(res?.result || '0');
+        const parsedCount = Number(res?.result);
+        // setCount(Number.isFinite(parsedCount) ? parsedCount : 0);
+        setCount(parsedCount || 0);
       }
     } catch (err) {
       console.log(err);
