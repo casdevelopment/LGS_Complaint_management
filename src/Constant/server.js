@@ -1,4 +1,4 @@
 const Server = {
-  live: 'https://lgescp.cyberasol.com',
+  live: 'https://lgescomplaintapi.cyberasol.com',
 };
 export default Server.live;
