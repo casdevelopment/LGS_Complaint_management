@@ -14,6 +14,7 @@ const AttendedScreen = () => {
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false); // 👈 add loading state for refresh
   const [refreshing, setRefreshing] = useState(false);
+      const [suggestion, setSuggestion] = useState(false);
   const filterModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
@@ -24,18 +25,19 @@ const AttendedScreen = () => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
   const openForwardComplain = useCallback(id => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     setLoading(true);
     try {
       const body = {
         UserId: user?.id,
         Role: user?.role,
         Status: 'attended',
+        IsSuggestion: value !== undefined ? value : suggestion,
       };
       const res = await complainHistory(body, user?.role);
 
@@ -92,7 +94,11 @@ const AttendedScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="In Process" />
+      <Header title="In Process" 
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }}  />
 
       <FlatList
         data={history}

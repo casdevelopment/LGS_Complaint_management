@@ -17,12 +17,11 @@ const AdminImplementedComplaints = ({ route }) => {
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const filterModalRef = useRef(null);
   const dropModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
-  const student = useSelector(state => state.auth.student);
+  const [suggestion, setSuggestion] = useState(false);
   const openForwardComplain = useCallback(id => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
@@ -32,10 +31,10 @@ const AdminImplementedComplaints = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     setLoading(true);
     try {
       const body = {
@@ -44,6 +43,7 @@ const AdminImplementedComplaints = ({ route }) => {
         CampusId: campus.schoolId,
         ClassId: classes.classId,
         Status: complainStatus.status,
+        IsSuggestion: value !== undefined ? value : suggestion
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {
@@ -106,7 +106,11 @@ const AdminImplementedComplaints = ({ route }) => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Implemented" />
+      <Header title="Implemented" 
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }}  />
 
       <FlatList
         data={history}

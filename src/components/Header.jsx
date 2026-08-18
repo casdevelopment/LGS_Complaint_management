@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Switch } from 'react-native';
 import React from 'react';
 import {
   widthPercentageToDP as wp,
@@ -6,12 +6,12 @@ import {
 } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Header({ title }) {
+export default function Header({ title, suggestion = null, setSuggestions = null }) {
   const navigation = useNavigation();
   return (
     <View
       style={{
-        paddingTop: hp('10%'),
+        paddingTop: hp('6%'),
       }}
     >
       <TouchableOpacity
@@ -33,6 +33,10 @@ export default function Header({ title }) {
 
       {/* Title */}
       <Text style={styles.title}>{title}</Text>
+      {suggestion!=null && setSuggestions &&<View style={styles.suggestionContainer}>
+        <Text style={[styles.sugtxt]}>Sugesstion{' '}</Text>
+        <Switch style={styles.SugSwitch} value={suggestion} onValueChange={setSuggestions} />
+      </View>}
     </View>
   );
 }
@@ -47,6 +51,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 45,
     left: 25,
+  },
+  suggestionContainer:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    fontFamily: 'Asap-SemiBold',
+    alignItems: 'center',
+  },
+  sugtxt:{
+    fontSize: 16,
+    color: '#07294D',
+    fontFamily: 'Asap-Regular',
+  },
+  SugSwitch: {
+    height: 30,
+    width: 40,
   },
   title: {
     fontSize: 32,

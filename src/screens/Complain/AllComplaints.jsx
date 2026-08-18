@@ -20,6 +20,7 @@ const AllComplaints = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const adminHistoryModalRef = useRef(null);
+  const [suggestion, setSuggestion] = useState(route?.params?.isSuggestion ?? false);
   const historyModalRef = useRef(null);
   const dropModalRef = useRef(null);
   const forwardModalRef = useRef(null);
@@ -60,10 +61,10 @@ const AllComplaints = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     setLoading(true);
     try {
       let res;
@@ -74,7 +75,7 @@ const AllComplaints = ({ route }) => {
           Role: user?.role,
           Status: '',
           StudentId: student?.studentId,
-          IsSuggestion: isSuggestion,
+          IsSuggestion: value !== undefined ? value : isSuggestion,
         };
         res = await complainHistory(body, user?.role);
       } else if (isEmployee) {
@@ -83,7 +84,7 @@ const AllComplaints = ({ route }) => {
           UserId: user?.id,
           Role: user?.role,
           Status: '',
-          IsSuggestion: isSuggestion,
+          IsSuggestion: value !== undefined ? value : isSuggestion,
         };
         res = await getAllComplaintsList(body, user?.role);
       } else {
@@ -96,7 +97,7 @@ const AllComplaints = ({ route }) => {
             user?.campusid ??
             user?.campusId ??
             null,
-          IsSuggestion: isSuggestion,
+          IsSuggestion: value !== undefined ? value : isSuggestion,
         };
         res = await getAllComplaintsList(body);
       }
@@ -161,12 +162,16 @@ const AllComplaints = ({ route }) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title={title} />
+      <Header title={title} 
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }}  />
 
       <FlatList
         data={history}

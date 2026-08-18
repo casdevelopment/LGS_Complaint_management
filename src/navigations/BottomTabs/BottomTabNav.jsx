@@ -24,7 +24,7 @@ function BottomTabNav() {
       tabBar={props => <CustomTabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      {user?.role === 'oic' || user?.role === 'employee' ? (
+      {user?.role === 'oic' || user?.role === 'employee'&& user.additionalDesignationName !== 'POC' ? (
         <Tab.Screen name="History" component={AdminCampusScreen} />
       ) : (
         <Tab.Screen name="History" component={HistoryScreen} />

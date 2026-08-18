@@ -5,9 +5,8 @@ import {
   FlatList,
   SafeAreaView,
   Text,
-  TouchableOpacity,
-  Image,
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Header from '../../components/Header';
 import ClosedCard from '../../components/Closed/CloasedCard';
 import HistoryModal from '../../components/Modals/HistoryModal';
@@ -19,12 +18,7 @@ import AdminHistoryModal from '../../components/Modals/AdminHistoryModal';
 import { COLORS } from '../../utils/colors';
 import DropModal from '../../components/Modals/DropModal';
 import Loader from '../../components/Loader/Loader';
-const FILTERS = [
-  { label: 'All', value: '' },
-  { label: 'Closed', value: 'closed' },
-  { label: 'Processing', value: 'attended' },
-  { label: 'Un Attended', value: 'un attended' },
-];
+
 
 const HistoryScreen = () => {
   const [history, setHistory] = useState([]);
@@ -32,13 +26,20 @@ const HistoryScreen = () => {
   const [loading, setLoading] = useState(false);
   const [activeFilter, setActiveFilter] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  console.log(history, 'state value');
   const filterModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
+  const [suggestion, setSuggestion] = useState(false);
   const forwardModalRef = useRef(null);
   const dropModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
   const student = useSelector(state => state.auth.student);
+   const isFocused = useIsFocused();
+  
+    useEffect(() => {
+      if (isFocused) {
+        fetchHistory(suggestion);
+      }
+    }, [isFocused]);
   const openComplaintSummary = useCallback(id => {
     filterModalRef.current?.openModal(id);
   }, []);
@@ -46,16 +47,13 @@ const HistoryScreen = () => {
     adminHistortModalRef.current?.openModal(id);
   }, []);
 
-  useEffect(() => {
-    fetchHistory();
-  }, [activeFilter, user?.role]);
   const openForwardComplain = useCallback(id => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
   const openDropComplain = useCallback(id => {
     dropModalRef.current?.openModal(id);
   }, []);
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     try {
       setLoading(true);
       const body = {
@@ -63,6 +61,7 @@ const HistoryScreen = () => {
         Role: user?.role,
         Status: user?.role === 'parent' ? '' : activeFilter, // 👈 parent always empty
         StudentId: student?.studentId,
+        IsSuggestion: value !== undefined ? value : suggestion
       };
       console.log(body, 'mmmmm');
       const res = await complainHistory(body, user?.role);
@@ -143,48 +142,39 @@ const HistoryScreen = () => {
             onPressDropComplaint={() => openDropComplain(item?.complaintId)}
           />
         );
+      case 'poc':
+        return (
+          <AdminHistoryCard
+            id={item?.complaintId}
+            date={item?.createdAt}
+            data={item}
+            assignedTo={item.assignedTo}
+            department={item.department}
+            text={item.complaintSubject}
+            rating={item?.parentRating}
+            thumb={item?.isThumbUp}
+            complainStage={item?.complaintStageId}
+            onPressSummary={() => openAdminComplaintSummary(item?.complaintId)}
+            onPressAssignAgent={() => openForwardComplain(item?.complaintId)}
+            onPressDropComplaint={() => openDropComplain(item?.complaintId)}
+          />
+        );
       default:
         return <Text>Unknown role</Text>;
     }
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchHistory();
-  }, [activeFilter, user?.role]);
+    fetchHistory(suggestion);
+  }, [activeFilter, user?.role, suggestion]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="History" />
-      {/* 👇 Filters only for non-parent roles */}
-      {/* {user?.role !== 'parent' ||
-        (user?.role !== 'potherrent' && (
-          <View style={styles.filterContainer}>
-            <Image
-              source={require('../../assets/Images/sort.png')}
-              style={{ marginRight: 5 }}
-            />
-            {FILTERS.map(f => (
-              <TouchableOpacity
-                key={f.value}
-                style={[
-                  styles.filterButton,
-                  activeFilter === f.value && styles.activeFilter,
-                ]}
-                onPress={() => setActiveFilter(f.value)}
-              >
-                <Text
-                  style={[
-                    styles.filterText,
-                    activeFilter === f.value && styles.activeFilterText,
-                  ]}
-                >
-                  {f.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))} */}
-
+      <Header title="History" 
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }}  />
       <FlatList
         data={history}
         keyExtractor={item => item?.complaintId.toString()}

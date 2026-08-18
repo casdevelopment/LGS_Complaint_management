@@ -17,12 +17,11 @@ const AdminAcknowledgeComplaints = ({ route }) => {
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const filterModalRef = useRef(null);
+  const [suggestion, setSuggestion] = useState(false);
   const dropModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
-  const student = useSelector(state => state.auth.student);
   const openForwardComplain = useCallback(id => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
@@ -32,10 +31,10 @@ const AdminAcknowledgeComplaints = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     setLoading(true);
     try {
       const body = {
@@ -44,6 +43,7 @@ const AdminAcknowledgeComplaints = ({ route }) => {
         CampusId: campus.schoolId,
         ClassId: classes.classId,
         Status: complainStatus.status,
+        IsSuggestion: value !== undefined ? value : suggestion
       };
       console.log(body, 'ccccv');
       const res = await complainHistory(body, user?.role);
@@ -100,14 +100,18 @@ const AdminAcknowledgeComplaints = ({ route }) => {
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
   const openDropComplain = useCallback(id => {
     dropModalRef.current?.openModal(id);
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Acknowledged" />
+      <Header title="Acknowledged"
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }}  />
 
       <FlatList
         data={history}

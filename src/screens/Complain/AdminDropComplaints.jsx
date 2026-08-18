@@ -22,7 +22,7 @@ const AdminDropComplaints = ({ route }) => {
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
-  const student = useSelector(state => state.auth.student);
+  const [suggestion, setSuggestion] = useState(false);
   const openForwardComplain = useCallback(id => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
@@ -35,10 +35,10 @@ const AdminDropComplaints = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     setLoading(true);
     try {
       const body = {
@@ -47,6 +47,7 @@ const AdminDropComplaints = ({ route }) => {
         CampusId: campus.schoolId,
         ClassId: classes.classId,
         Status: complainStatus.status,
+        IsSuggestion: value !== undefined ? value : suggestion
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {
@@ -107,7 +108,11 @@ const AdminDropComplaints = ({ route }) => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Dropped" />
+      <Header title="Dropped" 
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }}  />
 
       <FlatList
         data={history}

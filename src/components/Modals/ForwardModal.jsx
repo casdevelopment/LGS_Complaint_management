@@ -98,6 +98,9 @@ const ForwardModal = forwardRef((props, ref) => {
 
   // fetch departments when modal opens
   const fetchDepartments = async () => {
+    if(user.role ==='other'){
+      return; // skip fetching for 'other' role
+    }
     try {
       setLoading(true);
       const data = await getDepartments();

@@ -38,18 +38,15 @@ const HomeScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     if (isFocused) {
-      console.log('✅ HomeScreen tab is focused');
-      fetchNotificationCount();
-    }
-  }, [isFocused, user?.id, user?.role]);
-
-  useEffect(() => {
-    if (user?.role === 'parent' || user?.role === 'other') {
+     if (user?.role === 'parent' || user?.role === 'other') {
       fetchStats();
     } else {
       fetchOICStats();
     }
-  }, []);
+      fetchNotificationCount();
+    }
+  }, [isFocused, user?.id, user?.role]);
+
 
   useEffect(() => {
     if (!isFocused) return; // only when Home is active
@@ -174,7 +171,7 @@ const HomeScreen = ({ navigation, route }) => {
                 />
 
                 <View style={styles.rowBetween}>
-                  <Text style={styles.cardTitle}>Assigned Complaints</Text>
+                  <Text style={styles.cardTitle}>Total Assigned</Text>
                   <Text style={styles.cardValue}>{stats?.totalComplaints}</Text>
                 </View>
                 <View style={{}}>
@@ -263,7 +260,7 @@ const HomeScreen = ({ navigation, route }) => {
                 />
 
                 <View style={styles.rowBetween}>
-                  <Text style={styles.cardTitle}>Total Complaints</Text>
+                  <Text style={styles.cardTitle}>Total</Text>
                   <Text style={styles.cardValue}>{stats?.totalComplaints}</Text>
                 </View>
                 <View style={{}}>
@@ -353,7 +350,7 @@ const HomeScreen = ({ navigation, route }) => {
                   style={{ marginRight: 10 }}
                 />
                 <View style={{}}>
-                  <Text style={styles.cardTitle}>Total Complaints</Text>
+                  <Text style={styles.cardTitle}>Total</Text>
                   <Text style={styles.cardValue}>{stats?.totalComplaints}</Text>
                 </View>
               </View>

@@ -17,12 +17,11 @@ const AdminClosedComplaint = ({ route }) => {
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const filterModalRef = useRef(null);
+    const [suggestion, setSuggestion] = useState(false);
   const dropModalRef = useRef(null);
   const adminHistortModalRef = useRef(null);
   const forwardModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
-  const student = useSelector(state => state.auth.student);
   const openForwardComplain = useCallback(id => {
     forwardModalRef.current?.openModal(id, 'assign');
   }, []);
@@ -32,11 +31,12 @@ const AdminClosedComplaint = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     setLoading(true);
+    setRefreshing(true);
     try {
       const body = {
         UserId: user?.id,
@@ -44,10 +44,14 @@ const AdminClosedComplaint = ({ route }) => {
         CampusId: campus.schoolId,
         ClassId: classes.classId,
         Status: complainStatus.status,
+        IsSuggestion: value !== undefined ? value : suggestion
+
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {
         setHistory(res?.data || []);
+        setLoading(false);
+      setRefreshing(false);
       }
     } catch (err) {
       console.error(err);
@@ -99,14 +103,18 @@ const AdminClosedComplaint = ({ route }) => {
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
   const openDropComplain = useCallback(id => {
     dropModalRef.current?.openModal(id);
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Closed" />
+      <Header title="Closed"
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }} />
 
       <FlatList
         data={history}

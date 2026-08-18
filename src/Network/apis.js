@@ -6,7 +6,7 @@ import axiosInstance from '../utils/axiosInstance';
 const historyEndpoints = {
   parent: '/api/complaint/complaint-list',
   other: '/api/complaint/complaint-list',
-  employee: '/api/oic/complaint-list',
+  employee: '/api/oic/allcomplaint-list',
   oic: '/api/oic/complaint-list',
 };
 const complainSummaryEndpoints = {
@@ -556,21 +556,6 @@ export const parentReview = async payload => {
   }
 };
 
-// export const complainHistory = async payload => {
-//   try {
-//     const response = await axiosInstance.post(
-//       '/api/complaint/complaint-list',
-//       payload,
-//     );
-//     return response?.data;
-//   } catch (error) {
-//     console.error(
-//       'Complain History error:',
-//       error.response?.data || error.message,
-//     );
-//     throw error;
-//   }
-// };
 export const complainHistory = async (payload, role) => {
   console.log(payload, 'nnn');
   try {

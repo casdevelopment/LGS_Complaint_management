@@ -11,6 +11,7 @@ const AcknowledgeComplain = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [suggestion, setSuggestion] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const filterModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
@@ -31,6 +32,7 @@ const AcknowledgeComplain = () => {
         Status: 'acknowledged',
         Role: user?.role,
         StudentId: user?.role === 'other' ? 0 : student.studentId,
+        IsSuggestion: suggestion
       };
       const res = await complainHistory(body, user?.role);
       if (res?.result === 'success') {
@@ -86,7 +88,10 @@ const AcknowledgeComplain = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Acknowledged" />
+      <Header title="Acknowledged" suggestion={suggestion} setSuggestion={() => {
+        setSuggestion(!suggestion);
+        fetchHistory();
+      }} />
 
       <FlatList
         data={history}

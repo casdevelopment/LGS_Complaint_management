@@ -11,6 +11,7 @@ const ImplementedComplain = () => {
   const [history, setHistory] = useState([]);
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [suggestion, setSuggestion] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const filterModalRef = useRef(null);
   const user = useSelector(state => state.auth.user);
@@ -20,10 +21,10 @@ const ImplementedComplain = () => {
   }, []);
 
   useEffect(() => {
-    fetchHistory();
+    fetchHistory(suggestion);
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (value) => {
     setLoading(true);
     try {
       const body = {
@@ -31,6 +32,7 @@ const ImplementedComplain = () => {
         Status: 'implemented',
         Role: user?.role,
         StudentId: user?.role === 'other' ? 0 : student.studentId,
+        IsSuggestion: value !== undefined ? value : suggestion,
       };
       const res = await complainHistory(body, user?.role);
       console.log(res, 'history');
@@ -85,7 +87,11 @@ const ImplementedComplain = () => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Implemented" />
+      <Header title="Implemented" 
+       suggestion={suggestion} setSuggestions={() => {
+        fetchHistory(!suggestion);
+        setSuggestion(!suggestion);
+      }}  />
 
       <FlatList
         data={history}
