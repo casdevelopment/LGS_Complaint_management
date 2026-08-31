@@ -8,6 +8,7 @@ import ForgotPassword from '../screens/Auth/ForgotPassword';
 import OTPVerification from '../screens/Auth/OTPVerification';
 import NewPassword from '../screens/Auth/NewPassword';
 import Signup from '../screens/Auth/Signup';
+<<<<<<< HEAD
 import HomeScreen from '../screens/Home/HomeScreen';
 import RoleSelectionScreen from '../screens/Auth/RoleSelectionScreen';
 import CategoryScreen from '../screens/Complain/CategoryScreen';
@@ -19,6 +20,8 @@ import AccountScreen from '../screens/Profile/AccountScreen';
 import UpdatePassword from '../screens/Profile/UpdatePassword';
 import BottomTabNav from './BottomTabs/BottomTabNav';
 import NotificationScreen from '../screens/Profile/NotificationScreen';
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +35,7 @@ export default function AuthStack() {
       <Stack.Screen name="OTPVerification" component={OTPVerification} />
       <Stack.Screen name="NewPassword" component={NewPassword} />
       <Stack.Screen name="Signup" component={Signup} />
+<<<<<<< HEAD
       {/* <Stack.Screen name="HomeScreen" component={BottomTabNav} /> */}
       <Stack.Screen
         name="RoleSelectionScreen"
@@ -42,6 +46,8 @@ export default function AuthStack() {
         <Stack.Screen name="ComplainForm" component={ComplainForm} />
         <Stack.Screen name="ClosedComplain" component={ClosedComplain} />
         <Stack.Screen name="DroppedComplain" component={DroppedComplain} /> */}
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     </Stack.Navigator>
   );
 }

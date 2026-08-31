@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import React, { useState, useCallback } from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 import {
   View,
   Text,
   StyleSheet,
   Image,
+<<<<<<< HEAD
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
@@ -151,6 +156,30 @@ const Login = ({ navigation }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+=======
+  TextInput,
+  TouchableOpacity,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+const { width, height } = Dimensions.get('window');
+
+const Login = ({ navigation }) => {
+  const [role, setRole] = useState('Parent');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
@@ -170,10 +199,16 @@ const Login = ({ navigation }) => {
             Enter your credentials to get login
           </Text>
           <Text style={styles.roleTitle}>Login As</Text>
+<<<<<<< HEAD
 
           {/* Role selection */}
           <View style={styles.roleContainer}>
             {roles.map(item => (
+=======
+          {/* Role selection */}
+          <View style={styles.roleContainer}>
+            {['Parent', 'OIC', 'Admin'].map(item => (
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
               <TouchableOpacity
                 key={item}
                 style={styles.roleOption}
@@ -192,6 +227,7 @@ const Login = ({ navigation }) => {
             ))}
           </View>
 
+<<<<<<< HEAD
           {/* Formik */}
           <Formik
             initialValues={{ emailOrPhone: '', password: '' }}
@@ -239,6 +275,39 @@ const Login = ({ navigation }) => {
               </>
             )}
           </Formik>
+=======
+          {/* Phone/Email input */}
+          <Text style={styles.roleTitle}>Phone Number or Email</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Phone Number or Email"
+              placeholderTextColor="#999"
+              style={styles.input}
+            />
+          </View>
+
+          {/* Password input */}
+          <Text style={styles.roleTitle}>Password</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#999"
+              secureTextEntry={!passwordVisible}
+              style={styles.input}
+            />
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={styles.eyeButton}
+            >
+              <Text>{passwordVisible ? '🙈' : '👁️'}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Login button */}
+          <TouchableOpacity style={styles.loginButton}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 
           {/* Forgot password */}
           <TouchableOpacity
@@ -251,15 +320,22 @@ const Login = ({ navigation }) => {
           {/* Signup */}
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don’t have an account? </Text>
+<<<<<<< HEAD
             <TouchableOpacity
               onPress={() => navigation.navigate('RoleSelectionScreen')}
             >
+=======
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
               <Text style={styles.signupLink}>Signup!</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
+<<<<<<< HEAD
       {loading && <Loader />}
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     </KeyboardAvoidingView>
   );
 };
@@ -287,7 +363,12 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: '#07294D',
+<<<<<<< HEAD
     marginBottom: hp('5%'),
+=======
+    marginBottom: hp('8%'),
+
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     fontFamily: 'Asap-Regular',
   },
   roleContainer: {
@@ -328,6 +409,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
+<<<<<<< HEAD
+=======
+  inputContainer: {
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  input: {
+    flex: 1,
+    paddingVertical: hp('2.2%'),
+    fontSize: 14,
+  },
+  eyeButton: {
+    padding: 5,
+  },
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   loginButton: {
     backgroundColor: '#07294D',
     borderRadius: 10,
@@ -349,11 +451,19 @@ const styles = StyleSheet.create({
     color: '#0D1B2A',
   },
   signupContainer: {
+<<<<<<< HEAD
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: hp('15%'), // ✅ no more absolute
     marginBottom: hp('4%'),
     alignItems: 'center',
+=======
+    alignSelf: 'center',
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    bottom: hp('4'),
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   },
   signupText: {
     fontSize: 14,

@@ -2,7 +2,10 @@ import UIKit
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+<<<<<<< HEAD
 import Firebase
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+<<<<<<< HEAD
     FirebaseApp.configure()
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()

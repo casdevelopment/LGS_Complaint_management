@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 import {
   View,
   Text,
@@ -10,13 +14,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+<<<<<<< HEAD
   Alert,
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { Dropdown } from 'react-native-element-dropdown';
+<<<<<<< HEAD
 import { Formik } from 'formik';
 import CustomDropdown from '../../components/Form/CustomDropdown';
 import CustomInput from '../../components/Form/CustomInput';
@@ -123,12 +131,43 @@ const Signup = ({ navigation, route }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+=======
+
+const campusData = [
+  { label: 'Campus A', value: 'a' },
+  { label: 'Campus B', value: 'b' },
+  { label: 'Campus C', value: 'c' },
+];
+
+const classData = [
+  { label: 'Class 1', value: '1' },
+  { label: 'Class 2', value: '2' },
+  { label: 'Class 3', value: '3' },
+];
+
+const { width, height } = Dimensions.get('window');
+
+const Signup = ({ navigation }) => {
+  const [role, setRole] = useState('Parent');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [campus, setCampus] = useState(null);
+  const [classValue, setClassValue] = useState(null);
+
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.container}>
+<<<<<<< HEAD
+=======
+          {/* Top-right curve */}
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
           <Image
             source={require('../../assets/Images/topRightDarkCurve.png')}
             style={styles.topRight}
@@ -140,6 +179,7 @@ const Signup = ({ navigation, route }) => {
           <Text style={styles.subtitle}>
             Enter your credentials to get login
           </Text>
+<<<<<<< HEAD
 
           <Formik
             initialValues={{
@@ -228,11 +268,112 @@ const Signup = ({ navigation, route }) => {
             <Text style={styles.signupText}>Already have account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.signupLink}>Signin!</Text>
+=======
+          <Image
+            style={styles.profilePic}
+            source={require('../../assets/Images/Avatar.png')}
+          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Your full name"
+              placeholderTextColor="#999"
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Your mail"
+              placeholderTextColor="#999"
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Enter your register number"
+              placeholderTextColor="#999"
+              style={styles.input}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#999"
+              secureTextEntry={!passwordVisible}
+              style={styles.input}
+            />
+
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={styles.eyeButton}
+            >
+              <Text>{passwordVisible ? '🙈' : '👁️'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Confirm Password"
+              placeholderTextColor="#999"
+              secureTextEntry={!passwordVisible}
+              style={styles.input}
+            />
+
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={styles.eyeButton}
+            >
+              <Text>{passwordVisible ? '🙈' : '👁️'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Dropdown
+              style={styles.dropdown}
+              data={campusData}
+              labelField="label"
+              valueField="value"
+              placeholder="Select your Campus"
+              value={campus}
+              onChange={item => setCampus(item.value)}
+            />
+
+            <Dropdown
+              style={styles.dropdown}
+              data={classData}
+              labelField="label"
+              valueField="value"
+              placeholder="Select your class"
+              value={classValue}
+              onChange={item => setClassValue(item.value)}
+            />
+          </View>
+
+          {/* Login button */}
+          <TouchableOpacity style={styles.loginButton}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+
+          {/* Forgot password */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ForgotPassword')}
+            style={styles.forgotButton}
+          >
+            <Text style={styles.forgotText}>Forgot password?</Text>
+          </TouchableOpacity>
+
+          {/* Signup */}
+          <View style={styles.signupContainer}>
+            <Text style={styles.signupText}>Don’t have an account? </Text>
+            <TouchableOpacity>
+              <Text style={styles.signupLink}>Signup!</Text>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
+<<<<<<< HEAD
       {(campusLoading || signupLoading) && <Loader />}
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     </KeyboardAvoidingView>
   );
 };
@@ -266,11 +407,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Asap-Regular',
   },
   profilePic: {
+<<<<<<< HEAD
     height: 80,
     width: 80,
     marginBottom: 10,
     alignSelf: 'center',
     borderRadius: 40,
+=======
+    alignSelf: 'center',
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   },
   roleContainer: {
     flexDirection: 'row',
@@ -329,7 +474,10 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loginButton: {
+<<<<<<< HEAD
     marginBottom: hp('8%'),
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     backgroundColor: '#07294D',
     borderRadius: 10,
     paddingVertical: hp('2.2%'),
@@ -366,12 +514,19 @@ const styles = StyleSheet.create({
     color: '#0D1B2A',
   },
   dropdown: {
+<<<<<<< HEAD
     height: 60,
+=======
+    height: 50,
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
     marginBottom: 16,
+<<<<<<< HEAD
     backgroundColor: '#f9f9f9',
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   },
 });

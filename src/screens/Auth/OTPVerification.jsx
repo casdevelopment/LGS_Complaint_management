@@ -10,7 +10,10 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+<<<<<<< HEAD
   Alert,
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -19,6 +22,7 @@ import {
 import InputField from '../../components/Form/InputField';
 import Timer from '../../components/Timer/TimerSection';
 import DigitInput from '../../components/Form/DigitInput';
+<<<<<<< HEAD
 import Loader from '../../components/Loader/Loader';
 import { verifySignupOTP, verifyForgotOtp } from '../../Network/apis';
 import { resendOTP } from '../../Network/apis';
@@ -130,11 +134,25 @@ const OTPVerification = ({ navigation, route }) => {
       setLoading(false);
     }
   };
+=======
+
+const { width, height } = Dimensions.get('window');
+
+const OTPVerification = ({ navigation }) => {
+  const [value, setValue] = useState('');
+  const [OTP, setOTP] = useState('');
+
+  const [reset, setReset] = useState(false);
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
+<<<<<<< HEAD
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+=======
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
@@ -160,6 +178,7 @@ const OTPVerification = ({ navigation, route }) => {
           <Timer
             initialSeconds={60}
             onTimerEnd={() => console.log('LEGS')}
+<<<<<<< HEAD
             onResend={handleResendOtp}
           />
 
@@ -168,18 +187,36 @@ const OTPVerification = ({ navigation, route }) => {
             <Text style={styles.loginText}>
               {from === 'signup' ? 'Verification' : 'Submit'}
             </Text>
+=======
+            onResend={() => console.log('LEGS')}
+          />
+
+          {/* Login button */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('NewPassword')}
+            style={styles.loginButton}
+          >
+            <Text style={styles.loginText}>Submit</Text>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
           </TouchableOpacity>
 
           {/* Signup */}
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don’t have an account? </Text>
+<<<<<<< HEAD
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+=======
+            <TouchableOpacity>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
               <Text style={styles.signupLink}>Signup!</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
+<<<<<<< HEAD
       {loading && <Loader />}
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     </KeyboardAvoidingView>
   );
 };
@@ -289,11 +326,18 @@ const styles = StyleSheet.create({
   },
   signupContainer: {
     alignSelf: 'center',
+<<<<<<< HEAD
     // position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: hp('16%'),
     marginBottom: hp('4%'),
+=======
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    bottom: hp('4'),
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   },
   signupText: {
     fontSize: 14,

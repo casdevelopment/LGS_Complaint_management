@@ -1,20 +1,32 @@
+<<<<<<< HEAD
 import React from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 import {
   View,
   Text,
   StyleSheet,
   Image,
+<<<<<<< HEAD
+=======
+  TextInput,
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   TouchableOpacity,
   Dimensions,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+<<<<<<< HEAD
   Alert,
+=======
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+<<<<<<< HEAD
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CustomInput from '../../components/Form/CustomInput';
@@ -60,11 +72,23 @@ const NewPassword = ({ navigation, route }) => {
       setSubmitting(false);
     }
   };
+=======
+
+const { width, height } = Dimensions.get('window');
+
+const NewPassword = ({ navigation }) => {
+  const [role, setRole] = useState('Parent');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
+<<<<<<< HEAD
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+=======
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
@@ -82,6 +106,7 @@ const NewPassword = ({ navigation, route }) => {
           <Text style={styles.title}>Set New Password</Text>
           <Text style={styles.subtitle}>Enter your new password below</Text>
 
+<<<<<<< HEAD
           {/* Formik form */}
           <Formik
             initialValues={{ password: '', confirmPassword: '' }}
@@ -138,11 +163,55 @@ const NewPassword = ({ navigation, route }) => {
               </>
             )}
           </Formik>
+=======
+          {/* Password input */}
+          <Text style={styles.roleTitle}>Password</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#999"
+              secureTextEntry={!passwordVisible}
+              style={styles.input}
+            />
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={styles.eyeButton}
+            >
+              <Text>{passwordVisible ? '🙈' : '👁️'}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Password input */}
+          <Text style={styles.roleTitle}>Confirm Password</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#999"
+              secureTextEntry={!passwordVisible}
+              style={styles.input}
+            />
+            <TouchableOpacity
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={styles.eyeButton}
+            >
+              <Text>{passwordVisible ? '🙈' : '👁️'}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Login button */}
+          <TouchableOpacity style={styles.loginButton}>
+            <Text style={styles.loginText}>Submit</Text>
+          </TouchableOpacity>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 
           {/* Signup */}
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don’t have an account? </Text>
+<<<<<<< HEAD
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+=======
+            <TouchableOpacity>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
               <Text style={styles.signupLink}>Signup!</Text>
             </TouchableOpacity>
           </View>
@@ -176,32 +245,113 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#07294D',
     marginBottom: hp('8%'),
+<<<<<<< HEAD
     fontFamily: 'Asap-Regular',
   },
   label: {
+=======
+
+    fontFamily: 'Asap-Regular',
+  },
+  roleContainer: {
+    flexDirection: 'row',
+    marginVertical: hp('2%'),
+  },
+  roleTitle: {
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
     marginBottom: hp('1%'),
     fontFamily: 'Asap-Regular',
     fontSize: 16,
     color: '#07294D',
   },
+<<<<<<< HEAD
+=======
+  roleOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  radioOuter: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 2,
+    borderColor: '#0D1B2A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 6,
+  },
+  radioOuterActive: {
+    borderColor: '#0D1B2A',
+  },
+  radioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#0D1B2A',
+  },
+  roleText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  inputContainer: {
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  input: {
+    flex: 1,
+    paddingVertical: hp('2.2%'),
+    fontSize: 14,
+  },
+  eyeButton: {
+    padding: 5,
+  },
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   loginButton: {
     backgroundColor: '#07294D',
     borderRadius: 10,
     paddingVertical: hp('2.2%'),
     alignItems: 'center',
+<<<<<<< HEAD
     marginTop: hp('8%'),
+=======
+    marginTop: hp('14%'),
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   },
   loginText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
+<<<<<<< HEAD
   signupContainer: {
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: hp('22%'),
     marginBottom: hp('4%'),
+=======
+  forgotButton: {
+    alignSelf: 'flex-end',
+    marginTop: 10,
+  },
+  forgotText: {
+    fontSize: 13,
+    color: '#0D1B2A',
+  },
+  signupContainer: {
+    alignSelf: 'center',
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    bottom: hp('4'),
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
   },
   signupText: {
     fontSize: 14,

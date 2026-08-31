@@ -1,3 +1,7 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">LGES Complaint Portal</string>
+=======
+    <string name="app_name">LGESComplaints</string>
+>>>>>>> 29e89e5b4b9472fa0e361b599efdccdb309b8527
 </resources>
